@@ -17,7 +17,7 @@ MonoBehaviour:
     ufoLicenseKey: QVpIeEdPei8vLy8vQUFBQUtJSDhVb0U3SzBRS3JSdFgxOWVLanF1RSt5UmpPQnFjSjVFZlg4eU1JaDAwR0ZpMUR3Vy9Dc3ZYaWplUHNSRWswZDdpU3ZBeFNmN3ZlcE9DaS9NZTQwQ3hkWmMxMW5rQk81THdERWJaVXlmMjdJVGI1M1U3QmpvdEoxMy8vVzBScHQ0S2tjUVVVTE1WcEUzdWEzdjNvdXFDOWJRdmZNKzBVaEVHMnlIOHp6Uk5oOFArcmdnY3FnNis3K2RsYklVRjBSSUNFU0NGL250R3VmbWt6OU9WVWlIV1prcjhPYWkvemI4RFFVQzhsOW02d3NtYWh4YVJlSW1hS1hpVm1Qd3Q1Z2NwUHJUb2VSSmVVU2g3YWI4dG02bzF3cDhIaHZvYnFnOE5MRjI0RVdaalRVUHNHaHdQMXhUd3dNR3RUWmdqSG9ra2xIZU1TMFQyamtMZmFaYjhGeXhmWUFHdHFscDNmOU9Ld25OWkhwdU0=
     delayedInitialization: 0
     cameraDeviceModeSetting: -1
-    maxSimultaneousImageTargets: 1
+    maxSimultaneousImageTargets: 4
     maxSimultaneousObjectTargets: 1
     useDelayedLoadingObjectTargets: 0
     modelTargetRecoWhileExtendedTracked: 1
@@ -33,7 +33,7 @@ MonoBehaviour:
   deviceTracker:
     autoInitTracker: 0
     autoStartTracker: 0
-    arcoreRequirement: 0
+    arcoreRequirement: 1
     autoImportArcore: 0
   smartTerrain:
     autoInitTracker: 0
