@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour
 {
-    private const string BALL_TAG = "GameBall";
-
     public float maxInteractionRange = 2f;
     public float maxHitStrength = 30;
 
@@ -35,7 +33,7 @@ public class PlayerInputController : MonoBehaviour
         {
             float distFactor = 1 - hit.distance / maxInteractionRange;
 
-            if (hit.collider.gameObject.CompareTag(BALL_TAG))
+            if (hit.collider.gameObject.CompareTag(Constants.BALL_TAG))
             {
                 Debug.Log("hit a ball at distance " + hit.distance, hit.collider.gameObject);
                 Vector3 force = distFactor * maxHitStrength * ray.direction.normalized;
