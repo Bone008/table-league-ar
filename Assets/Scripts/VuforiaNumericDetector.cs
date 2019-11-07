@@ -7,6 +7,7 @@ using Vuforia;
 [RequireComponent(typeof(VuMarkBehaviour))]
 public class VuforiaNumericDetector : MonoBehaviour
 {
+    public Transform forcedParent;
     public int currentMarkerId = -1;
 
     void Start()
@@ -14,12 +15,16 @@ public class VuforiaNumericDetector : MonoBehaviour
         UpdateTargetsActive();
 
         var vuBehavior = GetComponent<VuMarkBehaviour>();
-
         vuBehavior.RegisterVuMarkTargetAssignedCallback(() =>
         {
             currentMarkerId = (int)vuBehavior.VuMarkTarget.InstanceId.NumericValue;
             Debug.Log(string.Format("!!! Found marker #{0}", currentMarkerId));
             UpdateTargetsActive();
+
+            if(forcedParent && transform.parent != forcedParent)
+            {
+                transform.SetParent(forcedParent, true);
+            }
         });
         vuBehavior.RegisterVuMarkTargetLostCallback(() =>
         {
