@@ -7,6 +7,14 @@ public class PlayerInputController : MonoBehaviour
     public float maxInteractionRange = 2f;
     public float maxHitStrength = 30;
 
+    public void ResetBall()
+    {
+        var ball = GameObject.FindGameObjectWithTag(Constants.BALL_TAG);
+        ball.transform.position = new Vector3(0, 0.1f, 0);
+        ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+    }
+
     void Update()
     {
         foreach (var touch in Input.touches)

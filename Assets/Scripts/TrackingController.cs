@@ -25,6 +25,7 @@ public class TrackingController : MonoBehaviour
     public int centerTrackerId = 1;
     /// <summary>Prefab of the world-space representation of a tracker.</summary>
     public GameObject trackerCenterPrefab;
+    public GameObject onlyWithTrackingTarget;
     public Text debug;
 
     private VuMarkManager vuMarkManager;
@@ -101,6 +102,11 @@ public class TrackingController : MonoBehaviour
             ProcessUnregisteredTrackers();
         }
 
+        if(onlyWithTrackingTarget != null && onlyWithTrackingTarget.activeSelf != hasTracking)
+        {
+            onlyWithTrackingTarget.SetActive(hasTracking);
+        }
+
         // Debug: Reset with keyboard.
         if(Input.GetKeyDown(KeyCode.R))
         {
@@ -144,6 +150,12 @@ public class TrackingController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetScale(float scaleExponent)
+    {
+        float s = Mathf.Pow(10, scaleExponent);
+        onlyWithTrackingTarget.transform.localScale = s * Vector3.one;
     }
 
     private Quaternion AverageQuaternionStepwise(int step, Quaternion accumulator, Quaternion newQuaternion)

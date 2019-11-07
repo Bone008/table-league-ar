@@ -38,8 +38,7 @@ public class VuforiaNumericDetector : MonoBehaviour
         // Do nothing if we are already destroyed.
         // This looks really weird but because Unity overloads "==" it works ...
         if (this == null) return;
-
-        Debug.Log(string.Join(",", transform.GetComponentsInChildren<MarkerTarget>(true).Select(t => "" + t.markerId)));
+        
         foreach (var target in transform.GetComponentsInChildren<MarkerTarget>(true))
         {
             target.gameObject.SetActive(target.markerId == currentMarkerId);
