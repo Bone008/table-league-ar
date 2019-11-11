@@ -9,7 +9,7 @@ using System.Linq;
 public class TrackingController : MonoBehaviour
 {
     private const int MAX_TRACKER_ID = 10;
-    
+
     private class TrackerState
     {
         public readonly int id;
@@ -90,25 +90,26 @@ public class TrackingController : MonoBehaviour
 
             trackingAccuracy = Mathf.Sqrt(predictedCameraPositions.Select(pos => (pos - averageCameraPosition).sqrMagnitude).Max());
         }
-        
+
         debug.text = "Tracking: " + n
             + ", Trackers: " + string.Join(", ", vuMarkManager.GetActiveBehaviours()
                 .Select(marker => GetTrackerFromTarget(marker.VuMarkTarget))
                 .Where(tracker => tracker != null)
                 .Select(tracker => string.Format("#{0}::{1}", tracker.id, tracker.isRegistered ? "R" : "?")))
-            + "\nAccuracy: " + (trackingAccuracy*100).ToString("0") + " cm";
+            + "\nAccuracy: " + (trackingAccuracy * 100).ToString("0") + " cm";
 
-        if (hasTracking) {
+        if (hasTracking)
+        {
             ProcessUnregisteredTrackers();
         }
 
-        if(onlyWithTrackingTarget != null && onlyWithTrackingTarget.activeSelf != hasTracking)
+        if (onlyWithTrackingTarget != null && onlyWithTrackingTarget.activeSelf != hasTracking)
         {
             onlyWithTrackingTarget.SetActive(hasTracking);
         }
 
         // Debug: Reset with keyboard.
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             ResetTrackers();
         }
@@ -137,6 +138,7 @@ public class TrackingController : MonoBehaviour
 
     public void ResetTrackers()
     {
+        SetExtendedTracking(false);
         // Unregister all trackers except the world center.
         foreach (var tracker in trackers)
         {
@@ -156,6 +158,20 @@ public class TrackingController : MonoBehaviour
     {
         float s = Mathf.Pow(10, scaleExponent);
         onlyWithTrackingTarget.transform.localScale = s * Vector3.one;
+    }
+
+    public void SetExtendedTracking(bool enabled)
+    {
+        var tracker = TrackerManager.Instance.GetTracker<PositionalDeviceTracker>();
+        if (tracker == null)
+        {
+            Debug.LogError("Positional device tracker is not initialized!");
+            return;
+        }
+        if (!tracker.IsActive && enabled)
+            tracker.Start();
+        else if (tracker.IsActive && !enabled)
+            tracker.Stop();
     }
 
     private Quaternion AverageQuaternionStepwise(int step, Quaternion accumulator, Quaternion newQuaternion)
