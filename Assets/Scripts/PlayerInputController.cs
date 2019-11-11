@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInputController : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class PlayerInputController : MonoBehaviour
     public void ResetBall()
     {
         var ball = GameObject.FindGameObjectWithTag(Constants.BALL_TAG);
+        if(ball == null)
+        {
+            Debug.LogWarning("Ball not found!");
+            return;
+        }
         ball.transform.position = new Vector3(0, 0.1f, 0);
         ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -19,14 +25,14 @@ public class PlayerInputController : MonoBehaviour
     {
         foreach (var touch in Input.touches)
         {
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
             {
                 Debug.Log("touch at " + touch.position);
                 OnSceneClick(touch.position);
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             Debug.Log("click at " + Input.mousePosition);
             OnSceneClick(Input.mousePosition);
