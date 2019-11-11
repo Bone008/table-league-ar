@@ -2642,6 +2642,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 255797289, guid: 93dff4c8e8fee7a47b2be96bb5652b6f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1286000447}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93dff4c8e8fee7a47b2be96bb5652b6f, type: 3}
 --- !u!4 &769522895 stripped
@@ -4185,8 +4189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5a070e4d8a2d447bb8fe0cf7ed6450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxInteractionRange: 2
-  maxHitStrength: 1
+  maxInteractionRange: 0.6
+  maxHitStrength: 0.5
 --- !u!1 &1315600460
 GameObject:
   m_ObjectHideFlags: 0
@@ -4259,8 +4263,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1326443681}
   m_LocalRotation: {x: 0.096239924, y: -0, z: -0, w: 0.99535817}
-  m_LocalPosition: {x: -0.0747, y: 0.0192, z: -0.5297}
-  m_LocalScale: {x: 0.6393355, y: 0.025775, z: 0.4452305}
+  m_LocalPosition: {x: -0.0747, y: 0.0256, z: -0.5626}
+  m_LocalScale: {x: 0.6393355, y: 0.025775, z: 0.5122822}
   m_Children: []
   m_Father: {fileID: 627575307}
   m_RootOrder: 9

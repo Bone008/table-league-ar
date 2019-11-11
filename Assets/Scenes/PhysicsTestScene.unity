@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1087,5 +1087,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 255797289, guid: 93dff4c8e8fee7a47b2be96bb5652b6f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1651110048}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93dff4c8e8fee7a47b2be96bb5652b6f, type: 3}
