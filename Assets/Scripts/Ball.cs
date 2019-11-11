@@ -10,11 +10,19 @@ public class Ball : MonoBehaviour
     void Start()
     {
         rbody = GetComponent<Rigidbody>();
+        // Make sure the ball can spin fast enough for high speeds.
+        rbody.maxAngularVelocity = 100;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Debug
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            rbody.velocity = Vector3.zero;
+            rbody.angularVelocity = Vector3.zero;
+        }
 
     }
 
@@ -32,8 +40,8 @@ public class Ball : MonoBehaviour
             velocity = 2 * (Vector3.Dot(velocity, Vector3.Normalize(c.contacts[0].normal))) * Vector3.Normalize(c.contacts[0].normal) - velocity; //Following formula  v' = 2 * (v . n) * n - v
 
             velocity *= -1;
-
-            GetComponent<Rigidbody>().velocity = velocity;
+            // No longer needed with proper physics settings
+            //GetComponent<Rigidbody>().velocity = velocity;
         }
     }
 }

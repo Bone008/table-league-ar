@@ -50,7 +50,9 @@ public class PlayerInputController : MonoBehaviour
             if (hit.collider.gameObject.CompareTag(Constants.BALL_TAG))
             {
                 Debug.Log("hit a ball at distance " + hit.distance, hit.collider.gameObject);
-                Vector3 force = distFactor * maxHitStrength * (transform.rotation * Vector3.forward);
+                Vector3 direction = transform.rotation * Vector3.forward;
+                if (direction.y < 0) direction.y = 0;
+                Vector3 force = distFactor * maxHitStrength * direction.normalized;
                 hit.rigidbody.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
             }
         }
