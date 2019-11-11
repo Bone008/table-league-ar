@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anchor: {fileID: 5273160967142474999}
+  ballMinImpactVelocity: 0.15
   ballImpulse: 2
   knockOverDuration: 0.4
   knockOverCurve:

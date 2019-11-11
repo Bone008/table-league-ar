@@ -13,7 +13,7 @@ public class BarrierHitRegion : MonoBehaviour
             Vector3 localBallPosition = transform.InverseTransformPoint(collision.gameObject.transform.position);
             if (localBallPosition.z > 0)
             {
-                tower.OnBallCollided(collision);
+                tower.OnBallCollide(collision);
             }
             else Debug.Log("ignored collision from behind");
         }
