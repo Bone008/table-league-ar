@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 960904578660f0d469718463da021fe3, type: 2}
+  - {fileID: 2100000, guid: 3f72bbe171c0f644e8d3650e9c750fa8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 4144803343209334875}
   - component: {fileID: 4144803343209334874}
   m_Layer: 0
-  m_Name: MagneticTower
+  m_Name: MagneticPushTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -231,6 +231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfde56cc63722fb4c9235e29f207254c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullForce: 1.8
+  pullForce: -1.8
   maxEnergy: 0.5
   rechargeDelay: 1
