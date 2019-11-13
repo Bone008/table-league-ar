@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 7631184233844285168}
   m_Layer: 0
   m_Name: BarrierTower
-  m_TagString: Untagged
+  m_TagString: Towers
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
