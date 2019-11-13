@@ -7,6 +7,8 @@ public class PlayerInputController : MonoBehaviour
 {
     public float maxInteractionRange = 2f;
     public float maxHitStrength = 30;
+    public GameObject newTower;
+    public float towerDistance;
 
     public void ResetBall()
     {
@@ -31,7 +33,6 @@ public class PlayerInputController : MonoBehaviour
                 OnSceneClick(touch.position);
             }
         }
-
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             Debug.Log("click at " + Input.mousePosition);
@@ -43,10 +44,13 @@ public class PlayerInputController : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(position);
         RaycastHit hit;
+        bool create = true;
+        GameObject[] towers = GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG);
+        Debug.Log(towers.Length);
+
         if (Physics.Raycast(ray, out hit, maxInteractionRange))
         {
             float distFactor = 1 - hit.distance / maxInteractionRange;
-
             if (hit.collider.gameObject.CompareTag(Constants.BALL_TAG))
             {
                 Debug.Log("hit a ball at distance " + hit.distance, hit.collider.gameObject);
@@ -55,6 +59,25 @@ public class PlayerInputController : MonoBehaviour
                 Vector3 force = distFactor * maxHitStrength * direction.normalized;
                 hit.rigidbody.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
             }
+
+            if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG))
+            {
+                foreach (GameObject t in towers)
+                {
+                    Debug.Log(Vector3.Distance(t.transform.position, hit.point));
+
+                    if (Vector3.Distance(t.transform.position, hit.point) < towerDistance)
+                    {
+                        create = false;
+                        break;
+                    }
+                }
+                if (create)
+                {
+                    newTower.tag = Constants.TOWER_TAG;
+                    Instantiate(newTower, hit.point, Quaternion.identity);
+                }
+            }            
         }
     }
 }
