@@ -7,8 +7,8 @@ public class PlayerInputController : MonoBehaviour
 {
     public float maxInteractionRange = 2f;
     public float maxHitStrength = 30;
-    public GameObject newTower;
     public float towerDistance;
+    public GameObject[] prefabTowers;
 
     public void ResetBall()
     {
@@ -46,7 +46,6 @@ public class PlayerInputController : MonoBehaviour
         RaycastHit hit;
         bool create = true;
         GameObject[] towers = GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG);
-        Debug.Log(towers.Length);
 
         if (Physics.Raycast(ray, out hit, maxInteractionRange))
         {
@@ -64,7 +63,6 @@ public class PlayerInputController : MonoBehaviour
             {
                 foreach (GameObject t in towers)
                 {
-                    Debug.Log(Vector3.Distance(t.transform.position, hit.point));
 
                     if (Vector3.Distance(t.transform.position, hit.point) < towerDistance)
                     {
@@ -74,8 +72,7 @@ public class PlayerInputController : MonoBehaviour
                 }
                 if (create)
                 {
-                    newTower.tag = Constants.TOWER_TAG;
-                    Instantiate(newTower, hit.point, Quaternion.identity);
+                    Instantiate(prefabTowers[TowerManager.GetTowerChoice()], hit.point, Quaternion.identity);
                 }
             }            
         }
