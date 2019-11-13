@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +24,14 @@ public class Ball : MonoBehaviour
             rbody.velocity = Vector3.zero;
             rbody.angularVelocity = Vector3.zero;
         }
+    }
 
+    public void Reset(Vector3 position)
+    {
+        rbody.velocity = Vector3.zero;
+        rbody.angularVelocity = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        transform.position = position;
     }
 
     void OnCollisionEnter(Collision c)
@@ -44,4 +52,5 @@ public class Ball : MonoBehaviour
             //GetComponent<Rigidbody>().velocity = velocity;
         }
     }
+
 }
