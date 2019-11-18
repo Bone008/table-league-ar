@@ -10,6 +10,11 @@ public class PlayerInputController : MonoBehaviour
     public float towerDistance;
     public GameObject[] prefabTowers;
 
+    void Awake()
+    {
+        Input.simulateMouseWithTouches = false;
+    }
+
     public void ResetBall()
     {
         var ball = GameObject.FindGameObjectWithTag(Constants.BALL_TAG);
@@ -47,7 +52,7 @@ public class PlayerInputController : MonoBehaviour
         bool create = true;
         GameObject[] towers = GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG);
 
-        if (Physics.Raycast(ray, out hit, maxInteractionRange))
+        if (Physics.Raycast(ray, out hit, maxInteractionRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
         {
             float distFactor = 1 - hit.distance / maxInteractionRange;
             if (hit.collider.gameObject.CompareTag(Constants.BALL_TAG))
