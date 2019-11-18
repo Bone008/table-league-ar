@@ -163,6 +163,21 @@ namespace UnityTemplateProjects
             m_InterpolatingCameraState.LerpTowards(m_TargetCameraState, positionLerpPct, rotationLerpPct);
 
             m_InterpolatingCameraState.UpdateTransform(transform);
+
+
+            // MODIFICATION: Focus on closest ball in debug mode.
+            if(Input.GetKeyDown(KeyCode.B))
+            {
+                var balls = GameObject.FindGameObjectsWithTag(Constants.BALL_TAG);
+                GameObject closestBall = Util.MinBy(balls, b => Vector3.Distance(b.transform.position, transform.position));
+                Vector3 targetPos = closestBall.transform.position;
+                targetPos += closestBall.GetComponent<Rigidbody>().velocity;
+                m_TargetCameraState.x = targetPos.x;
+                m_TargetCameraState.y = targetPos.y;
+                m_TargetCameraState.z = targetPos.z;
+                m_TargetCameraState.Translate(0.2f * Vector3.back);
+                m_TargetCameraState.y = Mathf.Max(0.02f, m_TargetCameraState.y);
+            }
         }
     }
 
