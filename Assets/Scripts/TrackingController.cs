@@ -125,7 +125,7 @@ public class TrackingController : MonoBehaviour
             if (tracker.isRegistered) continue;
 
             // Debug: Register on mouse click.
-            if (Input.GetMouseButton(0))
+            if (Util.IsMouseOrTouchDown)
             {
                 Debug.Log("Registering #" + tracker.id + " at " + marker.transform.position);
                 tracker.knownWorldRotation = marker.transform.rotation;

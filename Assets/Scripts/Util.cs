@@ -82,7 +82,7 @@ public static class Util
     private static IEnumerator _AnimateCoroutine(float duration, Func<float, float> easingFunc, Action<float> progressCallback, bool realtime)
     {
         float t = 0;
-        while(t < duration)
+        while (t < duration)
         {
             progressCallback(easingFunc(t / duration));
             yield return null;
@@ -124,7 +124,7 @@ public static class Util
         yield return delayObject;
         callback();
     }
-    
+
     /// <summary>
     /// Searches for a GameObject with a specific tag in the current gameobject and its parents
     /// </summary>
@@ -135,7 +135,7 @@ public static class Util
     {
         Transform currentParent = current.transform;
 
-        while(currentParent != null)
+        while (currentParent != null)
         {
             if (currentParent.tag.Equals(searchedTag))
                 return currentParent.gameObject;
@@ -186,6 +186,33 @@ public static class Util
                 }
             }
             return min;
+        }
+    }
+
+    /// <summary>True if there is a click/touch starting this frame.</summary>
+    public static bool IsMouseOrTouchDown
+    {
+        get
+        {
+            return Input.GetMouseButtonDown(0) || Input.touches.Any(t => t.phase == TouchPhase.Began);
+        }
+    }
+
+    /// <summary>True if there is a click/touch ending this frame.</summary>
+    public static bool IsMouseOrTouchUp
+    {
+        get
+        {
+            return Input.GetMouseButtonUp(0) || Input.touches.Any(t => t.phase == TouchPhase.Ended);
+        }
+    }
+
+    /// <summary>True if there is a click/touch active during this frame.</summary>
+    public static bool IsMouseOrTouch
+    {
+        get
+        {
+            return Input.GetMouseButton(0) || Input.touches.Length > 0;
         }
     }
 }
