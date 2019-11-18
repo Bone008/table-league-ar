@@ -27,6 +27,7 @@ public class TrackingController : MonoBehaviour
     public GameObject trackerCenterPrefab;
     public GameObject onlyWithTrackingTarget;
     public Text debug;
+    public Transform sceneTransform;
 
     private VuMarkManager vuMarkManager;
     private TrackerState[] trackers = new TrackerState[MAX_TRACKER_ID + 1];
@@ -38,6 +39,8 @@ public class TrackingController : MonoBehaviour
         {
             trackers[i] = new TrackerState(i);
         }
+
+        this.Delayed(1.0f, () => SetExtendedTracking(false));
 
         vuMarkManager.RegisterVuMarkDetectedCallback(target =>
         {
@@ -85,8 +88,10 @@ public class TrackingController : MonoBehaviour
             foreach (Vector3 pos in predictedCameraPositions)
                 averageCameraPosition += pos / n;
 
-            transform.localRotation = averageCameraRotation;
-            transform.localPosition = averageCameraPosition;
+            //transform.localRotation = averageCameraRotation;
+            //transform.localPosition = averageCameraPosition;
+            sceneTransform.localRotation = transform.localRotation * Quaternion.Inverse(averageCameraRotation);
+            sceneTransform.localPosition = transform.localRotation * Quaternion.Inverse(averageCameraRotation)  * - averageCameraPosition;
 
             trackingAccuracy = Mathf.Sqrt(predictedCameraPositions.Select(pos => (pos - averageCameraPosition).sqrMagnitude).Max());
         }
@@ -169,7 +174,12 @@ public class TrackingController : MonoBehaviour
             return;
         }
         if (!tracker.IsActive && enabled)
+        {
+            bool r = tracker.Reset();
+            tracker.ResetAnchors();
             tracker.Start();
+            Debug.Log("tracker reset successful: " + r);
+        }
         else if (tracker.IsActive && !enabled)
             tracker.Stop();
     }
