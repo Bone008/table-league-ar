@@ -9,6 +9,9 @@ public class PlayerInputController : MonoBehaviour
     public float maxHitStrength = 30;
     public float towerDistance;
     public GameObject[] prefabTowers;
+    public float towerCreationTime = 2f;
+    private float towerTimer = 0f;
+    private Vector3 newTowerPos;
 
     void Awake()
     {
@@ -30,6 +33,15 @@ public class PlayerInputController : MonoBehaviour
 
     void Update()
     {
+        if(Input.touchCount == 0 && !Input.GetMouseButton(0))
+        {
+            towerTimer = 0f;
+        }
+        if(towerTimer != 0 && Time.time - towerTimer >= towerCreationTime)
+        {
+            Instantiate(prefabTowers[TowerManager.GetTowerChoice()], newTowerPos, Quaternion.identity);
+            towerTimer = 0f;
+        }
         foreach (var touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
@@ -75,9 +87,10 @@ public class PlayerInputController : MonoBehaviour
                         break;
                     }
                 }
-                if (create)
+                if (create && towerTimer == 0)
                 {
-                    Instantiate(prefabTowers[TowerManager.GetTowerChoice()], hit.point, Quaternion.identity);
+                    towerTimer = Time.time;
+                    newTowerPos = hit.point;
                 }
             }            
         }
