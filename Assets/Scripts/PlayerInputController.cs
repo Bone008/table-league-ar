@@ -87,7 +87,7 @@ public class PlayerInputController : MonoBehaviour
                         break;
                     }
                 }
-                if (create && towerTimer == 0)
+                if (create && towerTimer == 0 && TowerManager.GetTowerChoice() != -1)
                 {
                     towerTimer = Time.time;
                     newTowerPos = hit.point;

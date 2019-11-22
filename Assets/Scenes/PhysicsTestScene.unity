@@ -1924,6 +1924,7 @@ MonoBehaviour:
   - {fileID: 4144803343209334873, guid: 45088b3a95a687b44930166e5fef52d4, type: 3}
   - {fileID: 4144803343209334873, guid: ab9692a0272588f4fa482ecaf6b8909b, type: 3}
   - {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147, type: 3}
+  towerCreationTime: 2
 --- !u!114 &1651110049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1949,6 +1950,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693c8ca543a3be6449e0e72bc87d013c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mTowerButton: {fileID: 110051735}
+  mPushButton: {fileID: 27668651}
+  bTowerButton: {fileID: 2005847350}
 --- !u!1 &1701282904
 GameObject:
   m_ObjectHideFlags: 0
