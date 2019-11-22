@@ -21,6 +21,8 @@ public class TowerManager : MonoBehaviour
         {
             towerChoice = 0;
             mTowerButton.image.color = Color.red;
+            mPushButton.image.color = Color.white;
+            bTowerButton.image.color = Color.white;
         }
     }
 
@@ -35,6 +37,8 @@ public class TowerManager : MonoBehaviour
         {
             towerChoice = 1;
             mPushButton.image.color = Color.red;
+            mTowerButton.image.color = Color.white;
+            bTowerButton.image.color = Color.white;
         }
     }
 
@@ -49,6 +53,8 @@ public class TowerManager : MonoBehaviour
         {
             towerChoice = 2;
             bTowerButton.image.color = Color.red;
+            mTowerButton.image.color = Color.white;
+            mPushButton.image.color = Color.white;
         }
     }
 
