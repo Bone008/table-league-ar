@@ -76,7 +76,7 @@ public class PlayerInputController : MonoBehaviour
                 hit.rigidbody.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
             }
 
-            if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG))
+            if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) && hit.point.z > 0)
             {
                 foreach (GameObject t in towers)
                 {
