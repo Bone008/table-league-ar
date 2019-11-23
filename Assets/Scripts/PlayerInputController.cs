@@ -12,6 +12,7 @@ public class PlayerInputController : MonoBehaviour
     public float towerCreationTime = 2f;
     private float towerTimer = 0f;
     private Vector3 newTowerPos;
+    private Quaternion newTowerAngle;
 
     void Awake()
     {
@@ -39,7 +40,7 @@ public class PlayerInputController : MonoBehaviour
         }
         if(towerTimer != 0 && Time.time - towerTimer >= towerCreationTime)
         {
-            Instantiate(prefabTowers[TowerManager.GetTowerChoice()], newTowerPos, Quaternion.identity);
+            Instantiate(prefabTowers[TowerManager.GetTowerChoice()], newTowerPos, newTowerAngle);
             towerTimer = 0f;
         }
         foreach (var touch in Input.touches)
@@ -91,6 +92,9 @@ public class PlayerInputController : MonoBehaviour
                 {
                     towerTimer = Time.time;
                     newTowerPos = hit.point;
+                    newTowerAngle = Quaternion.identity;
+                    Debug.Log("Camera Angle: " + Camera.main.transform.eulerAngles.y);
+                    newTowerAngle = Quaternion.Euler(newTowerAngle.x, Camera.main.transform.eulerAngles.y, newTowerAngle.z);
                 }
             }            
         }
