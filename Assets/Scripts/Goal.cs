@@ -7,7 +7,7 @@ public class Goal : MonoBehaviour
     public Player owner;
 
     void OnTriggerEnter(Collider other) {
-        if(other.gameObject.CompareTag(Constants.BALL_TAG))
+        if(other.gameObject.CompareTag(Constants.BALL_TAG) && !other.isTrigger)
         {
             GameManager.Instance.ScoreGoal(other.gameObject.GetComponent<Ball>(), owner);
         }
