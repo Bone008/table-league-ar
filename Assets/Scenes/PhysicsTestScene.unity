@@ -1252,6 +1252,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &1187489661 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147,
+    type: 3}
+  m_PrefabInstance: {fileID: 386018762}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1187489664
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187489661}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &1202846192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1924,7 +1968,12 @@ MonoBehaviour:
   - {fileID: 4144803343209334873, guid: 45088b3a95a687b44930166e5fef52d4, type: 3}
   - {fileID: 4144803343209334873, guid: ab9692a0272588f4fa482ecaf6b8909b, type: 3}
   - {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147, type: 3}
+  prefabPreviewTowers:
+  - {fileID: 5563275117789276712, guid: e5f9722ded65b504a9b422c942c2665d, type: 3}
+  - {fileID: 4482459438543267568, guid: 89bf2b2810f259c4893552d7a39349e5, type: 3}
+  - {fileID: 2616711898347794628, guid: a7c8152ec87f06e46a48fc4dc8789aaa, type: 3}
   towerCreationTime: 2
+  newTower: {fileID: 0}
 --- !u!114 &1651110049
 MonoBehaviour:
   m_ObjectHideFlags: 0
