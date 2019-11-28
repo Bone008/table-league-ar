@@ -3273,10 +3273,14 @@ MonoBehaviour:
   - {fileID: 4144803343209334873, guid: ab9692a0272588f4fa482ecaf6b8909b, type: 3}
   - {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147, type: 3}
 <<<<<<< HEAD
+<<<<<<< HEAD
   prefabPreviewTowers:
   - {fileID: 5563275117789276712, guid: e5f9722ded65b504a9b422c942c2665d, type: 3}
   - {fileID: 4482459438543267568, guid: 89bf2b2810f259c4893552d7a39349e5, type: 3}
   - {fileID: 2616711898347794628, guid: a7c8152ec87f06e46a48fc4dc8789aaa, type: 3}
+=======
+  prefabPreviewTowers: []
+>>>>>>> ceb2752ade4fb5eafc59a0921b626478b5a8bbbd
 =======
   prefabPreviewTowers: []
 >>>>>>> ceb2752ade4fb5eafc59a0921b626478b5a8bbbd
