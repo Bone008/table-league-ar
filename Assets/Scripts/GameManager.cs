@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     private int score1 = 0;
     private int score2 = 0;
 
+    private int resourceCollected = 0;
+
     void Awake()
     {
         Instance = this;
@@ -45,5 +47,22 @@ public class GameManager : MonoBehaviour
     {
         // TODO reset in home area instead of center
         ball.Reset(new Vector3(0, 0.4f, 0));
+    }
+
+    public void CollectResource()
+    {
+        resourceCollected += 10;
+        ui.UpdateResource(resourceCollected);
+    }
+
+    public void UseResource(int towerCost)
+    {
+        resourceCollected -= towerCost;
+        ui.UpdateResource(resourceCollected);
+    }
+
+    public int GetResource()
+    {
+        return resourceCollected;
     }
 }

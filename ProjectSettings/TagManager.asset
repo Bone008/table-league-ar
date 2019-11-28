@@ -8,6 +8,7 @@ TagManager:
   - Walls
   - Towers
   - Floor
+  - TowerResource
   layers:
   - Default
   - TransparentFX
