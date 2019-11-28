@@ -6,17 +6,18 @@ public class BallInteractionPreview : MonoBehaviour
 {
     public PlayerInputController controller;
     public Renderer visual;
-    
+
     void LateUpdate()
     {
-        Vector3 pos = transform.position;
         bool inRange = (controller.transform.position - transform.position).sqrMagnitude < controller.maxInteractionRange * controller.maxInteractionRange;
 
         visual.enabled = inRange;
-        if(inRange)
+        if (inRange)
         {
             Vector3 rot = controller.transform.eulerAngles;
-            rot.x = 0; // TODO allow pointing upwards
+            // Only allow angling upwards, not downwards.
+            if (rot.x < 180)
+                rot.x = 0;
             transform.eulerAngles = rot;
         }
     }

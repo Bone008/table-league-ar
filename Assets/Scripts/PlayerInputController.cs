@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 public class PlayerInputController : MonoBehaviour
 {
     public float maxInteractionRange = 2f;
-    public float maxHitStrength = 30;
+    public float minHitStrength;
+    public float maxHitStrength;
     public float towerDistance;
     public GameObject[] prefabTowers;
     public GameObject[] prefabPreviewTowers;
@@ -96,14 +97,20 @@ public class PlayerInputController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, maxInteractionRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
         {
-            float distFactor = 1 - hit.distance / maxInteractionRange;
-            if (hit.collider.gameObject.CompareTag(Constants.BALL_TAG))
+            float distanceToOrigin = (hit.transform.position - transform.position).magnitude;
+            if (hit.collider.gameObject.CompareTag(Constants.BALL_TAG) && distanceToOrigin < maxInteractionRange)
             {
-                Debug.Log("hit a ball at distance " + hit.distance, hit.collider.gameObject);
+                float distFactor = 1 - distanceToOrigin / maxInteractionRange;
+                float hitStrength = Mathf.Lerp(minHitStrength, maxHitStrength, distFactor);
+                Debug.Log("hit a ball at distance " + distanceToOrigin + ", strength " + hitStrength, hit.collider.gameObject);
+
                 Vector3 direction = transform.rotation * Vector3.forward;
                 if (direction.y < 0) direction.y = 0;
-                Vector3 force = distFactor * maxHitStrength * direction.normalized;
-                hit.rigidbody.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
+                direction.Normalize();
+
+                Vector3 force = hitStrength * direction;
+                hit.rigidbody.velocity = Vector3.zero;
+                hit.rigidbody.AddForce(force, ForceMode.Impulse);
             }
 
             if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG) && clickedObjectType == 0 && resourceTimer == 0)
