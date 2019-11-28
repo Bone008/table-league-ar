@@ -30,7 +30,7 @@ public class MagneticTower : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (!other.gameObject.CompareTag(Constants.BALL_TAG))
+        if (!other.gameObject.CompareTag(Constants.BALL_TAG) || other.isTrigger)
         {
             return;
         }
