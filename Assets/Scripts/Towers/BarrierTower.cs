@@ -6,6 +6,7 @@ using UnityEngine;
 public class BarrierTower : MonoBehaviour
 {
     public Transform anchor;
+    public Collider hitRegionCollider;
     public float ballMinImpactVelocity = 0.15f;
     public float ballImpulse = 2f;
     public float knockOverDuration = 0.2f;
@@ -35,6 +36,7 @@ public class BarrierTower : MonoBehaviour
     {
         // Re-enable tower when it is disabled, since coroutines are canceled.
         anchor.localEulerAngles = Vector3.zero;
+        hitRegionCollider.enabled = true;
         isReady = true;
     }
 
@@ -42,8 +44,11 @@ public class BarrierTower : MonoBehaviour
     {
         isReady = false;
         yield return this.AnimateVector(knockOverDuration, Vector3.zero, new Vector3(-85, 0, 0), knockOverCurve, v => anchor.localEulerAngles = v);
+        hitRegionCollider.enabled = false;
         yield return new WaitForSeconds(recoverDuration);
+        hitRegionCollider.enabled = true;
         yield return this.AnimateVector(2 * knockOverDuration, new Vector3(-85, 0, 0), Vector3.zero, knockOverCurve, v => anchor.localEulerAngles = v);
         isReady = true;
     }
+
 }
