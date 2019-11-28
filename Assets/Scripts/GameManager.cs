@@ -12,41 +12,41 @@ public class GameManager : MonoBehaviour
     public Player player1;
     public Player player2;
 
-    private int score1 = 0;
-    private int score2 = 0;
-
     private int resourceCollected = 0;
 
-    void Awake()
+    void Awake() { Instance = this; }
+
+    void Start()
     {
-        Instance = this;
+        ResetAllBalls();
+    }
+
+    /// <summary>Distributes all balls across both players' home areas.</summary>
+    public void ResetAllBalls()
+    {
+        Player p = player1;
+        foreach (GameObject ballObject in GameObject.FindGameObjectsWithTag(Constants.BALL_TAG))
+        {
+            ResetBall(ballObject.GetComponent<Ball>(), p);
+            p = GetOpponentOf(p);
+        }
     }
 
     public void ScoreGoal(Ball ball, Player defendingPlayer)
     {
-        if (defendingPlayer == player1)
-        {
-            score2++;
-            Debug.Log("Player " + player2.playerName + " scored!\nScores: " + score1 + " : " + score2);
-        }
-        else if (defendingPlayer == player2)
-        {
-            score1++;
-            Debug.Log("Player " + player1.playerName + " scored!\nScores: " + score1 + " : " + score2);
-        }
-        else
-            throw new ArgumentException("unknown player!");
-        
-        ui.UpdateScores(score1, score2);
+        Player attacker = GetOpponentOf(defendingPlayer);
+        attacker.score++;
+
+        ui.UpdateScores(player1.score, player2.score);
         ResetBall(ball, defendingPlayer);
-        // TODO Winning condition.
+
+        // TODO Check winning condition.
     }
 
     /// <summary>Spawns a ball back in the home area of the given player.</summary>
     private void ResetBall(Ball ball, Player forPlayer)
     {
-        // TODO reset in home area instead of center
-        ball.Reset(new Vector3(0, 0.4f, 0));
+        ball.Reset(forPlayer.homeAreaAnchor.position);
     }
 
     public void CollectResource()
@@ -64,5 +64,13 @@ public class GameManager : MonoBehaviour
     public int GetResource()
     {
         return resourceCollected;
+    }
+
+
+    public Player GetOpponentOf(Player player)
+    {
+        if (player == player1) return player2;
+        else if (player == player2) return player1;
+        else throw new ArgumentException("Unknown player!");
     }
 }

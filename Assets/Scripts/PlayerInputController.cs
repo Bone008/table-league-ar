@@ -30,24 +30,10 @@ public class PlayerInputController : MonoBehaviour
         Input.simulateMouseWithTouches = false;
     }
 
-    public void ResetBall()
-    {
-        var ball = GameObject.FindGameObjectWithTag(Constants.BALL_TAG);
-        if(ball == null)
-        {
-            Debug.LogWarning("Ball not found!");
-            return;
-        }
-        ball.transform.position = new Vector3(0, 0.1f, 0);
-        ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-    }
-
     void Update()
     {
         GameObject currentResource;
         float prob = Random.Range(0, 1.0f);
-        Debug.Log("Prob value: " + prob);
 
         if (prob < resourceCreationProbabilty && resourceCreated < resourceLimit)
         {
