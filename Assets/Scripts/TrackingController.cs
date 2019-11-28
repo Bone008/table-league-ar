@@ -12,8 +12,20 @@ public class TrackingController : MonoBehaviour, ITrackableEventHandler
     public GameObject onlyWithTrackingTarget;
     public GameObject onlyWithoutTrackingTarget;
     public Text debug;
+    public bool disableInEditor;
 
     private bool hasTracking;
+
+#if UNITY_EDITOR
+    void Awake()
+    {
+        if(disableInEditor)
+        {
+            GetComponent<UnityTemplateProjects.SimpleCameraController>().enabled = true;
+            this.enabled = false;
+        }
+    }
+#endif
 
     void Start()
     {
