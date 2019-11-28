@@ -51,7 +51,7 @@ public class PlayerInputController : MonoBehaviour
 
         if (prob < resourceCreationProbabilty && resourceCreated < resourceLimit)
         {
-            currentResource = Instantiate(resourcePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+            currentResource = Instantiate(resourcePrefab, new Vector3(Random.Range(-1.0f, 1.0f), 0.015f, Random.Range(-1.4f, 1.4f)), Quaternion.identity);
             Debug.Log("Resource Created");
             currentResource.GetComponentInChildren<ParticleSystem>().Stop();
             resourceCreated++;
