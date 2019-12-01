@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 4482459438543267571}
   m_Layer: 2
   m_Name: MagneticPushTower Preview
-  m_TagString: Towers
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

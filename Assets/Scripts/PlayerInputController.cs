@@ -8,23 +8,31 @@ public class PlayerInputController : MonoBehaviour
     public float maxInteractionRange = 2f;
     public float minHitStrength;
     public float maxHitStrength;
-    public float towerDistance;
-    public GameObject[] prefabTowers;
-    public GameObject[] prefabPreviewTowers;
-    public float towerCreationTime = 2f;
-    private float towerTimer = 0f;
-    private Vector3 newTowerPos;
-    private Quaternion newTowerAngle;
-    private GameObject newTower;
+    
     private int clickedObjectType = 0;
-    public int towerCost;
+
+    /// <summery>For resource.</summery>
     public float resourceCollectionTime;
     private float resourceTimer = 0f;
-    private int resourceCreated = 0;
+    private int resourcesCreated = 0;
     public int resourceLimit;
     public GameObject resourcePrefab;
     private GameObject activeResource;
     public float resourceCreationProbabilty;
+
+    /// <summery>For tower preview.</summery>
+    public GameObject[] prefabPreviewTowers;
+    private bool towerFeasible;
+    public int towerCost;
+
+    /// <summery>For tower.</summery>
+    public float towerDistance;
+    public GameObject[] prefabTowers;
+    public float towerCreationTime;
+    private float towerTimer = 0f;
+    private Vector3 newTowerPos;
+    private Quaternion newTowerAngle;
+    private GameObject towerPreview;
 
     void Awake()
     {
@@ -33,46 +41,107 @@ public class PlayerInputController : MonoBehaviour
 
     void Update()
     {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+        GameObject[] towers = GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG);
+        Quaternion previewAngle;
+
         GameObject currentResource;
         float prob = Random.Range(0, 1.0f);
 
-        if (prob < resourceCreationProbabilty && resourceCreated < resourceLimit)
-        {
-            currentResource = Instantiate(resourcePrefab, new Vector3(Random.Range(-1.0f, 1.0f), 0.015f, Random.Range(-1.4f, 1.4f)), Quaternion.identity);
-            Debug.Log("Resource Created");
-            currentResource.GetComponentInChildren<ParticleSystem>().Stop();
-            resourceCreated++;
-        }
+        towerFeasible = false;
 
         if (Input.touchCount == 0 && !Input.GetMouseButton(0))
         {
             towerTimer = 0f;
-            Destroy(newTower);
 
             resourceTimer = 0f;
-            if(clickedObjectType == 2)
+            if (clickedObjectType == 2)
             {
                 activeResource.GetComponentInChildren<ParticleSystem>().Stop();
             }
 
             clickedObjectType = 0;
+
+            if (TowerManager.GetTowerChoice() == -1 || GameManager.Instance.GetResource() < towerCost)
+            {
+                Destroy(towerPreview);
+                towerPreview = null;
+            }
+
+            if (Physics.Raycast(ray, out hit, maxInteractionRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+            {
+                if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) /*&& hit.point.z > 0*/ && clickedObjectType == 0 && towerTimer == 0 && TowerManager.GetTowerChoice() != -1 && GameManager.Instance.GetResource() >= towerCost)
+                {
+                    towerFeasible = true;
+                    foreach (GameObject t in towers)
+                    {
+                        if (Vector3.Distance(t.transform.position, hit.point) < towerDistance && t != towerPreview)
+                        {
+                            towerFeasible = false;
+                            break;
+                        }
+                    }
+                    if (towerFeasible)
+                    {
+                        previewAngle = Quaternion.identity;
+                        previewAngle = Quaternion.Euler(previewAngle.x, Camera.main.transform.eulerAngles.y, previewAngle.z);
+
+                        if (towerPreview == null)
+                        {
+                            towerPreview = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], hit.point, previewAngle);
+                        }
+                        else
+                        {
+                            if (GameObject.ReferenceEquals(prefabPreviewTowers[TowerManager.GetTowerChoice()], towerPreview))
+                            {
+                                towerPreview.transform.rotation = previewAngle;
+                                towerPreview.transform.position = hit.point;
+                            }
+                            else
+                            {
+                                Destroy(towerPreview);
+                                towerPreview = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], hit.point, previewAngle);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Destroy(towerPreview);
+                        towerPreview = null;
+                    }
+                }
+            }
         }
+        
+        if (prob < resourceCreationProbabilty && resourcesCreated < resourceLimit)
+        {
+            currentResource = Instantiate(resourcePrefab, new Vector3(Random.Range(-1.0f, 1.0f), 0.015f, Random.Range(-1.4f, 1.4f)), Quaternion.identity);
+            currentResource.GetComponentInChildren<ParticleSystem>().Stop();
+            resourcesCreated++;
+        }
+        
         if(clickedObjectType == 2 && resourceTimer != 0 && Time.time - resourceTimer >= towerCreationTime)
         {
             Destroy(activeResource);
             resourceTimer = 0f;
             clickedObjectType = 0;
             GameManager.Instance.CollectResource();
-            resourceCreated--;
+            resourcesCreated--;
         }
+
         if(clickedObjectType == 1 && towerTimer != 0 && Time.time - towerTimer >= towerCreationTime)
         {
-            Destroy(newTower);
+            newTowerPos = towerPreview.transform.position;
+            newTowerAngle = towerPreview.transform.rotation;
+            Destroy(towerPreview);
+            towerPreview = null;
             Instantiate(prefabTowers[TowerManager.GetTowerChoice()], newTowerPos, newTowerAngle);
             towerTimer = 0f;
             clickedObjectType = 0;
             GameManager.Instance.UseResource(towerCost);
         }
+
         foreach (var touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
@@ -92,8 +161,6 @@ public class PlayerInputController : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(position);
         RaycastHit hit;
-        GameObject[] towers = GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG);
-        GameObject[] resources = GameObject.FindGameObjectsWithTag(Constants.RESOURCE_TAG);
 
         if (Physics.Raycast(ray, out hit, maxInteractionRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
         {
@@ -112,40 +179,24 @@ public class PlayerInputController : MonoBehaviour
                 hit.rigidbody.velocity = Vector3.zero;
                 hit.rigidbody.AddForce(force, ForceMode.Impulse);
             }
-
+            
             if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG) && clickedObjectType == 0 && resourceTimer == 0)
             {
-                //Start Here
                 activeResource = hit.collider.gameObject;
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
                 resourceTimer = Time.time;
                 clickedObjectType = 2;
             }
-
-            if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) /*&& hit.point.z > 0*/ && clickedObjectType == 0 && towerTimer == 0 && TowerManager.GetTowerChoice() != -1 && GameManager.Instance.GetResource() >= towerCost)
+            
+            if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) && clickedObjectType == 0)
             {
-                bool create = true;
-
-                foreach (GameObject t in towers)
-                {
-
-                    if (Vector3.Distance(t.transform.position, hit.point) < towerDistance)
-                    {
-                        create = false;
-                        break;
-                    }
-                }
-
-                if (create)
-                {
-                    towerTimer = Time.time;
-                    newTowerPos = hit.point;
-                    newTowerAngle = Quaternion.identity;
-                    newTowerAngle = Quaternion.Euler(newTowerAngle.x, Camera.main.transform.eulerAngles.y, newTowerAngle.z);
-                    newTower = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], newTowerPos, newTowerAngle);
-                    clickedObjectType = 1;
-                }
-            }            
+                Debug.Log("Start Build");
+                towerTimer = Time.time;
+                //newTowerPos = hit.point;
+                //newTowerAngle = Quaternion.identity;
+                //newTowerAngle = Quaternion.Euler(newTowerAngle.x, Camera.main.transform.eulerAngles.y, newTowerAngle.z);
+                clickedObjectType = 1;                
+            }
         }
     }
 }
