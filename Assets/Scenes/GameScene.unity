@@ -3555,22 +3555,22 @@ MonoBehaviour:
   maxInteractionRange: 1.5
   minHitStrength: 0.8
   maxHitStrength: 1.5
-  towerDistance: 0.4
-  prefabTowers:
-  - {fileID: 4144803343209334873, guid: 45088b3a95a687b44930166e5fef52d4, type: 3}
-  - {fileID: 4144803343209334873, guid: ab9692a0272588f4fa482ecaf6b8909b, type: 3}
-  - {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147, type: 3}
-  prefabPreviewTowers:
-  - {fileID: 5563275117789276712, guid: e5f9722ded65b504a9b422c942c2665d, type: 3}
-  - {fileID: 4482459438543267568, guid: 89bf2b2810f259c4893552d7a39349e5, type: 3}
-  - {fileID: 2616711898347794628, guid: a7c8152ec87f06e46a48fc4dc8789aaa, type: 3}
-  towerCreationTime: 2
-  towerCost: 20
   resourceCollectionTime: 2
   resourceLimit: 3
   resourcePrefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
     type: 3}
   resourceCreationProbabilty: 0.01
+  prefabPreviewTowers:
+  - {fileID: 6578394846447689622, guid: e5f9722ded65b504a9b422c942c2665d, type: 3}
+  - {fileID: 7937909291865002646, guid: 89bf2b2810f259c4893552d7a39349e5, type: 3}
+  - {fileID: 9094761377070753644, guid: a7c8152ec87f06e46a48fc4dc8789aaa, type: 3}
+  towerCost: 20
+  towerDistance: 0.4
+  prefabTowers:
+  - {fileID: 4144803343209334873, guid: 45088b3a95a687b44930166e5fef52d4, type: 3}
+  - {fileID: 4144803343209334873, guid: ab9692a0272588f4fa482ecaf6b8909b, type: 3}
+  - {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147, type: 3}
+  towerCreationTime: 2
 --- !u!114 &1046193792
 MonoBehaviour:
   m_ObjectHideFlags: 0

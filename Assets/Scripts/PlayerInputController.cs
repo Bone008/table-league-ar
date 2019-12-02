@@ -34,6 +34,8 @@ public class PlayerInputController : MonoBehaviour
     private Quaternion newTowerAngle;
     private GameObject towerPreview;
 
+    private int towerChoice = -1;
+
     void Awake()
     {
         Input.simulateMouseWithTouches = false;
@@ -92,16 +94,27 @@ public class PlayerInputController : MonoBehaviour
                         previewAngle = Quaternion.identity;
                         previewAngle = Quaternion.Euler(previewAngle.x, Camera.main.transform.eulerAngles.y, previewAngle.z);
 
-                        if (towerPreview == null)
+                        if (towerPreview == null )
                         {
-                            Debug.Log("Create");
                             towerPreview = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], hit.point, previewAngle);
                             towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
+                            towerChoice = TowerManager.GetTowerChoice();
                         }
                         else
                         {
-                            towerPreview.transform.rotation = previewAngle;
-                            towerPreview.transform.position = hit.point;
+                            if(towerChoice != TowerManager.GetTowerChoice())
+                            {
+                                Destroy(towerPreview);
+                                towerPreview = null;
+                                towerPreview = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], hit.point, previewAngle);
+                                towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
+                                towerChoice = TowerManager.GetTowerChoice();
+                            }
+                            else
+                            {
+                                towerPreview.transform.rotation = previewAngle;
+                                towerPreview.transform.position = hit.point;
+                            }
                         }
                     }
                     else
@@ -194,12 +207,8 @@ public class PlayerInputController : MonoBehaviour
             
             if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) && clickedObjectType == 0)
             {
-                Debug.Log("Start Build");
                 towerTimer = Time.time;
                 towerPreview.GetComponentInChildren<ParticleSystem>().Play();
-                //newTowerPos = hit.point;
-                //newTowerAngle = Quaternion.identity;
-                //newTowerAngle = Quaternion.Euler(newTowerAngle.x, Camera.main.transform.eulerAngles.y, newTowerAngle.z);
                 clickedObjectType = 1;                
             }
         }
