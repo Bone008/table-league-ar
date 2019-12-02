@@ -62,6 +62,7 @@ public class PlayerInputController : MonoBehaviour
             }
 
             clickedObjectType = 0;
+            //towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
 
             if (TowerManager.GetTowerChoice() == -1 || GameManager.Instance.GetResource() < towerCost)
             {
@@ -71,7 +72,8 @@ public class PlayerInputController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, maxInteractionRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
-                if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) /*&& hit.point.z > 0*/ && clickedObjectType == 0 && towerTimer == 0 && TowerManager.GetTowerChoice() != -1 && GameManager.Instance.GetResource() >= towerCost)
+                float distanceToOrigin = (hit.transform.position - transform.position).magnitude;
+                if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) /*&& hit.point.z > 0*/ && clickedObjectType == 0 && towerTimer == 0 && TowerManager.GetTowerChoice() != -1 && GameManager.Instance.GetResource() >= towerCost && distanceToOrigin < maxInteractionRange)
                 {
                     towerFeasible = true;
                     foreach (GameObject t in towers)
@@ -89,20 +91,14 @@ public class PlayerInputController : MonoBehaviour
 
                         if (towerPreview == null)
                         {
+                            Debug.Log("Create");
                             towerPreview = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], hit.point, previewAngle);
+                            towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
                         }
                         else
                         {
-                            if (GameObject.ReferenceEquals(prefabPreviewTowers[TowerManager.GetTowerChoice()], towerPreview))
-                            {
-                                towerPreview.transform.rotation = previewAngle;
-                                towerPreview.transform.position = hit.point;
-                            }
-                            else
-                            {
-                                Destroy(towerPreview);
-                                towerPreview = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], hit.point, previewAngle);
-                            }
+                            towerPreview.transform.rotation = previewAngle;
+                            towerPreview.transform.position = hit.point;
                         }
                     }
                     else
@@ -110,6 +106,11 @@ public class PlayerInputController : MonoBehaviour
                         Destroy(towerPreview);
                         towerPreview = null;
                     }
+                }
+                else
+                {
+                    Destroy(towerPreview);
+                    towerPreview = null;
                 }
             }
         }
@@ -192,6 +193,7 @@ public class PlayerInputController : MonoBehaviour
             {
                 Debug.Log("Start Build");
                 towerTimer = Time.time;
+                //towerPreview.GetComponentInChildren<ParticleSystem>().Play();
                 //newTowerPos = hit.point;
                 //newTowerAngle = Quaternion.identity;
                 //newTowerAngle = Quaternion.Euler(newTowerAngle.x, Camera.main.transform.eulerAngles.y, newTowerAngle.z);
