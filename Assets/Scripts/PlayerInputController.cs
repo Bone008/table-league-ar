@@ -62,7 +62,10 @@ public class PlayerInputController : MonoBehaviour
             }
 
             clickedObjectType = 0;
-            //towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
+            if (towerPreview)
+            {
+                towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
+            }
 
             if (TowerManager.GetTowerChoice() == -1 || GameManager.Instance.GetResource() < towerCost)
             {
@@ -193,7 +196,7 @@ public class PlayerInputController : MonoBehaviour
             {
                 Debug.Log("Start Build");
                 towerTimer = Time.time;
-                //towerPreview.GetComponentInChildren<ParticleSystem>().Play();
+                towerPreview.GetComponentInChildren<ParticleSystem>().Play();
                 //newTowerPos = hit.point;
                 //newTowerAngle = Quaternion.identity;
                 //newTowerAngle = Quaternion.Euler(newTowerAngle.x, Camera.main.transform.eulerAngles.y, newTowerAngle.z);
