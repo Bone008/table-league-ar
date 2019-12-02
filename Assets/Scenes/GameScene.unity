@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3571,6 +3571,8 @@ MonoBehaviour:
   - {fileID: 4144803343209334873, guid: ab9692a0272588f4fa482ecaf6b8909b, type: 3}
   - {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147, type: 3}
   towerCreationTime: 2
+  cantBuildPrefab: {fileID: 7337655154984085288, guid: ad220660c4ecd1c49a63123bbaf28d7c,
+    type: 3}
 --- !u!114 &1046193792
 MonoBehaviour:
   m_ObjectHideFlags: 0

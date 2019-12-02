@@ -36,6 +36,9 @@ public class PlayerInputController : MonoBehaviour
 
     private int towerChoice = -1;
 
+    public GameObject cantBuildPrefab;
+    private GameObject cantBuildMarker = null;
+
     void Awake()
     {
         Input.simulateMouseWithTouches = false;
@@ -56,6 +59,7 @@ public class PlayerInputController : MonoBehaviour
         if (Input.touchCount == 0 && !Input.GetMouseButton(0))
         {
             towerTimer = 0f;
+            //Destroy(cantBuildMarker);
 
             resourceTimer = 0f;
             if (clickedObjectType == 2)
@@ -81,6 +85,8 @@ public class PlayerInputController : MonoBehaviour
                 if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) /*&& hit.point.z > 0*/ && clickedObjectType == 0 && towerTimer == 0 && TowerManager.GetTowerChoice() != -1 && GameManager.Instance.GetResource() >= towerCost && distanceToOrigin < maxInteractionRange)
                 {
                     towerFeasible = true;
+                    previewAngle = Quaternion.identity;
+                    previewAngle = Quaternion.Euler(previewAngle.x, Camera.main.transform.eulerAngles.y, previewAngle.z);
                     foreach (GameObject t in towers)
                     {
                         if (Vector3.Distance(t.transform.position, hit.point) < towerDistance && t != towerPreview)
@@ -90,12 +96,10 @@ public class PlayerInputController : MonoBehaviour
                         }
                     }
                     if (towerFeasible)
-                    {
-                        previewAngle = Quaternion.identity;
-                        previewAngle = Quaternion.Euler(previewAngle.x, Camera.main.transform.eulerAngles.y, previewAngle.z);
-
+                    {        
                         if (towerPreview == null )
                         {
+                            Destroy(cantBuildMarker);
                             towerPreview = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], hit.point, previewAngle);
                             towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
                             towerChoice = TowerManager.GetTowerChoice();
@@ -105,13 +109,14 @@ public class PlayerInputController : MonoBehaviour
                             if(towerChoice != TowerManager.GetTowerChoice())
                             {
                                 Destroy(towerPreview);
-                                towerPreview = null;
+                                Destroy(cantBuildMarker);
                                 towerPreview = Instantiate(prefabPreviewTowers[TowerManager.GetTowerChoice()], hit.point, previewAngle);
                                 towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
                                 towerChoice = TowerManager.GetTowerChoice();
                             }
                             else
                             {
+                                Destroy(cantBuildMarker);
                                 towerPreview.transform.rotation = previewAngle;
                                 towerPreview.transform.position = hit.point;
                             }
@@ -121,12 +126,22 @@ public class PlayerInputController : MonoBehaviour
                     {
                         Destroy(towerPreview);
                         towerPreview = null;
+                        if(cantBuildMarker == null)
+                        {
+                            cantBuildMarker = Instantiate(cantBuildPrefab, hit.point, previewAngle);
+                        }
+                        else
+                        {
+                            cantBuildMarker.transform.rotation = previewAngle;
+                            cantBuildMarker.transform.position = hit.point;
+                        }
                     }
                 }
-                else
+                if(distanceToOrigin > maxInteractionRange)
                 {
                     Destroy(towerPreview);
                     towerPreview = null;
+                    Destroy(cantBuildMarker);
                 }
             }
         }
