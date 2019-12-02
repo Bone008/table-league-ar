@@ -11,15 +11,15 @@ public class TrackingController : MonoBehaviour, ITrackableEventHandler
     public VuMarkBehaviour mainVuMark;
     public GameObject onlyWithTrackingTarget;
     public GameObject onlyWithoutTrackingTarget;
+    public Transform scaleTarget;
     public Text debug;
-    public bool disableInEditor;
 
     private bool hasTracking;
 
 #if UNITY_EDITOR
     void Awake()
     {
-        if(disableInEditor)
+        if (VuforiaConfiguration.Instance.WebCam.TurnOffWebCam)
         {
             GetComponent<UnityTemplateProjects.SimpleCameraController>().enabled = true;
             this.enabled = false;
@@ -31,17 +31,61 @@ public class TrackingController : MonoBehaviour, ITrackableEventHandler
     {
         UpdateTrackingStatus(false);
         mainVuMark.RegisterTrackableEventHandler(this);
+
+        VuforiaManager.Instance.WorldCenter = mainVuMark;
+        VuforiaManager.Instance.VuMarkWorldCenter = null;
+
+
+        var vuMarkManager = TrackerManager.Instance.GetStateManager().GetVuMarkManager();
+        vuMarkManager.RegisterVuMarkDetectedCallback(target =>
+        {
+            // If necessary, here we can access the new VuMarkTarget (determine ID).
+            // But the VuMarkBehavior is not available yet.
+        });
+        vuMarkManager.RegisterVuMarkBehaviourDetectedCallback(behavior =>
+        {
+            // If necessary, here we can access the assigned VuMarkBehavior.
+            // But the VuMarkTarget is not available yet.
+            //Debug.Log("----- target: " + behavior.VuMarkTarget);
+            this.Delayed(0, () =>
+            {
+                Debug.Log("----- target delayed: " + behavior.VuMarkTarget);
+                if(behavior.GetComponent<VuforiaNumericDetector>().currentMarkerId == 1)
+                {
+                    UpdateTrackingStatus(true);
+                    if(mainVuMark != behavior)
+                    {
+                        mainVuMark = behavior;
+                        Debug.Log("#### mainVuMark was changed!", mainVuMark);
+                    }
+                }
+            });
+
+
+        });
+        vuMarkManager.RegisterVuMarkLostCallback(target =>
+        {
+            if(target.InstanceId.NumericValue == 1)
+            {
+                UpdateTrackingStatus(false);
+            }
+        });
     }
 
     void Update()
     {
         var tracker = TrackerManager.Instance.GetTracker<PositionalDeviceTracker>();
         debug.text = mainVuMark.CurrentStatus + " -- " + mainVuMark.CurrentStatusInfo + " -- device tracker: " + tracker.IsActive;
+        if (Time.frameCount > 100 && Time.frameCount % 100 == 0)
+        {
+            Debug.Log(mainVuMark.Trackable.Name + " -- " + VuforiaManager.Instance.VuMarkWorldCenter, VuforiaManager.Instance.VuMarkWorldCenter as UnityEngine.Object);
+            //Debug.Log(.Trackable, VuforiaManager.Instance.WorldCenter as UnityEngine.Object);
+        }
     }
 
     public void OnTrackableStateChanged(TrackableBehaviour.Status previousStatus, TrackableBehaviour.Status newStatus)
     {
-        UpdateTrackingStatus(newStatus != TrackableBehaviour.Status.NO_POSE);
+        //UpdateTrackingStatus(newStatus != TrackableBehaviour.Status.NO_POSE);
     }
 
     private void UpdateTrackingStatus(bool hasTracking)
@@ -55,7 +99,7 @@ public class TrackingController : MonoBehaviour, ITrackableEventHandler
     public void SetScale(float scaleExponent)
     {
         float s = Mathf.Pow(10, scaleExponent);
-        onlyWithTrackingTarget.transform.localScale = s * Vector3.one;
+        scaleTarget.localScale = s * Vector3.one;
     }
 
     public void ResetTrackers()

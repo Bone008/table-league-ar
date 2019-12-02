@@ -25,12 +25,30 @@ public class VuforiaNumericDetector : MonoBehaviour
             {
                 transform.SetParent(forcedParent, true);
             }
+
+            Debug.Log("old world center " + VuforiaManager.Instance.WorldCenter, VuforiaManager.Instance.WorldCenter as UnityEngine.Object);
+            if (currentMarkerId == 1)
+            {
+                VuforiaManager.Instance.WorldCenter = vuBehavior;
+                transform.position = Vector3.zero;
+                transform.rotation = Quaternion.identity;
+            }
+            //else if (currentMarkerId == 2)
+            //{
+            //    //VuforiaManager.Instance.WorldCenter = vuBehavior;
+            //    transform.position = Vector3.left;
+            //    transform.rotation = Quaternion.identity;
+            //}
+            Debug.Log("new world center " + VuforiaManager.Instance.WorldCenter, VuforiaManager.Instance.WorldCenter as UnityEngine.Object);
         });
         vuBehavior.RegisterVuMarkTargetLostCallback(() =>
         {
+            Debug.Log(string.Format("!!! Lost marker #{0}", currentMarkerId));
             currentMarkerId = -1;
             UpdateTargetsActive();
         });
+
+        Debug.Log("BEHAVIOR STARTED! " + this.GetHashCode());
     }
 
     private void UpdateTargetsActive()
