@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BotInput : MonoBehaviour
+public class BotInput : NetworkBehaviour
 {
     public Player player;
 
@@ -21,11 +22,13 @@ public class BotInput : MonoBehaviour
     private Ball targetBall = null;
     private float lastHitTime = 0;
     
+    [ServerCallback]
     void OnEnable()
     {
         StartCoroutine(HighLevelLoop());
     }
 
+    [ServerCallback]
     void Update()
     {
         if(targetBall != null)

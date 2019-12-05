@@ -77,7 +77,7 @@ public class TrackingController : MonoBehaviour
     void Update()
     {
         var tracker = TrackerManager.Instance.GetTracker<PositionalDeviceTracker>();
-        debug.text = mainVuMark.CurrentStatus + " -- " + mainVuMark.CurrentStatusInfo + " -- device tracker: " + tracker.IsActive;
+        debug.text = mainVuMark.CurrentStatus + " -- " + mainVuMark.CurrentStatusInfo + " -- device tracker: " + tracker?.IsActive;
     }
 
     private void UpdateTrackingStatus(bool hasTracking)

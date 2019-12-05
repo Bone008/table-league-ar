@@ -10,10 +10,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public GameObject ballPrefab;
+    public GameObject botPlayerPrefab;
     public Player player1;
     public Player player2;
     public bool mayStartWithOnePlayer;
-    public BotInput botController;
 
     private bool assignedPlayer1 = false;
     private bool assignedPlayer2 = false;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     // TODO: set value from menu config
     private readonly int numBallsToSpawn = 2;
     private List<Ball> balls = new List<Ball>();
-
+    private GameObject botPlayer = null;
 
     // TODO put into Player script
     private int resourceCollected = 100;
@@ -67,7 +67,9 @@ public class GameManager : MonoBehaviour
 
         if (!assignedPlayer2)
         {
-            botController.gameObject.SetActive(true);
+            botPlayer = Instantiate(botPlayerPrefab, player2.transform);
+            botPlayer.GetComponent<BotInput>().player = player2;
+            NetworkServer.Spawn(botPlayer);
         }
 
         for (int i = 0; i < numBallsToSpawn; i++)
@@ -87,7 +89,11 @@ public class GameManager : MonoBehaviour
 
         assignedPlayer1 = false;
         assignedPlayer2 = false;
-        botController.gameObject.SetActive(false);
+        if(botPlayer)
+        {
+            NetworkServer.Destroy(botPlayer);
+            botPlayer = null;
+        }
         balls.Clear();
     }
 
