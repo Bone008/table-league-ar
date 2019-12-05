@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,16 +9,62 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    public GameObject ballPrefab;
     public GameUIManager ui;
     public Player player1;
     public Player player2;
 
+    private bool assignedPlayer1 = false;
+    private bool assignedPlayer2 = false;
+    private bool hasStarted = false;
+    public bool isReadyToStart => !hasStarted && assignedPlayer1 && assignedPlayer2;
+
+    // TODO: set value from menu config
+    private readonly int numBallsToSpawn = 2;
+    private List<Ball> balls = new List<Ball>();
+
+
+    // TODO put into Player script
     private int resourceCollected = 100;
 
     void Awake() { Instance = this; }
 
-    void Start()
+    public Player AssignPlayer()
     {
+        if (!assignedPlayer1)
+        {
+            assignedPlayer1 = true;
+            return player1;
+        }
+        if (!assignedPlayer2)
+        {
+            assignedPlayer2 = true;
+            return player2;
+        }
+        return null;
+    }
+
+    public void UnassignPlayer(Player player)
+    {
+        if (player == player1) assignedPlayer1 = false;
+        else if (player == player2) assignedPlayer2 = false;
+        else throw new ArgumentException("Cannot unassign unknown player!");
+    }
+
+    public void StartGame()
+    {
+        if(hasStarted)
+        {
+            Debug.LogWarning("Tried to start game multiple times.");
+            return;
+        }
+
+        for(int i=0; i<numBallsToSpawn; i++)
+        {
+            var ballObject = Instantiate(ballPrefab);
+            NetworkServer.Spawn(ballObject);
+            balls.Add(ballObject.GetComponent<Ball>());
+        }
         ResetAllBalls();
     }
 
@@ -25,9 +72,9 @@ public class GameManager : MonoBehaviour
     public void ResetAllBalls()
     {
         Player p = player1;
-        foreach (GameObject ballObject in GameObject.FindGameObjectsWithTag(Constants.BALL_TAG))
+        foreach (var ball in balls)
         {
-            ResetBall(ballObject.GetComponent<Ball>(), p);
+            ResetBall(ball, p);
             p = GetOpponentOf(p);
         }
     }

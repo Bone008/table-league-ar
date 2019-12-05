@@ -9,6 +9,11 @@ public class Goal : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.CompareTag(Constants.BALL_TAG) && !other.isTrigger)
         {
+            if(owner == null)
+            {
+                Debug.LogWarning("Goal does not have an owner!", this);
+                return;
+            }
             GameManager.Instance.ScoreGoal(other.gameObject.GetComponent<Ball>(), owner);
         }
     }

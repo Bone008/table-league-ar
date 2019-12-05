@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     private Rigidbody rbody;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rbody = GetComponent<Rigidbody>();
         // Make sure the ball can spin fast enough for high speeds.
