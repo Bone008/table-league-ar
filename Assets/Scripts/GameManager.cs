@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public Player player1;
     public Player player2;
 
-    private int resourceCollected = 100;
+    private int resourceCollected = 0;
 
     void Awake() { Instance = this; }
 
