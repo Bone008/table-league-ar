@@ -4,16 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>Singleton that keeps track of balls, players, scores and winning.</summary>
+/// <summary>Server-only singleton that keeps track of balls, players, scores and winning.</summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
     public GameObject ballPrefab;
-    public GameUIManager ui;
     public Player player1;
     public Player player2;
     public bool mayStartWithOnePlayer;
+    public BotInput botController;
 
     private bool assignedPlayer1 = false;
     private bool assignedPlayer2 = false;
@@ -63,6 +63,11 @@ public class GameManager : MonoBehaviour
         }
         hasStarted = true;
 
+        if(!assignedPlayer2)
+        {
+            botController.gameObject.SetActive(true);
+        }
+
         for (int i=0; i<numBallsToSpawn; i++)
         {
             var ballObject = Instantiate(ballPrefab);
@@ -70,6 +75,16 @@ public class GameManager : MonoBehaviour
             balls.Add(ballObject.GetComponent<Ball>());
         }
         ResetAllBalls();
+    }
+
+    public void StopGame()
+    {
+        if (!hasStarted) return;
+        hasStarted = false;
+        assignedPlayer1 = false;
+        assignedPlayer2 = false;
+        botController.gameObject.SetActive(false);
+        balls.Clear();
     }
 
     /// <summary>Distributes all balls across both players' home areas.</summary>
@@ -87,8 +102,6 @@ public class GameManager : MonoBehaviour
     {
         Player attacker = GetOpponentOf(defendingPlayer);
         attacker.score++;
-
-        ui.UpdateScores(player1.score, player2.score);
         ResetBall(ball, defendingPlayer);
 
         // TODO Check winning condition.
@@ -103,13 +116,11 @@ public class GameManager : MonoBehaviour
     public void CollectResource()
     {
         resourceCollected += 10;
-        ui.UpdateResource(resourceCollected);
     }
 
     public void UseResource(int towerCost)
     {
         resourceCollected -= towerCost;
-        ui.UpdateResource(resourceCollected);
     }
 
     public int GetResource()

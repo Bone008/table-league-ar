@@ -50,4 +50,9 @@ public class NetworkManagerEx : NetworkManager
     {
         GameManager.Instance.UnassignPlayer(GameManager.Instance.player1);
     }
+
+    public override void OnStopServer()
+    {
+        GameManager.Instance.StopGame();
+    }
 }

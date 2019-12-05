@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   compressRotation: 1
 --- !u!135 &6463811477164468256
 SphereCollider:
@@ -155,6 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac1d2cd044d87e448a009f4d24b098ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!135 &6404268565237890774
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : NetworkBehaviour
 {
     private Rigidbody rbody;
-
-    // Start is called before the first frame update
+    
     void Awake()
     {
         rbody = GetComponent<Rigidbody>();
@@ -16,17 +16,15 @@ public class Ball : MonoBehaviour
         rbody.maxAngularVelocity = 100;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnStartClient()
     {
-        // Debug
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            rbody.velocity = Vector3.zero;
-            rbody.angularVelocity = Vector3.zero;
-        }
+        if (!isClientOnly)
+            return;
+        rbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+        rbody.isKinematic = true;
     }
 
+    [Server]
     public void Reset(Vector3 position)
     {
         Vector3 targetPosition = position;
@@ -48,25 +46,6 @@ public class Ball : MonoBehaviour
         rbody.angularVelocity = Vector3.zero;
         transform.localRotation = Quaternion.identity;
         transform.position = targetPosition;
-    }
-
-    void OnCollisionEnter(Collision c)
-    {
-        if (c.gameObject.tag == "Walls")
-        {
-            Vector3 velocity;
-            //Vector3 dir = c.contacts[0].point - transform.position;
-            //dir = -dir.normalized;
-            velocity = GetComponent<Rigidbody>().velocity;
-            //GetComponent<Rigidbody>().velocity = velocity - 2 * (Vector3.Dot(velocity, dir)) * dir;
-
-
-            velocity = 2 * (Vector3.Dot(velocity, Vector3.Normalize(c.contacts[0].normal))) * Vector3.Normalize(c.contacts[0].normal) - velocity; //Following formula  v' = 2 * (v . n) * n - v
-
-            velocity *= -1;
-            // No longer needed with proper physics settings
-            //GetComponent<Rigidbody>().velocity = velocity;
-        }
     }
 
 }

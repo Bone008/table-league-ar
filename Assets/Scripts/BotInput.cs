@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(Player))]
 public class BotInput : MonoBehaviour
 {
+    public Player player;
+
     public SceneRectangle ownedArea;
     public float moveSpeed;
     public float moveSpeedAngle;
@@ -16,20 +17,13 @@ public class BotInput : MonoBehaviour
     public float ballHitCooldown;
     public float ballHitScatterAngle;
 
-    private Player player;
     private Goal[] opponentGoals = null;
     private Ball targetBall = null;
     private float lastHitTime = 0;
-
-    void Start()
-    {
-        player = GetComponent<Player>();
-    }
-
+    
     void OnEnable()
     {
         StartCoroutine(HighLevelLoop());
-
     }
 
     void Update()
@@ -100,8 +94,6 @@ public class BotInput : MonoBehaviour
 
     private void HitBall(Ball ball)
     {
-        var rbody = ball.GetComponent<Rigidbody>();
-        
         Quaternion scatter = Quaternion.Euler(
             UnityEngine.Random.Range(-ballHitScatterAngle, ballHitScatterAngle),
             UnityEngine.Random.Range(-ballHitScatterAngle, ballHitScatterAngle),
@@ -111,7 +103,6 @@ public class BotInput : MonoBehaviour
         direction.Normalize();
 
         Vector3 force = ballHitStrength * direction;
-        rbody.velocity = Vector3.zero;
-        rbody.AddForce(force, ForceMode.Impulse);
+        player.HitBall(ball.gameObject, force);
     }
 }
