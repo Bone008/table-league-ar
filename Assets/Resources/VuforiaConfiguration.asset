@@ -39,6 +39,6 @@ MonoBehaviour:
     autoInitTracker: 0
     autoStartTracker: 0
   webcam:
-    deviceNameSetInEditor: 
-    turnOffWebCam: 1
+    deviceNameSetInEditor: Logitech QuickCam S5500
+    turnOffWebCam: 0
     renderTextureLayer: 30

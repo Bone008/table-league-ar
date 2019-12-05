@@ -17,28 +17,38 @@ public class BotInput : MonoBehaviour
     public float ballHitScatterAngle;
 
     private Player player;
-    private Goal[] opponentGoals;
+    private Goal[] opponentGoals = null;
     private Ball targetBall = null;
     private float lastHitTime = 0;
 
     void Start()
     {
         player = GetComponent<Player>();
-        opponentGoals = GameObject.FindGameObjectsWithTag(Constants.GOAL_TAG)
-            .Select(obj => obj.GetComponent<Goal>())
-            .Where(goal => goal.owner != player)
-            .ToArray();
     }
 
     void OnEnable()
     {
         StartCoroutine(HighLevelLoop());
+
     }
 
     void Update()
     {
         if(targetBall != null)
         {
+            if(opponentGoals == null ||opponentGoals.Length == 0)
+            {
+                opponentGoals = GameObject.FindGameObjectsWithTag(Constants.GOAL_TAG)
+                    .Select(obj => obj.GetComponent<Goal>())
+                    .Where(goal => goal.owner != player)
+                    .ToArray();
+                if(opponentGoals.Length == 0)
+                {
+                    Debug.LogError("BotInput: Could not find any opponent goals!");
+                    return;
+                }
+            }
+
             // Pick goal, switches every 10 seconds.
             int goalIndex = Mathf.FloorToInt(Time.time / 10) % opponentGoals.Length;
             Vector3 goalPos = opponentGoals[goalIndex].transform.position;

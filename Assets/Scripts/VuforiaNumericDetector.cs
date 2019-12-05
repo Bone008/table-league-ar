@@ -28,6 +28,7 @@ public class VuforiaNumericDetector : MonoBehaviour
         });
         vuBehavior.RegisterVuMarkTargetLostCallback(() =>
         {
+            Debug.Log(string.Format("!!! Lost marker #{0}", currentMarkerId));
             currentMarkerId = -1;
             UpdateTargetsActive();
         });

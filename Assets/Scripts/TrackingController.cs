@@ -6,20 +6,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TrackingController : MonoBehaviour, ITrackableEventHandler
+public class TrackingController : MonoBehaviour
 {
+    /// <summary>Vuforia ID of the tracker that should be the world center.</summary>
+    public int centerTrackerId = 1;
     public VuMarkBehaviour mainVuMark;
     public GameObject onlyWithTrackingTarget;
     public GameObject onlyWithoutTrackingTarget;
+    public Transform scaleTarget;
     public Text debug;
-    public bool disableInEditor;
 
     private bool hasTracking;
 
 #if UNITY_EDITOR
     void Awake()
     {
-        if(disableInEditor)
+        if (VuforiaConfiguration.Instance.WebCam.TurnOffWebCam)
         {
             GetComponent<UnityTemplateProjects.SimpleCameraController>().enabled = true;
             this.enabled = false;
@@ -30,18 +32,52 @@ public class TrackingController : MonoBehaviour, ITrackableEventHandler
     void Start()
     {
         UpdateTrackingStatus(false);
-        mainVuMark.RegisterTrackableEventHandler(this);
+
+        // Through the editor, we can only set VuMarkWorldCenter,
+        // which behaves incorrectly when a VuMark is cloned.
+        // We need to keep track of which VuMarkBehavior is the main
+        // tracker and should be the WorldCenter ourselves!
+        VuforiaManager.Instance.WorldCenter = mainVuMark;
+        VuforiaManager.Instance.VuMarkWorldCenter = null;
+        
+        var vuMarkManager = TrackerManager.Instance.GetStateManager().GetVuMarkManager();
+        vuMarkManager.RegisterVuMarkBehaviourDetectedCallback(behavior =>
+        {
+            var numericScript = behavior.GetComponent<VuforiaNumericDetector>();
+            if (numericScript == null)
+                return;
+            
+            // VuMarkTarget was not assigned yet => marker ID not yet known.
+            // Need to delay until next frame.
+            this.Delayed(0, () =>
+            {
+                if(numericScript.currentMarkerId == centerTrackerId)
+                {
+                    UpdateTrackingStatus(true);
+                    if(mainVuMark != behavior)
+                    {
+                        mainVuMark = behavior;
+                        mainVuMark.transform.position = Vector3.zero;
+                        mainVuMark.transform.rotation = Quaternion.identity;
+                        VuforiaManager.Instance.WorldCenter = mainVuMark;
+                        Debug.Log("#### mainVuMark has changed!", mainVuMark);
+                    }
+                }
+            });
+        });
+        vuMarkManager.RegisterVuMarkLostCallback(target =>
+        {
+            if((int)target.InstanceId.NumericValue == centerTrackerId)
+            {
+                UpdateTrackingStatus(false);
+            }
+        });
     }
 
     void Update()
     {
         var tracker = TrackerManager.Instance.GetTracker<PositionalDeviceTracker>();
         debug.text = mainVuMark.CurrentStatus + " -- " + mainVuMark.CurrentStatusInfo + " -- device tracker: " + tracker.IsActive;
-    }
-
-    public void OnTrackableStateChanged(TrackableBehaviour.Status previousStatus, TrackableBehaviour.Status newStatus)
-    {
-        UpdateTrackingStatus(newStatus != TrackableBehaviour.Status.NO_POSE);
     }
 
     private void UpdateTrackingStatus(bool hasTracking)
@@ -55,7 +91,7 @@ public class TrackingController : MonoBehaviour, ITrackableEventHandler
     public void SetScale(float scaleExponent)
     {
         float s = Mathf.Pow(10, scaleExponent);
-        onlyWithTrackingTarget.transform.localScale = s * Vector3.one;
+        scaleTarget.localScale = s * Vector3.one;
     }
 
     public void ResetTrackers()
