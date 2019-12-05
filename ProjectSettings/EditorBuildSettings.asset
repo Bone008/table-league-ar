@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/VuforiaTestScene.unity
     guid: b842de27a3cb5d744b2e61bb00c0945e
+  - enabled: 0
+    path: Assets/Scenes/Menu.unity
+    guid: b74542cbda8bbc04eba7ed9a0cf8fff0
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: d3f6eb7f759bb9a4ebe532c45043d1ad
-  - enabled: 0
-    path: Assets/Scenes/MultiplayerTestScene.unity
-    guid: 18caa13b166d6a84f93f833d0a2cc05d
   m_configObjects: {}
