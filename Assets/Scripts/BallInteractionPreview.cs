@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class BallInteractionPreview : MonoBehaviour
 {
-    public PlayerInputController controller;
-    public Renderer visual;
+    // TODO: This somehow needs to be kept in sync with the value in PlayerInputController :(
+    // Not sure how to read it directly from there though ...
+    public float maxInteractionRange = 1.5f;
 
+    public Renderer visual;
+    
     void LateUpdate()
     {
-        bool inRange = (controller.transform.position - transform.position).sqrMagnitude < controller.maxInteractionRange * controller.maxInteractionRange;
+        var controller = PlayerNetController.LocalInstance;
+        if (controller == null)
+            return;
+
+        bool inRange = (controller.transform.position - transform.position).sqrMagnitude < maxInteractionRange * maxInteractionRange;
 
         visual.enabled = inRange;
         if (inRange)
