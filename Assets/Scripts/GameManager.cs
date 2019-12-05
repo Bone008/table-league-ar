@@ -56,19 +56,19 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if(hasStarted)
+        if (hasStarted)
         {
             Debug.LogWarning("Tried to start game multiple times.");
             return;
         }
         hasStarted = true;
 
-        if(!assignedPlayer2)
+        if (!assignedPlayer2)
         {
             botController.gameObject.SetActive(true);
         }
 
-        for (int i=0; i<numBallsToSpawn; i++)
+        for (int i = 0; i < numBallsToSpawn; i++)
         {
             var ballObject = Instantiate(ballPrefab);
             NetworkServer.Spawn(ballObject);
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
             p = GetOpponentOf(p);
         }
     }
-    
+
     public void ScoreGoal(Ball ball, Player defendingPlayer)
     {
         Player attacker = GetOpponentOf(defendingPlayer);
