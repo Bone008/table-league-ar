@@ -18,7 +18,7 @@ public class TrackingController : MonoBehaviour
 
     private bool hasTracking;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
     void Awake()
     {
         if (VuforiaConfiguration.Instance.WebCam.TurnOffWebCam)

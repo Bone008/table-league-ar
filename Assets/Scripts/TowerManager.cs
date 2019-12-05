@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum TowerType
+{
+    None,
+    Magnetic,
+    MagneticPush,
+    Barrier
+}
+
 public class TowerManager : MonoBehaviour
 {
     public static int towerChoice = - 1;

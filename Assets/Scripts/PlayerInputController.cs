@@ -234,7 +234,10 @@ public class PlayerInputController : MonoBehaviour
             {
                 towerTimer = Time.time;
                 towerPreview.GetComponentInChildren<ParticleSystem>().Play();
-                clickedObjectType = 1;                
+                clickedObjectType = 1;
+
+                // Proof of concept how to call a command on the server, should replace a lot of the logic in this script.
+                netPlayer.CmdStartBuildTower((TowerType)towerChoice, towerPreview.transform.position, towerPreview.transform.eulerAngles.y);
             }
         }
     }

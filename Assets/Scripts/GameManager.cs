@@ -13,11 +13,12 @@ public class GameManager : MonoBehaviour
     public GameUIManager ui;
     public Player player1;
     public Player player2;
+    public bool mayStartWithOnePlayer;
 
     private bool assignedPlayer1 = false;
     private bool assignedPlayer2 = false;
     private bool hasStarted = false;
-    public bool isReadyToStart => !hasStarted && assignedPlayer1 && assignedPlayer2;
+    public bool isReadyToStart => !hasStarted && assignedPlayer1 && (assignedPlayer2 || mayStartWithOnePlayer);
 
     // TODO: set value from menu config
     private readonly int numBallsToSpawn = 2;
@@ -58,8 +59,9 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Tried to start game multiple times.");
             return;
         }
+        hasStarted = true;
 
-        for(int i=0; i<numBallsToSpawn; i++)
+        for (int i=0; i<numBallsToSpawn; i++)
         {
             var ballObject = Instantiate(ballPrefab);
             NetworkServer.Spawn(ballObject);
@@ -78,7 +80,7 @@ public class GameManager : MonoBehaviour
             p = GetOpponentOf(p);
         }
     }
-
+    
     public void ScoreGoal(Ball ball, Player defendingPlayer)
     {
         Player attacker = GetOpponentOf(defendingPlayer);

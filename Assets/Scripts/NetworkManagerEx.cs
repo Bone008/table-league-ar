@@ -16,7 +16,7 @@ public class NetworkManagerEx : NetworkManager
         }
 
         GameObject netPlayer = Instantiate(playerPrefab, player.transform);
-        netPlayer.GetComponent<PlayerNetController>().gamePlayer = player;
+        netPlayer.GetComponent<PlayerNetController>().player = player;
 
         // This call spawns the Player game object on all clients,
         // and sets it up as the local player-controlled object on the connecting client.
@@ -32,7 +32,7 @@ public class NetworkManagerEx : NetworkManager
         if (conn.identity == null)
             return;
         
-        Player player = conn.identity.GetComponent<PlayerNetController>().gamePlayer;
+        Player player = conn.identity.GetComponent<PlayerNetController>().player;
         if (player != null)
         {
             Debug.Log("unassigning player " + player.playerName, player);
