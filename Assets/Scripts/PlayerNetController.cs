@@ -13,38 +13,49 @@ using UnityEngine;
 /// </summary>
 public class PlayerNetController : NetworkBehaviour
 {
+    /// <summary>Convenience accessor for the client</summary>
+    public static PlayerNetController LocalInstance { get; private set; }
+
     /// <summary>Assigned on the server when this controller is instantiated and assigned to a player.</summary>
     public Player player;
 
+    /// <summary>This property allows the client to determine which player they are.</summary>
+    [SyncVar]
+    public int playerId;
+
     public override void OnStartLocalPlayer()
     {
+        LocalInstance = this;
+
         foreach (var renderer in GetComponentsInChildren<Renderer>())
         {
             renderer.enabled = false;
         }
-        Camera.main.GetComponent<PlayerInputController>().netPlayer = this;
+
+        Debug.Log("This client is controlling player " + playerId);
+        player = (playerId == 1 ? GameManager.Instance.player1 : GameManager.Instance.player2);
     }
 
     void OnDestroy()
     {
-        Camera.main.GetComponent<PlayerInputController>().netPlayer = null;
+        LocalInstance = null;
     }
 
     void LateUpdate()
     {
-        if (isLocalPlayer)
-        {
-            // Follow the camera. We cannot just attach to it, since NetworkTransform
-            // synchronizes localPosition, which would otherwise not change.
-            transform.position = Camera.main.transform.position;
-            transform.rotation = Camera.main.transform.rotation;
-        }
+        if (!isLocalPlayer)
+            return;
+
+        // Follow the camera. We cannot just attach to it, since NetworkTransform
+        // synchronizes localPosition, which would otherwise not change.
+        transform.position = Camera.main.transform.position;
+        transform.rotation = Camera.main.transform.rotation;
     }
 
     [Command]
     public void CmdHitBall(GameObject ball, Vector3 force)
     {
-        if(!ball.CompareTag(Constants.BALL_TAG))
+        if (!ball.CompareTag(Constants.BALL_TAG))
         {
             Debug.LogWarning("Tried to hit something that was not a ball: " + ball, ball);
             return;
@@ -57,5 +68,5 @@ public class PlayerNetController : NetworkBehaviour
     {
         player.StartBuildTower(type, position, rotationAngle);
     }
-    
+
 }

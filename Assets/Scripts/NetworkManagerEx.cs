@@ -16,7 +16,9 @@ public class NetworkManagerEx : NetworkManager
         }
 
         GameObject netPlayer = Instantiate(playerPrefab, player.transform);
-        netPlayer.GetComponent<PlayerNetController>().player = player;
+        var netController = netPlayer.GetComponent<PlayerNetController>();
+        netController.player = player;
+        netController.playerId = player.playerId;
 
         // This call spawns the Player game object on all clients,
         // and sets it up as the local player-controlled object on the connecting client.

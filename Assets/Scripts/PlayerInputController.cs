@@ -5,8 +5,7 @@ using UnityEngine.EventSystems;
 
 public class PlayerInputController : MonoBehaviour
 {
-    [HideInInspector]
-    public PlayerNetController netPlayer = null;
+    public PlayerNetController netController => PlayerNetController.LocalInstance;
 
     public float maxInteractionRange = 2f;
     public float minHitStrength;
@@ -213,7 +212,7 @@ public class PlayerInputController : MonoBehaviour
                 Vector3 force = hitStrength * direction;
                 if (Mirror.NetworkClient.active)
                 {
-                    netPlayer.CmdHitBall(hit.collider.gameObject, force);
+                    netController.CmdHitBall(hit.collider.gameObject, force);
                 }
                 else
                 {
@@ -237,7 +236,7 @@ public class PlayerInputController : MonoBehaviour
                 clickedObjectType = 1;
 
                 // Proof of concept how to call a command on the server, should replace a lot of the logic in this script.
-                netPlayer.CmdStartBuildTower((TowerType)towerChoice, towerPreview.transform.position, towerPreview.transform.eulerAngles.y);
+                netController.CmdStartBuildTower((TowerType)towerChoice, towerPreview.transform.position, towerPreview.transform.eulerAngles.y);
             }
         }
     }

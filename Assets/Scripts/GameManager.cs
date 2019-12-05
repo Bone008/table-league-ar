@@ -35,11 +35,13 @@ public class GameManager : MonoBehaviour
         if (!assignedPlayer1)
         {
             assignedPlayer1 = true;
+            player1.resources = 123;
             return player1;
         }
         if (!assignedPlayer2)
         {
             assignedPlayer2 = true;
+            player2.resources = 321;
             return player2;
         }
         return null;

@@ -2072,9 +2072,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  playerName: Bot
+  playerId: 0
   homeAreaAnchor: {fileID: 301011230}
   score: 0
+  resources: 0
 --- !u!4 &684050869
 Transform:
   m_ObjectHideFlags: 0
@@ -2303,9 +2304,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  playerName: Player 2
+  playerId: 2
   homeAreaAnchor: {fileID: 301011230}
   score: 0
+  resources: 0
 --- !u!114 &764313430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2509,9 +2511,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  playerName: Player 1
+  playerId: 1
   homeAreaAnchor: {fileID: 483461951}
   score: 0
+  resources: 0
 --- !u!114 &810622632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6560,6 +6563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98c2acfd67ba73429b715f92e05ab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  localPlayer: {fileID: 0}
   score1Text: {fileID: 1855777447}
   score2Text: {fileID: 199579120}
   resourceText: {fileID: 455705953}

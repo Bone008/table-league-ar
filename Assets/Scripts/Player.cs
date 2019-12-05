@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
-    public string playerName;
+    public int playerId;
     public Transform homeAreaAnchor;
+
+    public string playerName => "Player " + playerId;
 
     [SyncVar]
     public int score = 0;
+    [SyncVar]
+    public int resources = 0;
 
     [Server]
     public void HitBall(GameObject ball, Vector3 force)
