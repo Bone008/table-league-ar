@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class PlayerInputController : MonoBehaviour
 {
+    [HideInInspector]
+    public PlayerNetController netPlayer = null;
+
     public float maxInteractionRange = 2f;
     public float minHitStrength;
     public float maxHitStrength;
@@ -208,10 +211,17 @@ public class PlayerInputController : MonoBehaviour
                 direction.Normalize();
 
                 Vector3 force = hitStrength * direction;
-                hit.rigidbody.velocity = Vector3.zero;
-                hit.rigidbody.AddForce(force, ForceMode.Impulse);
+                if (Mirror.NetworkClient.active)
+                {
+                    netPlayer.CmdHitBall(hit.collider.gameObject, force);
+                }
+                else
+                {
+                    hit.rigidbody.velocity = Vector3.zero;
+                    hit.rigidbody.AddForce(force, ForceMode.Impulse);
+                }
             }
-            
+
             if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG) && clickedObjectType == 0 && resourceTimer == 0)
             {
                 activeResource = hit.collider.gameObject;
