@@ -27,6 +27,9 @@ public class SpawnManager : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.Instance.isRunning)
+            return;
+
         float prob = Random.Range(0, 1.0f);
         if (prob < resourceCreationProbabilty && resourcesCreated < resourceLimit)
         {

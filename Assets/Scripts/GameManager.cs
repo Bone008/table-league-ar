@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private bool assignedPlayer2 = false;
     private bool hasStarted = false;
     public bool isReadyToStart => !hasStarted && assignedPlayer1 && (assignedPlayer2 || mayStartWithOnePlayer);
+    public bool isRunning => hasStarted;
 
     // TODO: set value from menu config
     private readonly int numBallsToSpawn = 2;
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         hasStarted = true;
+        Debug.Log("Starting game!");
 
         if (!assignedPlayer2)
         {
@@ -81,6 +83,8 @@ public class GameManager : MonoBehaviour
     {
         if (!hasStarted) return;
         hasStarted = false;
+        Debug.Log("Stopping game!");
+
         assignedPlayer1 = false;
         assignedPlayer2 = false;
         botController.gameObject.SetActive(false);
