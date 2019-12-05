@@ -14,13 +14,9 @@ public class PlayerInputController : MonoBehaviour
     private int clickedObjectType = 0;
 
     /// <summery>For resource.</summery>
-    public float resourceCollectionTime;
-    private float resourceTimer = 0f;
-    private int resourcesCreated = 0;
-    public int resourceLimit;
-    public GameObject resourcePrefab;
-    private GameObject activeResource;
-    public float resourceCreationProbabilty;
+    //public float resourceCollectionTime;
+    //private float resourceTimer = 0f;
+    //private GameObject activeResource;
 
     /// <summery>For tower preview.</summery>
     public GameObject[] prefabPreviewTowers;
@@ -41,6 +37,9 @@ public class PlayerInputController : MonoBehaviour
     public GameObject cantBuildPrefab;
     private GameObject cantBuildMarker = null;
 
+    // Local flag to remember if we need to send CancelInteraction or not.
+    private bool isInteracting = false;
+
     void Awake()
     {
         Input.simulateMouseWithTouches = false;
@@ -53,21 +52,24 @@ public class PlayerInputController : MonoBehaviour
         GameObject[] towers = GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG);
         Quaternion previewAngle;
 
-        GameObject currentResource;
-        float prob = Random.Range(0, 1.0f);
-
         towerFeasible = false;
 
         if (Input.touchCount == 0 && !Input.GetMouseButton(0))
         {
+            if (isInteracting)
+            {
+                netController.CmdCancelInteraction();
+                isInteracting = false;
+            }
+
             towerTimer = 0f;
             //Destroy(cantBuildMarker);
 
-            resourceTimer = 0f;
-            if (clickedObjectType == 2)
-            {
-                activeResource.GetComponentInChildren<ParticleSystem>().Stop();
-            }
+            //resourceTimer = 0f;
+            //if (clickedObjectType == 2)
+            //{
+            //    activeResource.GetComponentInChildren<ParticleSystem>().Stop();
+            //}
 
             clickedObjectType = 0;
             if (towerPreview)
@@ -148,21 +150,13 @@ public class PlayerInputController : MonoBehaviour
             }
         }
         
-        if (prob < resourceCreationProbabilty && resourcesCreated < resourceLimit)
-        {
-            currentResource = Instantiate(resourcePrefab, new Vector3(Random.Range(-1.0f, 1.0f), 0.015f, Random.Range(-1.4f, 1.4f)), Quaternion.identity);
-            currentResource.GetComponentInChildren<ParticleSystem>().Stop();
-            resourcesCreated++;
-        }
-        
-        if(clickedObjectType == 2 && resourceTimer != 0 && Time.time - resourceTimer >= towerCreationTime)
-        {
-            Destroy(activeResource);
-            resourceTimer = 0f;
-            clickedObjectType = 0;
-            GameManager.Instance.CollectResource();
-            resourcesCreated--;
-        }
+        //if(clickedObjectType == 2 && resourceTimer != 0 && Time.time - resourceTimer >= towerCreationTime)
+        //{
+        //    Destroy(activeResource);
+        //    resourceTimer = 0f;
+        //    clickedObjectType = 0;
+        //    resourcesCreated--;
+        //}
 
         if(clickedObjectType == 1 && towerTimer != 0 && Time.time - towerTimer >= towerCreationTime)
         {
@@ -180,13 +174,13 @@ public class PlayerInputController : MonoBehaviour
         {
             if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
             {
-                Debug.Log("touch at " + touch.position);
+                //Debug.Log("touch at " + touch.position);
                 OnSceneClick(touch.position);
             }
         }
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            Debug.Log("click at " + Input.mousePosition);
+            //Debug.Log("click at " + Input.mousePosition);
             OnSceneClick(Input.mousePosition);
         }
     }
@@ -210,25 +204,23 @@ public class PlayerInputController : MonoBehaviour
                 direction.Normalize();
 
                 Vector3 force = hitStrength * direction;
-                if (Mirror.NetworkClient.active)
-                {
-                    netController.CmdHitBall(hit.collider.gameObject, force);
-                }
-                else
-                {
-                    hit.rigidbody.velocity = Vector3.zero;
-                    hit.rigidbody.AddForce(force, ForceMode.Impulse);
-                }
+                netController.CmdHitBall(hit.collider.gameObject, force);
             }
 
-            if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG) && clickedObjectType == 0 && resourceTimer == 0)
+            if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG))
+            {
+                isInteracting = true;
+                netController.CmdStartCollect(hit.collider.gameObject);
+            }
+
+            /*if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG) && clickedObjectType == 0 && resourceTimer == 0)
             {
                 activeResource = hit.collider.gameObject;
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
                 resourceTimer = Time.time;
                 clickedObjectType = 2;
-            }
-            
+            }*/
+
             if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) && clickedObjectType == 0)
             {
                 towerTimer = Time.time;

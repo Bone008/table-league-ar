@@ -52,6 +52,7 @@ public class PlayerNetController : NetworkBehaviour
         transform.rotation = Camera.main.transform.rotation;
     }
 
+    // Called by the client when clicking on a ball.
     [Command]
     public void CmdHitBall(GameObject ball, Vector3 force)
     {
@@ -63,10 +64,24 @@ public class PlayerNetController : NetworkBehaviour
         player.HitBall(ball, force);
     }
 
+    // Called by the client when clicking on a collectable.
+    [Command]
+    public void CmdStartCollect(GameObject collectable)
+    {
+        player.StartCollect(collectable);
+    }
+
     [Command]
     public void CmdStartBuildTower(TowerType type, Vector3 position, float rotationAngle)
     {
         player.StartBuildTower(type, position, rotationAngle);
+    }
+
+    // Called by the client when the click/touch is released while collecting or building something.
+    [Command]
+    public void CmdCancelInteraction()
+    {
+        player.CancelInteraction();
     }
 
 }

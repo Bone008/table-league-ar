@@ -2270,6 +2270,7 @@ GameObject:
   - component: {fileID: 768383733}
   - component: {fileID: 768383735}
   - component: {fileID: 768383732}
+  - component: {fileID: 768383734}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -2309,6 +2310,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &768383734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768383731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bce1d07ed0b2024284dffb588502e69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceLimit: 10
+  resourcePrefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
+    type: 3}
+  resourceCreationProbabilty: 0.01
 --- !u!114 &768383735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2844,6 +2861,7 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 6463811477164468258, guid: 93dff4c8e8fee7a47b2be96bb5652b6f, type: 3}
+  - {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d, type: 3}
 --- !u!4 &989319274
 Transform:
   m_ObjectHideFlags: 0
@@ -2979,11 +2997,6 @@ MonoBehaviour:
   maxInteractionRange: 1.5
   minHitStrength: 0.8
   maxHitStrength: 1.5
-  resourceCollectionTime: 2
-  resourceLimit: 3
-  resourcePrefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
-    type: 3}
-  resourceCreationProbabilty: 0.01
   prefabPreviewTowers:
   - {fileID: 9094761377070753644, guid: a7c8152ec87f06e46a48fc4dc8789aaa, type: 3}
   - {fileID: 7937909291865002646, guid: 89bf2b2810f259c4893552d7a39349e5, type: 3}
