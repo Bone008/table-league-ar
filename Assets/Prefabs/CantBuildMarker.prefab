@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 7337655155095308210}
   - component: {fileID: 7337655155095308213}
   - component: {fileID: 7337655155095308212}
-  - component: {fileID: 7337655155095308211}
   m_Layer: 0
   m_Name: Bar2
   m_TagString: Untagged
@@ -111,19 +110,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &7337655155095308211
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7337655155095308209}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7337655155815863046
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +121,6 @@ GameObject:
   - component: {fileID: 7337655155815863047}
   - component: {fileID: 7337655155815863050}
   - component: {fileID: 7337655155815863049}
-  - component: {fileID: 7337655155815863048}
   m_Layer: 0
   m_Name: Bar1
   m_TagString: Untagged
@@ -203,16 +188,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &7337655155815863048
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7337655155815863046}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
