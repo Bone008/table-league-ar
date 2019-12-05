@@ -6,8 +6,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TrackingController : MonoBehaviour, ITrackableEventHandler
+public class TrackingController : MonoBehaviour
 {
+    /// <summary>Vuforia ID of the tracker that should be the world center.</summary>
+    public int centerTrackerId = 1;
     public VuMarkBehaviour mainVuMark;
     public GameObject onlyWithTrackingTarget;
     public GameObject onlyWithoutTrackingTarget;
@@ -30,42 +32,42 @@ public class TrackingController : MonoBehaviour, ITrackableEventHandler
     void Start()
     {
         UpdateTrackingStatus(false);
-        mainVuMark.RegisterTrackableEventHandler(this);
 
+        // Through the editor, we can only set VuMarkWorldCenter,
+        // which behaves incorrectly when a VuMark is cloned.
+        // We need to keep track of which VuMarkBehavior is the main
+        // tracker and should be the WorldCenter ourselves!
         VuforiaManager.Instance.WorldCenter = mainVuMark;
         VuforiaManager.Instance.VuMarkWorldCenter = null;
-
-
+        
         var vuMarkManager = TrackerManager.Instance.GetStateManager().GetVuMarkManager();
-        vuMarkManager.RegisterVuMarkDetectedCallback(target =>
-        {
-            // If necessary, here we can access the new VuMarkTarget (determine ID).
-            // But the VuMarkBehavior is not available yet.
-        });
         vuMarkManager.RegisterVuMarkBehaviourDetectedCallback(behavior =>
         {
-            // If necessary, here we can access the assigned VuMarkBehavior.
-            // But the VuMarkTarget is not available yet.
-            //Debug.Log("----- target: " + behavior.VuMarkTarget);
+            var numericScript = behavior.GetComponent<VuforiaNumericDetector>();
+            if (numericScript == null)
+                return;
+            
+            // VuMarkTarget was not assigned yet => marker ID not yet known.
+            // Need to delay until next frame.
             this.Delayed(0, () =>
             {
-                Debug.Log("----- target delayed: " + behavior.VuMarkTarget);
-                if(behavior.GetComponent<VuforiaNumericDetector>().currentMarkerId == 1)
+                if(numericScript.currentMarkerId == centerTrackerId)
                 {
                     UpdateTrackingStatus(true);
                     if(mainVuMark != behavior)
                     {
                         mainVuMark = behavior;
-                        Debug.Log("#### mainVuMark was changed!", mainVuMark);
+                        mainVuMark.transform.position = Vector3.zero;
+                        mainVuMark.transform.rotation = Quaternion.identity;
+                        VuforiaManager.Instance.WorldCenter = mainVuMark;
+                        Debug.Log("#### mainVuMark has changed!", mainVuMark);
                     }
                 }
             });
-
-
         });
         vuMarkManager.RegisterVuMarkLostCallback(target =>
         {
-            if(target.InstanceId.NumericValue == 1)
+            if((int)target.InstanceId.NumericValue == centerTrackerId)
             {
                 UpdateTrackingStatus(false);
             }
@@ -76,16 +78,6 @@ public class TrackingController : MonoBehaviour, ITrackableEventHandler
     {
         var tracker = TrackerManager.Instance.GetTracker<PositionalDeviceTracker>();
         debug.text = mainVuMark.CurrentStatus + " -- " + mainVuMark.CurrentStatusInfo + " -- device tracker: " + tracker.IsActive;
-        if (Time.frameCount > 100 && Time.frameCount % 100 == 0)
-        {
-            Debug.Log(mainVuMark.Trackable.Name + " -- " + VuforiaManager.Instance.VuMarkWorldCenter, VuforiaManager.Instance.VuMarkWorldCenter as UnityEngine.Object);
-            //Debug.Log(.Trackable, VuforiaManager.Instance.WorldCenter as UnityEngine.Object);
-        }
-    }
-
-    public void OnTrackableStateChanged(TrackableBehaviour.Status previousStatus, TrackableBehaviour.Status newStatus)
-    {
-        //UpdateTrackingStatus(newStatus != TrackableBehaviour.Status.NO_POSE);
     }
 
     private void UpdateTrackingStatus(bool hasTracking)
