@@ -77,7 +77,7 @@ public class PlayerInputController : MonoBehaviour
                 towerPreview.GetComponentInChildren<ParticleSystem>().Stop();
             }
 
-            if (TowerManager.GetTowerChoice() == -1 || GameManager.Instance.GetResource() < towerCost)
+            if (TowerManager.GetTowerChoice() == -1 || netController.player.resources < towerCost)
             {
                 Destroy(towerPreview);
                 towerPreview = null;
@@ -86,7 +86,7 @@ public class PlayerInputController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, maxInteractionRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
                 float distanceToOrigin = (hit.transform.position - transform.position).magnitude;
-                if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) /*&& hit.point.z > 0*/ && clickedObjectType == 0 && towerTimer == 0 && TowerManager.GetTowerChoice() != -1 && GameManager.Instance.GetResource() >= towerCost && distanceToOrigin < maxInteractionRange)
+                if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) /*&& hit.point.z > 0*/ && clickedObjectType == 0 && towerTimer == 0 && TowerManager.GetTowerChoice() != -1 && netController.player.resources >= towerCost && distanceToOrigin < maxInteractionRange)
                 {
                     towerFeasible = true;
                     previewAngle = Quaternion.identity;
@@ -167,7 +167,7 @@ public class PlayerInputController : MonoBehaviour
             Instantiate(prefabTowers[TowerManager.GetTowerChoice()], newTowerPos, newTowerAngle);
             towerTimer = 0f;
             clickedObjectType = 0;
-            GameManager.Instance.UseResource(towerCost);
+            //GameManager.Instance.UseResource(towerCost);
         }
 
         foreach (var touch in Input.touches)

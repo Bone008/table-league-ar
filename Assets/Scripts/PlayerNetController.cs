@@ -33,6 +33,7 @@ public class PlayerNetController : NetworkBehaviour
         }
 
         Debug.Log("This client is controlling player " + playerId);
+        // TODO: possibly a hack that can break, GameManager is a server script!
         player = (playerId == 1 ? GameManager.Instance.player1 : GameManager.Instance.player2);
     }
 

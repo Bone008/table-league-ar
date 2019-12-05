@@ -26,9 +26,6 @@ public class GameManager : MonoBehaviour
     private List<Ball> balls = new List<Ball>();
     private GameObject botPlayer = null;
 
-    // TODO put into Player script
-    private int resourceCollected = 100;
-
     void Awake() { Instance = this; }
 
     public Player AssignPlayer()
@@ -122,22 +119,6 @@ public class GameManager : MonoBehaviour
     {
         ball.Reset(forPlayer.homeAreaAnchor.position);
     }
-
-    public void CollectResource()
-    {
-        resourceCollected += 10;
-    }
-
-    public void UseResource(int towerCost)
-    {
-        resourceCollected -= towerCost;
-    }
-
-    public int GetResource()
-    {
-        return resourceCollected;
-    }
-
 
     public Player GetOpponentOf(Player player)
     {
