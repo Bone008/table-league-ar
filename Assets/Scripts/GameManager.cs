@@ -18,11 +18,9 @@ public class GameManager : MonoBehaviour
     private bool assignedPlayer1 = false;
     private bool assignedPlayer2 = false;
     private bool hasStarted = false;
-    public bool isReadyToStart => !hasStarted && assignedPlayer1 && (assignedPlayer2 || mayStartWithOnePlayer);
+    public bool isReadyToStart => !hasStarted && assignedPlayer1 && (assignedPlayer2 || !ServerSettings.isMultiplayer);
     public bool isRunning => hasStarted;
 
-    // TODO: set value from menu config
-    private readonly int numBallsToSpawn = 2;
     private List<Ball> balls = new List<Ball>();
     private GameObject botPlayer = null;
 
@@ -69,7 +67,7 @@ public class GameManager : MonoBehaviour
             NetworkServer.Spawn(botPlayer);
         }
 
-        for (int i = 0; i < numBallsToSpawn; i++)
+        for (int i = 0; i < ServerSettings.numberOfBalls; i++)
         {
             var ballObject = Instantiate(ballPrefab);
             NetworkServer.Spawn(ballObject);
@@ -78,6 +76,7 @@ public class GameManager : MonoBehaviour
         ResetAllBalls();
     }
 
+    // Note: Probably redundant as the scene is destroyed anyway when the game stops.
     public void StopGame()
     {
         if (!hasStarted) return;
@@ -110,8 +109,13 @@ public class GameManager : MonoBehaviour
         Player attacker = GetOpponentOf(defendingPlayer);
         attacker.score++;
         ResetBall(ball, defendingPlayer);
-
-        // TODO Check winning condition.
+        
+        if(attacker.score >= ServerSettings.winningPoints)
+        {
+            Debug.Log("[SERVER] !!!!!!!!!!");
+            Debug.Log("[SERVER] " + attacker.playerName + " has won! In the future, this will redirect to the winning screen ...");
+            Debug.Log("[SERVER] !!!!!!!!!!");
+        }
     }
 
     /// <summary>Spawns a ball back in the home area of the given player.</summary>

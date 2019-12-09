@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,31 +7,20 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    private static int noOfBalls = 2;
-    private static int winningPoint = 5;
-    private int previousMenu = 0;
-
     public GameObject playMenu;
     public GameObject multiPlayer;
     public Button defaultBalls;
     public Button defaultPoints;
     
-    // Start is called before the first frame update
     void Start()
     {
         defaultBalls.interactable = false;
         defaultPoints.interactable = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void ConfigBack()
     {
-        if (previousMenu == 0)
+        if (!ServerSettings.isMultiplayer)
         {
             playMenu.SetActive(true);
         }
@@ -40,24 +30,40 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    void SinglePlayer()
+    public void SetSingleplayer()
     {
-        previousMenu = 0;
+        ServerSettings.isMultiplayer = false;
     }
 
-    void CreateGame()
+    public void SetMultiplayer()
     {
-        previousMenu = 1;
+        ServerSettings.isMultiplayer = true;
     }
     
     public void SetBalls(int balls)
     {
-        noOfBalls = balls;
+        ServerSettings.numberOfBalls = balls;
     }
 
     public void SetPoints(int points)
     {
-        winningPoint = points;
+        ServerSettings.winningPoints = points;
+    }
+
+    public void StartGame()
+    {
+        Debug.Log(string.Format("Starting game with settings: multiplayer={0}, #balls={1}, #points={2}",
+            ServerSettings.isMultiplayer, ServerSettings.numberOfBalls, ServerSettings.winningPoints));
+
+        // For singleplayer, we still host a pseudo "server", but we don't open any ports.
+        NetworkServer.dontListen = !ServerSettings.isMultiplayer;
+        NetworkManager.singleton.StartHost();
+        // NetworkManager will switch to its "onlineScene" automatically.
+    }
+
+    public void JoinGame()
+    {
+        NetworkManager.singleton.StartClient();
     }
     
 }
