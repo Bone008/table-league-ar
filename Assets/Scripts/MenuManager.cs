@@ -11,11 +11,27 @@ public class MenuManager : MonoBehaviour
     public GameObject multiPlayer;
     public Button defaultBalls;
     public Button defaultPoints;
+    public TMPro.TextMeshProUGUI statusText;
+
+    private bool attemptingConnect = false;
     
     void Start()
     {
         defaultBalls.interactable = false;
         defaultPoints.interactable = false;
+    }
+
+    void Update()
+    {
+        if(attemptingConnect && !NetworkClient.active)
+        {
+            statusText.text = "Connection failed! Please try again.";
+            attemptingConnect = false;
+        }
+        else if (NetworkClient.isConnected && !ClientScene.ready)
+        {
+            statusText.text = "Connected! Loading scene ...";
+        }
     }
 
     public void ConfigBack()
@@ -63,7 +79,15 @@ public class MenuManager : MonoBehaviour
 
     public void JoinGame()
     {
+        statusText.text = "Trying to connect ...";
+        attemptingConnect = true;
         NetworkManager.singleton.StartClient();
+    }
+
+    public void CancelLoading()
+    {
+        attemptingConnect = false;
+        NetworkManager.singleton.StopClient();
     }
     
 }
