@@ -17,8 +17,10 @@ public class PlayerNetController : NetworkBehaviour
     public static PlayerNetController LocalInstance { get; private set; }
 
     /// <summary>
-    /// Assigned on the server when this controller is instantiated and assigned to a player.
-    /// Assigned on the client for both players based on the synced player id.
+    /// ALWAYS CHECK FOR NULL BEFORE USING! This is not assigned yet in the "preparing" phase.
+    /// 
+    /// Assigned on the server when the client is first set to "user ready" and the Player is chosen.
+    /// Assigned on the client for both players once a playerId is received.
     /// </summary>
     public Player player;
 
@@ -38,17 +40,33 @@ public class PlayerNetController : NetworkBehaviour
 
     private void OnClientPlayerIdChange(int newId)
     {
+        Debug.Log("ID CHANGE " + newId, this);
         playerId = newId;
         if (isLocalPlayer)
             Debug.Log("This client is controlling player " + playerId);
-        if(playerId != 1 && playerId != 2)
+
+        // Find corresponding player game object.
+        // We CANNOT use GameManager.Instance, since it is server-only.
+        player = null;
+        foreach (var playerGo in GameObject.FindGameObjectsWithTag(Constants.PLAYER_TAG))
         {
-            Debug.LogWarning("Can only control player 1 or 2!");
-            return;
+            Player candidate = playerGo.GetComponent<Player>();
+            if(candidate == null)
+            {
+                Debug.LogWarning("Found a GO tagged PLAYER without a Player script!", playerGo);
+                continue;
+            }
+            if (candidate.playerId == playerId)
+            {
+                player = candidate;
+                transform.SetParent(player.transform, false);
+                break;
+            }
         }
-        
-        player = (playerId == 1 ? GameManager.Instance.player1 : GameManager.Instance.player2);
-        transform.SetParent(player.transform, false);
+        if (player == null && playerId > 0)
+        {
+            Debug.LogError("Could not locate player GameObject with id " + playerId);
+        }
     }
 
     void OnDestroy()

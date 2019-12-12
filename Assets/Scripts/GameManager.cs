@@ -7,6 +7,7 @@ using UnityEngine;
 /// <summary>Server-only singleton that keeps track of balls, players, scores and winning.</summary>
 public class GameManager : MonoBehaviour
 {
+    /// <summary>WARNING: Can NOT be accessed by client!</summary>
     public static GameManager Instance { get; private set; }
 
     public GameObject ballPrefab;

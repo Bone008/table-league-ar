@@ -1,5 +1,6 @@
 public static class Constants
 {
+    public const string PLAYER_TAG = "Player";
     public const string BALL_TAG = "GameBall";
     public const string WALL_TAG = "Walls";
     public const string TOWER_TAG = "Towers";

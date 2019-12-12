@@ -23,7 +23,7 @@ public class PlayerInputController : MonoBehaviour
         Input.simulateMouseWithTouches = false;
     }
 
-    void Update()
+    void LateUpdate()
     {
         if(netController == null || netController.player == null)
         {
@@ -97,7 +97,7 @@ public class PlayerInputController : MonoBehaviour
                 if (towerPreview == null || newTowerChoice != towerChoice)
                 {
                     Destroy(towerPreview);
-                    towerPreview = Instantiate(TowerManager.Instance.previewTowers[newTowerChoice], hit.point, previewAngle);
+                    towerPreview = Instantiate(TowerManager.Instance.getTowerPreview((TowerType)newTowerChoice), hit.point, previewAngle);
                 }
                 else
                 {

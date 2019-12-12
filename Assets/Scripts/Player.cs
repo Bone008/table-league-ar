@@ -31,7 +31,7 @@ public class Player : NetworkBehaviour
     private Collectable activeCollectable = null;
 
     private GameObject activeBuildTower;
-    TowerType activeType = TowerType.None;
+    private TowerType activeType = TowerType.None;
 
     [ServerCallback]
     void Update()
@@ -50,11 +50,12 @@ public class Player : NetworkBehaviour
             activeCollectable = null;
         }
 
-        if((int)activeType != 0 && Time.time > timerStart + TowerManager.Instance.buildTime)
+        if(activeType != TowerType.None && Time.time > timerStart + TowerManager.Instance.buildTime)
         {
-            var newTower = Instantiate(TowerManager.Instance.towers[(int)activeType - 1], activeBuildTower.transform.position, activeBuildTower.transform.rotation);
+            var newTower = Instantiate(TowerManager.Instance.getTower(activeType), activeBuildTower.transform.position, activeBuildTower.transform.rotation);
             NetworkServer.Spawn(newTower);
             NetworkServer.Destroy(activeBuildTower);
+            activeBuildTower = null;
             activeType = TowerType.None;
         }
     }
@@ -92,7 +93,19 @@ public class Player : NetworkBehaviour
     [Server]
     public void StartBuildTower(TowerType type, Vector3 position, Quaternion rotationAngle)
     {
-        activeBuildTower = Instantiate(TowerManager.Instance.previewTowers[(int)type], position, rotationAngle);
+        if(resources < Constants.towerCost)
+        {
+            Debug.LogWarning("Not enough resources to build a tower!", this);
+            return;
+        }
+
+        if(activeBuildTower)
+        {
+            NetworkServer.Destroy(activeBuildTower);
+            activeBuildTower = null;
+        }
+
+        activeBuildTower = Instantiate(TowerManager.Instance.getTowerPreview(type), position, rotationAngle);
         activeBuildTower.GetComponentInChildren<ParticleSystem>().Play();
         NetworkServer.Spawn(activeBuildTower);
         activeType = type;

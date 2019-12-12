@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6585504596914287709}
   m_Layer: 0
   m_Name: NetPlayer
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,6 +64,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  player: {fileID: 0}
+  playerId: 0
 --- !u!114 &6585504596914287709
 MonoBehaviour:
   m_ObjectHideFlags: 0

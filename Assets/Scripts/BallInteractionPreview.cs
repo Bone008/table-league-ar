@@ -15,7 +15,7 @@ public class BallInteractionPreview : MonoBehaviour
     void LateUpdate()
     {
         var controller = PlayerNetController.LocalInstance;
-        if (controller == null)
+        if (controller == null || controller.player == null)
             return;
 
         bool inRange = (controller.transform.position - transform.position).sqrMagnitude < maxInteractionRange * maxInteractionRange;
