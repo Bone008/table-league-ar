@@ -9,7 +9,9 @@ public class BallInteractionPreview : MonoBehaviour
     public float maxInteractionRange = 1.5f;
 
     public Renderer visual;
-    
+    public Material validMaterial;
+    public Material invalidMaterial;
+
     void LateUpdate()
     {
         var controller = PlayerNetController.LocalInstance;
@@ -17,8 +19,10 @@ public class BallInteractionPreview : MonoBehaviour
             return;
 
         bool inRange = (controller.transform.position - transform.position).sqrMagnitude < maxInteractionRange * maxInteractionRange;
+        bool inControl = controller.player.ownedRectangle.Contains(transform.position);
 
         visual.enabled = inRange;
+        visual.sharedMaterial = inControl ? validMaterial : invalidMaterial;
         if (inRange)
         {
             Vector3 rot = controller.transform.eulerAngles;
