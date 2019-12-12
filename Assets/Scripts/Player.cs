@@ -27,6 +27,8 @@ public class Player : NetworkBehaviour
     private float timerStart = 0;
     private Collectable activeCollectable = null;
 
+    private GameObject activeBuildTower;
+    TowerType activeType = TowerType.None;
 
     [ServerCallback]
     void Update()
@@ -43,6 +45,14 @@ public class Player : NetworkBehaviour
             }
             NetworkServer.Destroy(activeCollectable.gameObject);
             activeCollectable = null;
+        }
+
+        if((int)activeType != 0 && Time.time > timerStart + TowerManager.Instance.buildTime)
+        {
+            var newTower = Instantiate(TowerManager.Instance.towers[(int)activeType - 1], activeBuildTower.transform.position, activeBuildTower.transform.rotation);
+            NetworkServer.Spawn(newTower);
+            NetworkServer.Destroy(activeBuildTower);
+            activeType = TowerType.None;
         }
     }
 
@@ -77,9 +87,13 @@ public class Player : NetworkBehaviour
     }
 
     [Server]
-    public void StartBuildTower(TowerType type, Vector3 position, float rotationAngle)
+    public void StartBuildTower(TowerType type, Vector3 position, Quaternion rotationAngle)
     {
-        Debug.Log("NOT IMPLEMENTED: SERVER starting to build tower " + type);
+        activeBuildTower = Instantiate(TowerManager.Instance.previewTowers[(int)type], position, rotationAngle);
+        activeBuildTower.GetComponentInChildren<ParticleSystem>().Play();
+        NetworkServer.Spawn(activeBuildTower);
+        activeType = type;
+        timerStart = Time.time;
     }
 
     [Server]
@@ -89,6 +103,12 @@ public class Player : NetworkBehaviour
         {
             activeCollectable.StopCollecting();
             activeCollectable = null;
+        }
+
+        if(activeType != TowerType.None)
+        {
+            NetworkServer.Destroy(activeBuildTower);
+            activeType = TowerType.None;
         }
     }
 }

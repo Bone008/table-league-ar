@@ -13,62 +13,21 @@ public enum TowerType
 
 public class TowerManager : MonoBehaviour
 {
-    public static int towerChoice = - 1;
-    public Button mTowerButton;
-    public Button mPushButton;
-    public Button bTowerButton;
+    public static TowerManager Instance { get; private set; }
 
-    public void MagneticTower()
+    public GameObject[] previewTowers;
+    public GameObject[] towers;
+    public float buildTime;
+
+    void Awake() { Instance = this; }
+
+    public GameObject getTowerPreview(TowerType type)
     {
-        if(towerChoice  == 0)
-        {
-            towerChoice = -1;
-            mTowerButton.image.color = Color.white;
-        }
-        else
-        {
-            towerChoice = 0;
-            mTowerButton.image.color = Color.red;
-            mPushButton.image.color = Color.white;
-            bTowerButton.image.color = Color.white;
-        }
+        return previewTowers[(int)type];
     }
 
-    public void MagneticPushTower()
+    public GameObject getTower(TowerType type)
     {
-        if (towerChoice == 1)
-        {
-            towerChoice = -1;
-            mPushButton.image.color = Color.white;
-        }
-        else
-        {
-            towerChoice = 1;
-            mPushButton.image.color = Color.red;
-            mTowerButton.image.color = Color.white;
-            bTowerButton.image.color = Color.white;
-        }
+        return towers[(int)type];
     }
-
-    public void BarrierTower()
-    {
-        if (towerChoice == 2)
-        {
-            towerChoice = -1;
-            bTowerButton.image.color = Color.white;
-        }
-        else
-        {
-            towerChoice = 2;
-            bTowerButton.image.color = Color.red;
-            mTowerButton.image.color = Color.white;
-            mPushButton.image.color = Color.white;
-        }
-    }
-
-    public static int GetTowerChoice()
-    {
-        return towerChoice;
-    }
-         
 }

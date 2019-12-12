@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 4144803343209334872}
   - component: {fileID: 4144803343209334875}
   - component: {fileID: 4144803343209334874}
+  - component: {fileID: 6137711281929361774}
   m_Layer: 2
   m_Name: MagneticTower
   m_TagString: Towers
@@ -234,3 +235,18 @@ MonoBehaviour:
   pullForce: 1.8
   maxEnergy: 0.5
   rechargeDelay: 1
+--- !u!114 &6137711281929361774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144803343209334873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverOnly: 0
+  m_AssetId: 
+  m_SceneId: 4169438061
