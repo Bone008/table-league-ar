@@ -22,6 +22,7 @@ public class SpawnManager : MonoBehaviour
     public float resourceCreationProbabilty;
     
     private int resourcesCreated = 0;
+    private Player lastSpawnedSide = null;
     
     void Awake() { Instance = this; }
 
@@ -33,7 +34,17 @@ public class SpawnManager : MonoBehaviour
         float prob = Random.Range(0, 1.0f);
         if (prob < resourceCreationProbabilty && resourcesCreated < resourceLimit)
         {
-            var newResource = Instantiate(resourcePrefab, new Vector3(Random.Range(-1.0f, 1.0f), 0.015f, Random.Range(-1.4f, 1.4f)), Quaternion.identity);
+            // Alternate spawning on either player's side.
+            if (lastSpawnedSide) lastSpawnedSide = GameManager.Instance.GetOpponentOf(lastSpawnedSide);
+            else lastSpawnedSide = GameManager.Instance.player1;
+
+            // Pick a random point within their rectangle.
+            var rect = lastSpawnedSide.ownedRectangle;
+            float spawnX = Random.Range(rect.min.x, rect.max.x);
+            float spawnZ = Random.Range(rect.min.z, rect.max.z);
+            Vector3 spawnPos = new Vector3(spawnX, 0.015f, spawnZ);
+
+            var newResource = Instantiate(resourcePrefab, spawnPos, Quaternion.identity);
             NetworkServer.Spawn(newResource);
             resourcesCreated++;
         }
