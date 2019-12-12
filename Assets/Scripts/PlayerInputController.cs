@@ -69,7 +69,6 @@ public class PlayerInputController : MonoBehaviour
                     else
                     {
                         newTowerChoice = (int)TowerType.None;
-                        Debug.Log("Not feasible");
                     }
                 }
                 else
@@ -101,7 +100,6 @@ public class PlayerInputController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(newTowerChoice);
                     towerPreview.transform.rotation = previewAngle;
                     towerPreview.transform.position = hit.point;
                 }
