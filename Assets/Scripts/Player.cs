@@ -19,6 +19,9 @@ public class Player : NetworkBehaviour
 
     public string playerName => "Player " + playerId;
 
+    /// <summary>Indicates if the player has tracking and has indicated that they are (still) ready to play.</summary>
+    [SyncVar]
+    public bool isUserReady = false;
     [SyncVar]
     public int score = 0;
     [SyncVar]

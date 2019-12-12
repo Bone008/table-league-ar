@@ -58,6 +58,14 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
+    public void SetReady()
+    {
+        if (PlayerNetController.LocalInstance)
+            PlayerNetController.LocalInstance.CmdSetReady(true);
+        else
+            Debug.LogWarning("Cannot send ready command without a network player!");
+    }
+
     public void ExitGame()
     {
         NetworkManager.singleton.StopHost();

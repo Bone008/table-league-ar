@@ -25,7 +25,7 @@ public class PlayerInputController : MonoBehaviour
 
     void Update()
     {
-        if(netController == null)
+        if(netController == null || netController.player == null)
         {
             return;
         }

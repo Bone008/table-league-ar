@@ -17,26 +17,37 @@ public class GameManager : MonoBehaviour
     private bool assignedPlayer1 = false;
     private bool assignedPlayer2 = false;
     private bool hasStarted = false;
-    public bool isReadyToStart => !hasStarted && assignedPlayer1 && (assignedPlayer2 || !ServerSettings.isMultiplayer);
-    public bool isRunning => hasStarted;
+    private bool isPaused = false;
+    //public bool isReadyToStart => !hasStarted && assignedPlayer1 && (assignedPlayer2 || !ServerSettings.isMultiplayer);
+    public bool isRunning => hasStarted && !isPaused;
 
     private List<Ball> balls = new List<Ball>();
     private GameObject botPlayer = null;
 
     void Awake() { Instance = this; }
 
-    public Player AssignPlayer()
+    void Update()
+    {
+        if(!hasStarted && player1.isUserReady && player2.isUserReady)
+            StartGame();
+    }
+
+    public Player AssignPlayer(Vector3? clientPosition)
     {
         if (!assignedPlayer1)
         {
             assignedPlayer1 = true;
             player1.resources = 123;
+
+            if (!ServerSettings.isMultiplayer && !assignedPlayer2) SpawnAndAssignBot();
             return player1;
         }
         if (!assignedPlayer2)
         {
             assignedPlayer2 = true;
             player2.resources = 321;
+
+            if (!ServerSettings.isMultiplayer && !assignedPlayer1) SpawnAndAssignBot();
             return player2;
         }
         return null;
@@ -49,6 +60,17 @@ public class GameManager : MonoBehaviour
         else throw new ArgumentException("Cannot unassign unknown player!");
     }
 
+    private void SpawnAndAssignBot()
+    {
+        if (assignedPlayer1 && assignedPlayer2)
+            throw new InvalidOperationException("No free player to assign bot to!");
+
+        Player player = (assignedPlayer1 ? player2 : player1);
+        botPlayer = Instantiate(botPlayerPrefab, player.transform);
+        botPlayer.GetComponent<BotInputController>().player = player;
+        NetworkServer.Spawn(botPlayer);
+    }
+
     public void StartGame()
     {
         if (hasStarted)
@@ -58,13 +80,6 @@ public class GameManager : MonoBehaviour
         }
         hasStarted = true;
         Debug.Log("Starting game!");
-
-        if (!assignedPlayer2)
-        {
-            botPlayer = Instantiate(botPlayerPrefab, player2.transform);
-            botPlayer.GetComponent<BotInputController>().player = player2;
-            NetworkServer.Spawn(botPlayer);
-        }
 
         for (int i = 0; i < ServerSettings.numberOfBalls; i++)
         {

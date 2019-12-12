@@ -23,7 +23,7 @@ public class PlayerNetController : NetworkBehaviour
     public Player player;
 
     /// <summary>This property allows the client to determine which player they are.</summary>
-    [SyncVar]
+    [SyncVar(hook = nameof(OnClientPlayerIdChange))]
     public int playerId;
 
     public override void OnStartLocalPlayer()
@@ -34,14 +34,21 @@ public class PlayerNetController : NetworkBehaviour
         {
             renderer.enabled = false;
         }
-
-        Debug.Log("This client is controlling player " + playerId);
     }
 
-    public override void OnStartClient()
+    private void OnClientPlayerIdChange(int newId)
     {
-        // TODO: possibly a hack that can break, GameManager is a server script!
+        playerId = newId;
+        if (isLocalPlayer)
+            Debug.Log("This client is controlling player " + playerId);
+        if(playerId != 1 && playerId != 2)
+        {
+            Debug.LogWarning("Can only control player 1 or 2!");
+            return;
+        }
+        
         player = (playerId == 1 ? GameManager.Instance.player1 : GameManager.Instance.player2);
+        transform.SetParent(player.transform, false);
     }
 
     void OnDestroy()
@@ -58,6 +65,20 @@ public class PlayerNetController : NetworkBehaviour
         // synchronizes localPosition, which would otherwise not change.
         transform.position = Camera.main.transform.position;
         transform.rotation = Camera.main.transform.rotation;
+    }
+
+    [Command]
+    public void CmdSetReady(bool ready)
+    {
+        // If this is the first time we get ready, assign a player.
+        if(ready && player == null)
+        {
+            player = GameManager.Instance.AssignPlayer(transform.position);
+            playerId = player.playerId;
+            transform.SetParent(player.transform, false);
+        }
+        
+        player.isUserReady = ready;
     }
 
     // Called by the client when clicking on a ball.

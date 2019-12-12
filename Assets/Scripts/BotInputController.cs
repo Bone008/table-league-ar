@@ -28,6 +28,12 @@ public class BotInputController : NetworkBehaviour
         StartCoroutine(HighLevelLoop());
     }
 
+    public override void OnStartServer()
+    {
+        // Bots were born ready.
+        player.isUserReady = true;
+    }
+
     [ServerCallback]
     void Update()
     {
