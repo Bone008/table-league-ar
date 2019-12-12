@@ -7,13 +7,14 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
+    private static string remoteAddress = "localhost";
+
     public GameObject playMenu;
     public GameObject multiPlayer;
     public Button defaultBalls;
     public Button defaultPoints;
     public TMPro.TextMeshProUGUI statusText;
 
-    private string remoteAddress = "localhost";
     private bool attemptingConnect = false;
     
     void Start()

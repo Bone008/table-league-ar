@@ -83,7 +83,8 @@ public class TrackingController : MonoBehaviour
     private void UpdateTrackingStatus(bool hasTracking)
     {
         this.hasTracking = hasTracking;
-        onlyWithTrackingTarget.SetActive(hasTracking);
+        if(onlyWithTrackingTarget != null)
+            onlyWithTrackingTarget.SetActive(hasTracking);
         if (onlyWithoutTrackingTarget != null)
             onlyWithoutTrackingTarget.SetActive(!hasTracking);
     }
