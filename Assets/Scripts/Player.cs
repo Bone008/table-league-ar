@@ -38,7 +38,8 @@ public class Player : NetworkBehaviour
     {
         if (activeCollectable && Time.time > timerStart + activeCollectable.collectDuration)
         {
-            Debug.Log("finished collecting");
+            EffectsManager.Instance.RpcHideInteraction();
+
             switch(activeCollectable.type)
             {
                 case CollectableType.TowerResource:
@@ -52,6 +53,8 @@ public class Player : NetworkBehaviour
 
         if(activeType != TowerType.None && Time.time > timerStart + TowerManager.Instance.buildTime)
         {
+            EffectsManager.Instance.RpcHideInteraction();
+
             resources -= Constants.towerCost;
             var newTower = Instantiate(TowerManager.Instance.getTower(activeType), activeBuildTower.transform.position, activeBuildTower.transform.rotation);
             NetworkServer.Spawn(newTower);
@@ -95,6 +98,7 @@ public class Player : NetworkBehaviour
         collectable.StartCollecting(this);
         activeCollectable = collectable;
         timerStart = Time.time;
+        EffectsManager.Instance.RpcShowInteraction(gameObject, collectable.transform.position);
     }
 
     [Server]
@@ -118,6 +122,7 @@ public class Player : NetworkBehaviour
         timerStart = Time.time;
 
         RpcPlayBuildEffect(activeBuildTower);
+        EffectsManager.Instance.RpcShowInteraction(gameObject, position);
     }
 
     [ClientRpc]
@@ -135,6 +140,7 @@ public class Player : NetworkBehaviour
     [Server]
     public void CancelInteraction()
     {
+        EffectsManager.Instance.RpcHideInteraction();
         if(activeCollectable)
         {
             activeCollectable.StopCollecting();

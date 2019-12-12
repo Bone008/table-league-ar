@@ -17,10 +17,13 @@ public class BotInputController : NetworkBehaviour
     public float ballHitStrength;
     public float ballHitCooldown;
     public float ballHitScatterAngle;
+    public float collectInterval;
 
     private Goal[] opponentGoals = null;
     private Ball targetBall = null;
     private float lastHitTime = 0;
+
+    private float lastCollectTime = 0;
     
     [ServerCallback]
     void OnEnable()
@@ -80,8 +83,9 @@ public class BotInputController : NetworkBehaviour
     {
         while (true)
         {
-            FindTargetBall();
             yield return new WaitForSeconds(0.5f);
+            FindTargetBall();
+            FindResource();
         }
     }
 
@@ -98,6 +102,24 @@ public class BotInputController : NetworkBehaviour
             target.GetComponent<Rigidbody>().velocity.sqrMagnitude < ballMaxVelocity * ballMaxVelocity)
         {
             targetBall = target.GetComponent<Ball>();
+        }
+    }
+
+    private void FindResource()
+    {
+        // Be a bit less OP.
+        if (Time.time - lastCollectTime < collectInterval)
+            return;
+
+        GameObject[] resources = GameObject.FindGameObjectsWithTag(Constants.RESOURCE_TAG);
+        if (resources.Length == 0)
+            return;
+
+        GameObject target = resources.MinBy(go => (go.transform.position - transform.position).sqrMagnitude);
+        if (player.ownedRectangle.Contains(target.transform.position))
+        {
+            lastCollectTime = Time.time;
+            player.StartCollect(target);
         }
     }
 
