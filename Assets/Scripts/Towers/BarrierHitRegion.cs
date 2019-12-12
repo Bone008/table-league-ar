@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BarrierHitRegion : MonoBehaviour
+public class BarrierHitRegion : NetworkBehaviour
 {
     public BarrierTower tower;
 
+    [ServerCallback]
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag(Constants.BALL_TAG))

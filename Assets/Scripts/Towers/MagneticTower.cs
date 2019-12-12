@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider))]
-public class MagneticTower : MonoBehaviour
+public class MagneticTower : TowerBase
 {
     [Tooltip("positive = attract ball, negative = repulse ball")]
     public float pullForce;
@@ -14,11 +15,13 @@ public class MagneticTower : MonoBehaviour
     private float lastActivation = float.NegativeInfinity;
     private float energy = 0;
 
+    [ServerCallback]
     void Start()
     {
         maxRadius = transform.lossyScale.x * GetComponent<CapsuleCollider>().radius;
     }
 
+    [ServerCallback]
     void Update()
     {
         // Recharge energy if the tower hasn't triggered for a while.
@@ -28,6 +31,7 @@ public class MagneticTower : MonoBehaviour
         }
     }
 
+    [ServerCallback]
     void OnTriggerStay(Collider other)
     {
         if (!other.gameObject.CompareTag(Constants.BALL_TAG) || other.isTrigger)

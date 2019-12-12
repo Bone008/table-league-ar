@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BarrierTower : MonoBehaviour
+public class BarrierTower : TowerBase
 {
     public Transform anchor;
     public Collider hitRegionCollider;
@@ -15,6 +16,7 @@ public class BarrierTower : MonoBehaviour
 
     private bool isReady = true;
 
+    [Server]
     public void OnBallCollide(Collision collision)
     {
         if (isReady)
@@ -28,10 +30,19 @@ public class BarrierTower : MonoBehaviour
             {
                 collision.rigidbody.AddForce(ballImpulse * anchor.forward, ForceMode.Impulse);
                 StartCoroutine(KnockOver());
+                RpcAlsoKnockOverOnClient();
             }
         }
     }
 
+    [ClientRpc]
+    private void RpcAlsoKnockOverOnClient()
+    {
+        if(isClientOnly)
+            StartCoroutine(KnockOver());
+    }
+
+    [ServerCallback]
     void OnDisable()
     {
         // Re-enable tower when it is disabled, since coroutines are canceled.
