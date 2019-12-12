@@ -56,12 +56,17 @@ public class PlayerInputController : MonoBehaviour
                     bool towerFeasible = true;
                     foreach (GameObject t in towers)
                     {
-                        if (Vector3.Distance(t.transform.position, hit.point) < Constants.towerDistance)
+                        if (Vector3.SqrMagnitude(t.transform.position - hit.point) < Constants.towerDistance * Constants.towerDistance)
                         {
                             towerFeasible = false;
                             break;
                         }
                     }
+                    if(!netController.player.ownedRectangle.Contains(hit.point))
+                    {
+                        towerFeasible = false;
+                    }
+
                     if (towerFeasible)
                     {
                         newTowerChoice = TowerUIManager.GetTowerChoice();
@@ -146,7 +151,7 @@ public class PlayerInputController : MonoBehaviour
                 netController.CmdHitBall(hit.collider.gameObject, force);
             }
 
-            if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG))
+            if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG) && netController.player.ownedRectangle.Contains(hit.transform.position))
             {
                 isInteracting = true;
                 netController.CmdStartCollect(hit.collider.gameObject);

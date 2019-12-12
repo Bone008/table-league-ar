@@ -85,6 +85,11 @@ public class Player : NetworkBehaviour
             Debug.LogWarning("Cannot collect this game object!", target);
             return;
         }
+        if (!ownedRectangle.Contains(collectable.transform.position))
+        {
+            Debug.LogWarning("Player tried to collect outside of owned rectangle!");
+            return;
+        }
         Debug.Log("SERVER starting to collect", collectable);
 
         collectable.StartCollecting(this);
@@ -98,6 +103,11 @@ public class Player : NetworkBehaviour
         if(resources < Constants.towerCost)
         {
             Debug.LogWarning("Not enough resources to build a tower!", this);
+            return;
+        }
+        if(!ownedRectangle.Contains(position))
+        {
+            Debug.LogWarning("Player tried to build outside of owned rectangle!");
             return;
         }
         CancelInteraction();
