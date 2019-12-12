@@ -10,6 +10,7 @@ TagManager:
   - Floor
   - TowerResource
   - Goal
+  - Preview
   layers:
   - Default
   - TransparentFX

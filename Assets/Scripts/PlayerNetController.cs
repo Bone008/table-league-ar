@@ -73,7 +73,7 @@ public class PlayerNetController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdStartBuildTower(TowerType type, Vector3 position, float rotationAngle)
+    public void CmdStartBuildTower(TowerType type, Vector3 position, Quaternion rotationAngle)
     {
         player.StartBuildTower(type, position, rotationAngle);
     }
