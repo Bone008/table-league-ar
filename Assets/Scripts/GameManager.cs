@@ -29,13 +29,18 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(!hasStarted && player1.isUserReady && player2.isUserReady)
+        if (!hasStarted && player1.isUserReady && player2.isUserReady)
             StartGame();
     }
 
-    public Player AssignPlayer(Vector3? clientPosition)
+    public Player AssignPlayer(Vector3 clientPosition)
     {
-        if (!assignedPlayer1)
+        float distTo1 = (clientPosition - player1.ownedRectangle.center).sqrMagnitude;
+        float distTo2 = (clientPosition - player2.ownedRectangle.center).sqrMagnitude;
+        // Assign player 1 by default, unless player 2 is is also free and we have the choice.
+        bool preferPlayer2 = !assignedPlayer2 && distTo2 < distTo1;
+        
+        if (!assignedPlayer1 && !preferPlayer2)
         {
             assignedPlayer1 = true;
             player1.resources = 123;
@@ -63,10 +68,10 @@ public class GameManager : MonoBehaviour
 
     private void SpawnAndAssignBot()
     {
-        if (assignedPlayer1 && assignedPlayer2)
-            throw new InvalidOperationException("No free player to assign bot to!");
+        Player player = AssignPlayer(Vector3.zero);
+        if (player == null)
+            throw new InvalidOperationException("No free player to assign bot!");
 
-        Player player = (assignedPlayer1 ? player2 : player1);
         botPlayer = Instantiate(botPlayerPrefab, player.transform);
         botPlayer.GetComponent<BotInputController>().player = player;
         NetworkServer.Spawn(botPlayer);
@@ -100,7 +105,7 @@ public class GameManager : MonoBehaviour
 
         assignedPlayer1 = false;
         assignedPlayer2 = false;
-        if(botPlayer)
+        if (botPlayer)
         {
             NetworkServer.Destroy(botPlayer);
             botPlayer = null;
@@ -124,8 +129,8 @@ public class GameManager : MonoBehaviour
         Player attacker = GetOpponentOf(defendingPlayer);
         attacker.score++;
         ResetBall(ball, defendingPlayer);
-        
-        if(attacker.score >= ServerSettings.winningPoints)
+
+        if (attacker.score >= ServerSettings.winningPoints)
         {
             Debug.Log("[SERVER] !!!!!!!!!!");
             Debug.Log("[SERVER] " + attacker.playerName + " has won! In the future, this will redirect to the winning screen ...");

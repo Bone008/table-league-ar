@@ -104,6 +104,11 @@ public class PlayerNetController : NetworkBehaviour
         if(ready && player == null)
         {
             player = GameManager.Instance.AssignPlayer(transform.position);
+            if(player == null)
+            {
+                Debug.LogWarning("No free player to assign to client!", this);
+                return;
+            }
             playerId = player.playerId;
             transform.SetParent(player.transform, false);
         }

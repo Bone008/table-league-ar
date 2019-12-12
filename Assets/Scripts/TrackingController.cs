@@ -54,6 +54,8 @@ public class TrackingController : MonoBehaviour
         
         vuMarkManager.RegisterVuMarkBehaviourDetectedCallback(behavior =>
         {
+            if (!this)
+                return;
             var numericScript = behavior.GetComponent<VuforiaNumericDetector>();
             if (numericScript == null)
                 return;
@@ -78,7 +80,9 @@ public class TrackingController : MonoBehaviour
         });
         vuMarkManager.RegisterVuMarkLostCallback(target =>
         {
-            if((int)target.InstanceId.NumericValue == centerTrackerId)
+            if (!this)
+                return;
+            if ((int)target.InstanceId.NumericValue == centerTrackerId)
             {
                 UpdateTrackingStatus(false);
             }
