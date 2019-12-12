@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BotInput : NetworkBehaviour
+public class BotInputController : NetworkBehaviour
 {
+    /// <summary>Assigned on the server when this controller is instantiated and assigned to a player.</summary>
     public Player player;
-
-    public SceneRectangle ownedArea;
+    
     public float moveSpeed;
     public float moveSpeedAngle;
     public float ballMaxVelocity;
@@ -88,7 +88,7 @@ public class BotInput : NetworkBehaviour
             return;
 
         GameObject target = balls.MinBy(ball => (ball.transform.position - transform.position).sqrMagnitude);
-        if (ownedArea.Contains(target.transform.position) &&
+        if (player.ownedRectangle.Contains(target.transform.position) &&
             target.GetComponent<Rigidbody>().velocity.sqrMagnitude < ballMaxVelocity * ballMaxVelocity)
         {
             targetBall = target.GetComponent<Ball>();

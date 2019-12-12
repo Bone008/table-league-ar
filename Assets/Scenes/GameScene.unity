@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2248,6 +2248,7 @@ GameObject:
   - component: {fileID: 764313431}
   - component: {fileID: 764313430}
   - component: {fileID: 764313429}
+  - component: {fileID: 764313432}
   m_Layer: 0
   m_Name: Player (2)
   m_TagString: Player
@@ -2271,6 +2272,7 @@ MonoBehaviour:
   syncInterval: 0.1
   playerId: 2
   homeAreaAnchor: {fileID: 301011230}
+  ownedRectangle: {fileID: 764313432}
   score: 0
   resources: 0
 --- !u!114 &764313430
@@ -2302,6 +2304,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &764313432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764313428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e1827127739cb46882d231a8cdc673, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  min: {x: -1, y: 0, z: -1}
+  max: {x: 0, y: 0, z: 1}
 --- !u!1 &768383731
 GameObject:
   m_ObjectHideFlags: 0
@@ -2339,7 +2355,6 @@ MonoBehaviour:
     type: 3}
   player1: {fileID: 810622631}
   player2: {fileID: 764313429}
-  mayStartWithOnePlayer: 1
 --- !u!4 &768383733
 Transform:
   m_ObjectHideFlags: 0
@@ -2473,6 +2488,7 @@ GameObject:
   - component: {fileID: 810622633}
   - component: {fileID: 810622632}
   - component: {fileID: 810622631}
+  - component: {fileID: 810622634}
   m_Layer: 0
   m_Name: Player (1)
   m_TagString: Player
@@ -2496,6 +2512,7 @@ MonoBehaviour:
   syncInterval: 0.1
   playerId: 1
   homeAreaAnchor: {fileID: 483461951}
+  ownedRectangle: {fileID: 810622634}
   score: 0
   resources: 0
 --- !u!114 &810622632
@@ -2527,6 +2544,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &810622634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810622630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e1827127739cb46882d231a8cdc673, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  min: {x: 0, y: 0, z: -1}
+  max: {x: 1, y: 0, z: 1}
 --- !u!1 &819034880
 GameObject:
   m_ObjectHideFlags: 0

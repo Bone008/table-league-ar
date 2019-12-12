@@ -12,7 +12,10 @@ using UnityEngine;
 public class Player : NetworkBehaviour
 {
     public int playerId;
+    /// <summary>Location where balls in control of that player should spawn.</summary>
     public Transform homeAreaAnchor;
+    /// <summary>Area of the playing field that the player is in control of.</summary>
+    public SceneRectangle ownedRectangle;
 
     public string playerName => "Player " + playerId;
 
@@ -46,6 +49,12 @@ public class Player : NetworkBehaviour
     [Server]
     public void HitBall(GameObject ball, Vector3 force)
     {
+        if(!ownedRectangle.Contains(ball.transform.position))
+        {
+            Debug.Log("Player " + playerId + ": Cannot hit ball outside of their owned rectangle.");
+            return;
+        }
+
         var rigidbody = ball.GetComponent<Rigidbody>();
         rigidbody.velocity = Vector3.zero;
         rigidbody.AddForce(force, ForceMode.Impulse);

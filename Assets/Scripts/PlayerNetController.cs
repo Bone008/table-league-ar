@@ -16,7 +16,10 @@ public class PlayerNetController : NetworkBehaviour
     /// <summary>Convenience accessor for the client</summary>
     public static PlayerNetController LocalInstance { get; private set; }
 
-    /// <summary>Assigned on the server when this controller is instantiated and assigned to a player.</summary>
+    /// <summary>
+    /// Assigned on the server when this controller is instantiated and assigned to a player.
+    /// Assigned on the client for both players based on the synced player id.
+    /// </summary>
     public Player player;
 
     /// <summary>This property allows the client to determine which player they are.</summary>
@@ -33,6 +36,10 @@ public class PlayerNetController : NetworkBehaviour
         }
 
         Debug.Log("This client is controlling player " + playerId);
+    }
+
+    public override void OnStartClient()
+    {
         // TODO: possibly a hack that can break, GameManager is a server script!
         player = (playerId == 1 ? GameManager.Instance.player1 : GameManager.Instance.player2);
     }
