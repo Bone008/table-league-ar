@@ -7,18 +7,29 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    private static string remoteAddress = "localhost";
+    private const string PREFS_KEY_ADDRESS = "client.remote_address";
+    private static string remoteAddress = "";
 
     public GameObject playMenu;
     public GameObject multiPlayer;
     public Button defaultBalls;
     public Button defaultPoints;
     public TMPro.TextMeshProUGUI statusText;
+    public TMPro.TMP_InputField remoteAddressInput;
 
     private bool attemptingConnect = false;
     
     void Start()
     {
+        remoteAddress = PlayerPrefs.GetString(PREFS_KEY_ADDRESS, "localhost");
+        remoteAddressInput.text = remoteAddress;
+        remoteAddressInput.onValueChanged.AddListener(value =>
+        {
+            remoteAddress = value;
+            PlayerPrefs.SetString(PREFS_KEY_ADDRESS, value);
+            PlayerPrefs.Save();
+        });
+
         defaultBalls.interactable = false;
         defaultPoints.interactable = false;
     }
@@ -67,12 +78,7 @@ public class MenuManager : MonoBehaviour
     {
         ServerSettings.winningPoints = points;
     }
-
-    public void SetRemoteAddress(string value)
-    {
-        remoteAddress = value;
-    }
-
+    
     public void StartGame()
     {
         Debug.Log(string.Format("Starting game with settings: multiplayer={0}, #balls={1}, #points={2}",
