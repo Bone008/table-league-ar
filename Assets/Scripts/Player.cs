@@ -103,10 +103,23 @@ public class Player : NetworkBehaviour
         CancelInteraction();
 
         activeBuildTower = Instantiate(TowerManager.Instance.getTowerPreview(type), position, rotationAngle);
-        activeBuildTower.GetComponentInChildren<ParticleSystem>().Play();
         NetworkServer.Spawn(activeBuildTower);
         activeType = type;
         timerStart = Time.time;
+
+        RpcPlayBuildEffect(activeBuildTower);
+    }
+
+    [ClientRpc]
+    private void RpcPlayBuildEffect(GameObject towerPreview)
+    {
+        var particles = towerPreview.GetComponentInChildren<ParticleSystem>();
+        if(particles == null)
+        {
+            Debug.LogWarning("Could not find particles to play build effect on preview!", towerPreview);
+            return;
+        }
+        particles.Play();
     }
 
     [Server]
