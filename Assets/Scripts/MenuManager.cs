@@ -13,6 +13,7 @@ public class MenuManager : MonoBehaviour
     public Button defaultPoints;
     public TMPro.TextMeshProUGUI statusText;
 
+    private string remoteAddress = "localhost";
     private bool attemptingConnect = false;
     
     void Start()
@@ -66,6 +67,11 @@ public class MenuManager : MonoBehaviour
         ServerSettings.winningPoints = points;
     }
 
+    public void SetRemoteAddress(string value)
+    {
+        remoteAddress = value;
+    }
+
     public void StartGame()
     {
         Debug.Log(string.Format("Starting game with settings: multiplayer={0}, #balls={1}, #points={2}",
@@ -73,6 +79,7 @@ public class MenuManager : MonoBehaviour
 
         // For singleplayer, we still host a pseudo "server", but we don't open any ports.
         NetworkServer.dontListen = !ServerSettings.isMultiplayer;
+        NetworkManager.singleton.networkAddress = "localhost";
         NetworkManager.singleton.StartHost();
         // NetworkManager will switch to its "onlineScene" automatically.
     }
@@ -81,6 +88,7 @@ public class MenuManager : MonoBehaviour
     {
         statusText.text = "Trying to connect ...";
         attemptingConnect = true;
+        NetworkManager.singleton.networkAddress = remoteAddress;
         NetworkManager.singleton.StartClient();
     }
 
