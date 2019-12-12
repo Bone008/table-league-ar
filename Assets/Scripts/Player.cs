@@ -52,6 +52,7 @@ public class Player : NetworkBehaviour
 
         if(activeType != TowerType.None && Time.time > timerStart + TowerManager.Instance.buildTime)
         {
+            resources -= Constants.towerCost;
             var newTower = Instantiate(TowerManager.Instance.getTower(activeType), activeBuildTower.transform.position, activeBuildTower.transform.rotation);
             NetworkServer.Spawn(newTower);
             NetworkServer.Destroy(activeBuildTower);
@@ -77,6 +78,7 @@ public class Player : NetworkBehaviour
     [Server]
     public void StartCollect(GameObject target)
     {
+        CancelInteraction();
         var collectable = target.GetComponent<Collectable>();
         if (collectable == null)
         {
@@ -98,12 +100,7 @@ public class Player : NetworkBehaviour
             Debug.LogWarning("Not enough resources to build a tower!", this);
             return;
         }
-
-        if(activeBuildTower)
-        {
-            NetworkServer.Destroy(activeBuildTower);
-            activeBuildTower = null;
-        }
+        CancelInteraction();
 
         activeBuildTower = Instantiate(TowerManager.Instance.getTowerPreview(type), position, rotationAngle);
         activeBuildTower.GetComponentInChildren<ParticleSystem>().Play();
@@ -124,6 +121,7 @@ public class Player : NetworkBehaviour
         if(activeType != TowerType.None)
         {
             NetworkServer.Destroy(activeBuildTower);
+            activeBuildTower = null;
             activeType = TowerType.None;
         }
     }
