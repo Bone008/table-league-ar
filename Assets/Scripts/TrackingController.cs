@@ -11,11 +11,13 @@ public class TrackingController : MonoBehaviour
     /// <summary>Vuforia ID of the tracker that should be the world center.</summary>
     public int centerTrackerId = 1;
     public VuMarkBehaviour mainVuMark;
+    public LayerMask inactiveCullingMask;
     public GameObject onlyWithTrackingTarget;
     public GameObject onlyWithoutTrackingTarget;
     public Transform scaleTarget;
     public Text debug;
 
+    private int initialCullingMask;
     private bool hasTracking;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
@@ -31,7 +33,15 @@ public class TrackingController : MonoBehaviour
 
     void Start()
     {
+        initialCullingMask = Camera.main.cullingMask;
         UpdateTrackingStatus(false);
+
+        this.Delayed(0.5f, () =>
+        {
+            // Vuforia automatically creates this child, we want it to be on a separate layer so we can render
+            // only the background video when tracking is inactive.
+            Camera.main.transform.Find("BackgroundPlane").gameObject.layer = LayerMask.NameToLayer("BackgroundPlane");
+        });
 
         // Through the editor, we can only set VuMarkWorldCenter,
         // which behaves incorrectly when a VuMark is cloned.
@@ -41,6 +51,7 @@ public class TrackingController : MonoBehaviour
         VuforiaManager.Instance.VuMarkWorldCenter = null;
         
         var vuMarkManager = TrackerManager.Instance.GetStateManager().GetVuMarkManager();
+        
         vuMarkManager.RegisterVuMarkBehaviourDetectedCallback(behavior =>
         {
             var numericScript = behavior.GetComponent<VuforiaNumericDetector>();
@@ -87,6 +98,14 @@ public class TrackingController : MonoBehaviour
             onlyWithTrackingTarget.SetActive(hasTracking);
         if (onlyWithoutTrackingTarget != null)
             onlyWithoutTrackingTarget.SetActive(!hasTracking);
+
+        // Only render UI when there is no tracking.
+        Camera.main.cullingMask = hasTracking ? initialCullingMask : inactiveCullingMask.value;
+
+        if (PlayerNetController.LocalInstance)
+        {
+            PlayerNetController.LocalInstance.CmdSetHasTracking(hasTracking);
+        }
     }
 
     public void SetScale(float scaleExponent)

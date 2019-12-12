@@ -12,6 +12,7 @@ public class GameUIManager : MonoBehaviour
     public Player player2;
     public Player localPlayer => PlayerNetController.LocalInstance?.player;
 
+    public GameObject getReadyPanel;
     public Text score1Text;
     public Text score2Text;
     public Text resourceText;
@@ -61,7 +62,10 @@ public class GameUIManager : MonoBehaviour
     public void SetReady()
     {
         if (PlayerNetController.LocalInstance)
+        {
             PlayerNetController.LocalInstance.CmdSetReady(true);
+            getReadyPanel.SetActive(false);
+        }
         else
             Debug.LogWarning("Cannot send ready command without a network player!");
     }

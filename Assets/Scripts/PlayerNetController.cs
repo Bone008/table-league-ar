@@ -28,6 +28,9 @@ public class PlayerNetController : NetworkBehaviour
     [SyncVar(hook = nameof(OnClientPlayerIdChange))]
     public int playerId;
 
+    [SyncVar]
+    private bool hasTracking;
+
     public override void OnStartLocalPlayer()
     {
         LocalInstance = this;
@@ -83,6 +86,15 @@ public class PlayerNetController : NetworkBehaviour
         // synchronizes localPosition, which would otherwise not change.
         transform.position = Camera.main.transform.position;
         transform.rotation = Camera.main.transform.rotation;
+    }
+
+    [Command]
+    public void CmdSetHasTracking(bool value)
+    {
+        hasTracking = value;
+        if (player != null)
+            // If the user has been ready before, their ready state should reflect their tracking state.
+            CmdSetReady(value);
     }
 
     [Command]
