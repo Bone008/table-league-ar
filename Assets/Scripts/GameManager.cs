@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     private bool assignedPlayer2 = false;
     private bool hasStarted = false;
     private bool isPaused = false;
-    //public bool isReadyToStart => !hasStarted && assignedPlayer1 && (assignedPlayer2 || !ServerSettings.isMultiplayer);
+    /// <summary>True if the game has started and is NOT paused.</summary>
     public bool isRunning => hasStarted && !isPaused;
 
     private List<Ball> balls = new List<Ball>();
@@ -31,6 +31,16 @@ public class GameManager : MonoBehaviour
     {
         if (!hasStarted && player1.isUserReady && player2.isUserReady)
             StartGame();
+        else if (isPaused && player1.isUserReady && player2.isUserReady)
+        {
+            Time.timeScale = 1;
+            isPaused = false;
+        }
+        else if (isRunning && (!player1.isUserReady || !player2.isUserReady))
+        {
+            Time.timeScale = 0;
+            isPaused = true;
+        }
     }
 
     public Player AssignPlayer(Vector3 clientPosition)
@@ -61,6 +71,7 @@ public class GameManager : MonoBehaviour
 
     public void UnassignPlayer(Player player)
     {
+        player.isUserReady = false;
         if (player == player1) assignedPlayer1 = false;
         else if (player == player2) assignedPlayer2 = false;
         else throw new ArgumentException("Cannot unassign unknown player!");

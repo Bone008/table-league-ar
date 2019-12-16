@@ -67,7 +67,8 @@ public class Player : NetworkBehaviour
     [Server]
     public void HitBall(GameObject ball, Vector3 force)
     {
-        if(!ownedRectangle.Contains(ball.transform.position))
+        if (!GameManager.Instance.isRunning) return;
+        if (!ownedRectangle.Contains(ball.transform.position))
         {
             Debug.Log("Player " + playerId + ": Cannot hit ball outside of their owned rectangle.");
             return;
@@ -81,6 +82,8 @@ public class Player : NetworkBehaviour
     [Server]
     public void StartCollect(GameObject target)
     {
+        if (!GameManager.Instance.isRunning) return;
+
         CancelInteraction();
         var collectable = target.GetComponent<Collectable>();
         if (collectable == null)
@@ -104,7 +107,9 @@ public class Player : NetworkBehaviour
     [Server]
     public void StartBuildTower(TowerType type, Vector3 position, Quaternion rotationAngle)
     {
-        if(resources < Constants.towerCost)
+        if (!GameManager.Instance.isRunning) return;
+
+        if (resources < Constants.towerCost)
         {
             Debug.LogWarning("Not enough resources to build a tower!", this);
             return;
