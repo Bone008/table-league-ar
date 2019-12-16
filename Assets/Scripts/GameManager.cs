@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         if (!assignedPlayer1 && !preferPlayer2)
         {
             assignedPlayer1 = true;
-            player1.resources = 123;
+            player1.AddToInventory(CollectableType.TowerResource, 11);
 
             if (!ServerSettings.isMultiplayer && !assignedPlayer2) SpawnAndAssignBot();
             return player1;
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         if (!assignedPlayer2)
         {
             assignedPlayer2 = true;
-            player2.resources = 321;
+            player2.AddToInventory(CollectableType.TowerResource, 22);
 
             if (!ServerSettings.isMultiplayer && !assignedPlayer1) SpawnAndAssignBot();
             return player2;

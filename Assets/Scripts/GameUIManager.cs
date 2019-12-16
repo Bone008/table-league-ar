@@ -59,7 +59,7 @@ public class GameUIManager : MonoBehaviour
         score2Text.text = player2.score.ToString();
         if (localPlayer != null)
         {
-            resourceText.text = localPlayer.resources.ToString();
+            resourceText.text = localPlayer.GetInventoryCount(CollectableType.TowerResource).ToString();
         }
     }
 

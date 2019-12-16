@@ -7,6 +7,7 @@ using UnityEngine;
 public class Collectable : NetworkBehaviour
 {
     public CollectableType type;
+    public int amount;
     public float collectDuration;
     public ParticleSystem collectEffect;
 

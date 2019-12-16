@@ -4767,9 +4767,9 @@ GameObject:
   - component: {fileID: 2876984474660438597}
   - component: {fileID: -4383287404843722069}
   - component: {fileID: 8395985999261987052}
-  - component: {fileID: 2181888715949747049}
+  - component: {fileID: 2214776269971768367}
   m_Layer: 0
-  m_Name: Tower Resource
+  m_Name: PowerupFreeze
   m_TagString: TowerResource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4797,7 +4797,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5828997359253125535}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &7707156015337834557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4842,7 +4842,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  type: 1
+  type: 2
+  amount: 1
   collectDuration: 2
   collectEffect: {fileID: 3478743316611286335}
 --- !u!23 &8395985999261987052
@@ -4862,7 +4863,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 295257b792d6da14c962f1181a28703e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4883,8 +4884,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2181888715949747049
-BoxCollider:
+--- !u!135 &2214776269971768367
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4894,5 +4895,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}

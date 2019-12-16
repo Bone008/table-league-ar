@@ -137,7 +137,7 @@ public static class Util
 
         while (currentParent != null)
         {
-            if (currentParent.tag.Equals(searchedTag))
+            if (currentParent.CompareTag(searchedTag))
                 return currentParent.gameObject;
 
             currentParent = currentParent.parent;
@@ -146,7 +146,17 @@ public static class Util
         return null;
     }
 
+    /// <summary>Returns a random element picked from a list.</summary>
+    public static T PickRandomElement<T>(IList<T> list)
+    {
+        return list[UnityEngine.Random.Range(0, list.Count)];
+    }
 
+    /// <summary>Returns a random element picked from an array.</summary>
+    public static T PickRandomElement<T>(T[] array)
+    {
+        return array[UnityEngine.Random.Range(0, array.Length)];
+    }
 
 
 

@@ -2893,10 +2893,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bce1d07ed0b2024284dffb588502e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceLimit: 10
-  resourcePrefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
-    type: 3}
-  resourceCreationProbabilty: 0.01
+  collectables:
+  - type: 1
+    prefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
+      type: 3}
+  - type: 2
+    prefab: {fileID: 5828997359253125535, guid: ade64e0729ea83645bace9c5a461ff1f,
+      type: 3}
+  spawnProbability: 0.02
 --- !u!114 &768383735
 MonoBehaviour:
   m_ObjectHideFlags: 0

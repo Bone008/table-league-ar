@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ using UnityEngine;
 /// </summary>
 public class Player : NetworkBehaviour
 {
+    public class SyncDictionaryCollectableInt : SyncDictionary<CollectableType, int> { }
+
     public int playerId;
     /// <summary>Location where balls in control of that player should spawn.</summary>
     public Transform homeAreaAnchor;
@@ -24,8 +27,7 @@ public class Player : NetworkBehaviour
     public bool isUserReady = false;
     [SyncVar]
     public int score = 0;
-    [SyncVar]
-    public int resources = 0;
+    private SyncDictionaryCollectableInt inventory = new SyncDictionaryCollectableInt();
 
     private float timerStart = 0;
     private Collectable activeCollectable = null;
@@ -33,20 +35,44 @@ public class Player : NetworkBehaviour
     private GameObject activeBuildTower;
     private TowerType activeType = TowerType.None;
 
+    /// <summary>Returns how many items of the given type the player has in their inventory.</summary>
+    public int GetInventoryCount(CollectableType type)
+    {
+        if (type == CollectableType.None) throw new ArgumentException("cannot lookup invalid type");
+        inventory.TryGetValue(type, out int value);
+        return value;
+    }
+
+    /// <summary>Server-side method to add a collectable to the player's inventory.</summary>
+    [Server]
+    public void AddToInventory(CollectableType type, int amount)
+    {
+        if (type == CollectableType.None) throw new ArgumentException("cannot add invalid type");
+        inventory.TryGetValue(type, out int value);
+        inventory[type] = value + amount;
+    }
+
+    /// <summary>Server-side method to consume a collectable from the player's inventory.</summary>
+    /// <returns>False if not enough available, true if consumption was successful.</returns>
+    [Server]
+    public bool ConsumeFromInventory(CollectableType type, int amount)
+    {
+        if (type == CollectableType.None) throw new ArgumentException("cannot consume invalid type");
+        inventory.TryGetValue(type, out int value);
+
+        if (value < amount) return false;
+        inventory[type] = value - amount;
+        return true;
+    }
+
     [ServerCallback]
     void Update()
     {
         if (activeCollectable && Time.time > timerStart + activeCollectable.collectDuration)
         {
             EffectsManager.Instance.RpcHideInteraction();
+            AddToInventory(activeCollectable.type, activeCollectable.amount);
 
-            switch(activeCollectable.type)
-            {
-                case CollectableType.TowerResource:
-                    resources += 10;
-                    SpawnManager.Instance.NotifyResourceCollected();
-                    break;
-            }
             NetworkServer.Destroy(activeCollectable.gameObject);
             activeCollectable = null;
         }
@@ -55,9 +81,13 @@ public class Player : NetworkBehaviour
         {
             EffectsManager.Instance.RpcHideInteraction();
 
-            resources -= Constants.towerCost;
-            var newTower = Instantiate(TowerManager.Instance.getTower(activeType), activeBuildTower.transform.position, activeBuildTower.transform.rotation);
-            NetworkServer.Spawn(newTower);
+            if (ConsumeFromInventory(CollectableType.TowerResource, Constants.towerCost))
+            {
+                var newTower = Instantiate(TowerManager.Instance.getTower(activeType), activeBuildTower.transform.position, activeBuildTower.transform.rotation);
+                NetworkServer.Spawn(newTower);
+            }
+            else { Debug.LogWarning("Not enough resources to finish building tower!"); }
+
             NetworkServer.Destroy(activeBuildTower);
             activeBuildTower = null;
             activeType = TowerType.None;
@@ -109,7 +139,7 @@ public class Player : NetworkBehaviour
     {
         if (!GameManager.Instance.isRunning) return;
 
-        if (resources < Constants.towerCost)
+        if (GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost)
         {
             Debug.LogWarning("Not enough resources to build a tower!", this);
             return;

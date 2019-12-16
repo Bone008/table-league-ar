@@ -45,7 +45,7 @@ public class PlayerInputController : MonoBehaviour
                 isInteracting = false;
             }
 
-            if(netController.player.resources < Constants.towerCost || TowerUIManager.GetTowerChoice() == 0)
+            if(netController.player.GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost || TowerUIManager.GetTowerChoice() == 0)
             {
                 newTowerChoice = -1;
             }
