@@ -20,6 +20,8 @@ public class GameUIManager : MonoBehaviour
     public Text score1Text;
     public Text score2Text;
     public Text resourceText;
+    public Button freezeButton;
+    public Text freezeAmountText;
 
     public GameObject[] serverOnlyObjects = new GameObject[0];
 
@@ -60,6 +62,10 @@ public class GameUIManager : MonoBehaviour
         if (localPlayer != null)
         {
             resourceText.text = localPlayer.GetInventoryCount(CollectableType.TowerResource).ToString();
+
+            int freezeNum = localPlayer.GetInventoryCount(CollectableType.PowerupFreeze);
+            freezeAmountText.text = freezeNum.ToString();
+            freezeButton.interactable = freezeNum > 0;
         }
     }
 
@@ -91,5 +97,11 @@ public class GameUIManager : MonoBehaviour
     {
         Material newMat = (floorRenderer.sharedMaterial == floorEnabledMaterial ? floorDisabledMaterial : floorEnabledMaterial);
         floorRenderer.sharedMaterial = newMat;
+    }
+
+    public void UsePowerupFreeze()
+    {
+        // TODO implement
+        Debug.LogWarning("Powerup freeze not implemented yet", this);
     }
 }
