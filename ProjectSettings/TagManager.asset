@@ -8,7 +8,7 @@ TagManager:
   - Walls
   - Towers
   - Floor
-  - TowerResource
+  - Collectable
   - Goal
   - Preview
   layers:

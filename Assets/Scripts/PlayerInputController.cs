@@ -151,7 +151,7 @@ public class PlayerInputController : MonoBehaviour
                 netController.CmdHitBall(hit.collider.gameObject, force);
             }
 
-            if (hit.collider.gameObject.CompareTag(Constants.RESOURCE_TAG) && netController.player.ownedRectangle.Contains(hit.transform.position))
+            if (hit.collider.gameObject.CompareTag(Constants.COLLECTABLE_TAG) && netController.player.ownedRectangle.Contains(hit.transform.position))
             {
                 isInteracting = true;
                 netController.CmdStartCollect(hit.collider.gameObject);

@@ -111,7 +111,7 @@ public class BotInputController : NetworkBehaviour
         if (Time.time - lastCollectTime < collectInterval)
             return;
 
-        GameObject[] resources = GameObject.FindGameObjectsWithTag(Constants.RESOURCE_TAG);
+        GameObject[] resources = GameObject.FindGameObjectsWithTag(Constants.COLLECTABLE_TAG);
         if (resources.Length == 0)
             return;
 
