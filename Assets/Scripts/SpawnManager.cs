@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,14 +17,13 @@ public enum CollectableType
 public class SpawnManager : MonoBehaviour
 {
     public static SpawnManager Instance { get; private set; }
-
-    public int resourceLimit;
+    
     public GameObject resourcePrefab;
     public float resourceCreationProbabilty;
-    
+
     private int resourcesCreated = 0;
     private Player lastSpawnedSide = null;
-    
+
     void Awake() { Instance = this; }
 
     void Update()
@@ -32,24 +32,39 @@ public class SpawnManager : MonoBehaviour
             return;
 
         float prob = Random.Range(0, 1.0f);
-        if (prob < resourceCreationProbabilty && resourcesCreated < resourceLimit)
+        if (prob < resourceCreationProbabilty)
         {
-            // Alternate spawning on either player's side.
-            if (lastSpawnedSide) lastSpawnedSide = GameManager.Instance.GetOpponentOf(lastSpawnedSide);
-            else lastSpawnedSide = GameManager.Instance.player1;
-
-            // Pick a random point within their rectangle.
-            var rect = lastSpawnedSide.ownedRectangle;
-            float spawnX = Random.Range(rect.min.x, rect.max.x);
-            float spawnZ = Random.Range(rect.min.z, rect.max.z);
-            Vector3 spawnPos = new Vector3(spawnX, 0.015f, spawnZ);
-
-            var newResource = Instantiate(resourcePrefab, spawnPos, Quaternion.identity);
-            NetworkServer.Spawn(newResource);
-            resourcesCreated++;
+            AttemptSpawn();
         }
     }
-    
+
+    private void AttemptSpawn()
+    {
+        // Alternate spawning on either player's side.
+        if (lastSpawnedSide) lastSpawnedSide = GameManager.Instance.GetOpponentOf(lastSpawnedSide);
+        else lastSpawnedSide = GameManager.Instance.player1;
+
+        // Pick a random spawn point on the player's side that is not occupied.
+        Transform[] spawns = lastSpawnedSide.ownedRectangle.resourceSpawnPoints;
+        List<Vector3> freeSpawns = spawns.Select(spawn => spawn.position).Where(pos => !IsSpawnOccupied(pos)).ToList();
+        if(freeSpawns.Count == 0)
+        {
+            // All spawn points occupied
+            return;
+        }
+        Vector3 spawnPos = freeSpawns[Random.Range(0, freeSpawns.Count)] + 0.04f * Vector3.up;
+
+        var newResource = Instantiate(resourcePrefab, spawnPos, Quaternion.identity);
+        NetworkServer.Spawn(newResource);
+        resourcesCreated++;
+    }
+
+    private bool IsSpawnOccupied(Vector3 pos)
+    {
+        Collider[] hits = Physics.OverlapSphere(pos, 0.01f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
+        return hits.Any(hit => hit.CompareTag(Constants.RESOURCE_TAG));
+    }
+
     public void NotifyResourceCollected()
     {
         resourcesCreated--;
