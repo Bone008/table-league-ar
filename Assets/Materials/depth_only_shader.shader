@@ -9,6 +9,7 @@ Shader "Custom/DepthOnlyShader"
 		// Don't draw in the RGBA channels; just the depth buffer
 		ColorMask 0
 		ZWrite On
+		ZTest Always
 
 		// Do nothing else.
 		Pass {}
