@@ -12,6 +12,10 @@ public class GameUIManager : MonoBehaviour
     public Player player2;
     public Player localPlayer => PlayerNetController.LocalInstance?.player;
 
+    public Renderer floorRenderer;
+    public Material floorEnabledMaterial;
+    public Material floorDisabledMaterial;
+
     public GameObject getReadyPanel;
     public Text score1Text;
     public Text score2Text;
@@ -73,5 +77,11 @@ public class GameUIManager : MonoBehaviour
     public void ExitGame()
     {
         NetworkManager.singleton.StopHost();
+    }
+
+    public void ToggleFloorVisibility()
+    {
+        Material newMat = (floorRenderer.sharedMaterial == floorEnabledMaterial ? floorDisabledMaterial : floorEnabledMaterial);
+        floorRenderer.sharedMaterial = newMat;
     }
 }
