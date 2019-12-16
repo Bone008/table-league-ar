@@ -79,7 +79,7 @@ public class SpawnManager : MonoBehaviour
 
     private bool IsSpawnOccupied(Vector3 pos)
     {
-        Collider[] hits = Physics.OverlapSphere(pos, 0.01f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
+        Collider[] hits = Physics.OverlapSphere(pos, 0.1f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
         return hits.Any(hit => hit.CompareTag(Constants.COLLECTABLE_TAG));
     }
 }
