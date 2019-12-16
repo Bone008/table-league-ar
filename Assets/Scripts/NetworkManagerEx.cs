@@ -21,29 +21,17 @@ public class NetworkManagerEx : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        if (conn.identity == null)
-            return;
-        
-        Player player = conn.identity.GetComponent<PlayerNetController>().player;
+        Player player = conn.identity?.GetComponent<PlayerNetController>()?.player;
+        base.OnServerDisconnect(conn);
+
         if (player != null)
         {
-            Debug.Log("unassigning player " + player.playerName, player);
+            Debug.Log("Client disconnected! Unassigned player: " + player.playerName, player);
             GameManager.Instance.UnassignPlayer(player);
         }
         else
         {
-            Debug.LogError("Could not find Player script to unassign!");
+            Debug.Log("Client disconnected (was not assigned to player)!");
         }
-    }
-    
-    // Probably obsolete since the scene is unloaded anyway ...
-    public override void OnStopHost()
-    {
-        GameManager.Instance.UnassignPlayer(GameManager.Instance.player1);
-    }
-
-    public override void OnStopServer()
-    {
-        GameManager.Instance.StopGame();
     }
 }

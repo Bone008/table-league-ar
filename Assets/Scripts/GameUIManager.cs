@@ -76,7 +76,15 @@ public class GameUIManager : MonoBehaviour
 
     public void ExitGame()
     {
-        NetworkManager.singleton.StopHost();
+        if (NetworkServer.active)
+            NetworkManager.singleton.StopHost();
+        else if (NetworkClient.active)
+            NetworkManager.singleton.StopClient();
+        else
+        {
+            Debug.LogWarning("Neither server nor client active while trying to exit game!");
+            SceneManager.LoadSceneAsync(NetworkManager.singleton.offlineScene);
+        }
     }
 
     public void ToggleFloorVisibility()
