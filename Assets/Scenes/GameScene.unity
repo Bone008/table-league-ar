@@ -3140,7 +3140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bce1d07ed0b2024284dffb588502e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnProbability: 0.02
+  spawnProbability: 0.05
   collectables:
   - type: 1
     prefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,

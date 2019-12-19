@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -699,6 +699,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5267232765689458241, guid: c82a892376f4d26438283a9bbb427147,
+        type: 3}
+      propertyPath: m_SceneId
+      value: 3117071774
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c82a892376f4d26438283a9bbb427147, type: 3}
 --- !u!1001 &460468948
@@ -767,6 +772,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 704855227478598647, guid: 93dff4c8e8fee7a47b2be96bb5652b6f,
+        type: 3}
+      propertyPath: m_SceneId
+      value: 3177352212
       objectReference: {fileID: 0}
     - target: {fileID: 255797289, guid: 93dff4c8e8fee7a47b2be96bb5652b6f, type: 3}
       propertyPath: controller
@@ -1144,7 +1154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69db72437f1ddaf4fab442a4ed96d664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ui: {fileID: 1202846197}
+  ballPrefab: {fileID: 0}
+  botPlayerPrefab: {fileID: 0}
   player1: {fileID: 1651110049}
   player2: {fileID: 1993647747}
 --- !u!4 &1077024356
@@ -1412,9 +1423,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98c2acfd67ba73429b715f92e05ab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player1: {fileID: 0}
+  player2: {fileID: 0}
+  floorRenderer: {fileID: 0}
+  floorEnabledMaterial: {fileID: 0}
+  floorDisabledMaterial: {fileID: 0}
+  getReadyPanel: {fileID: 0}
   score1Text: {fileID: 2088908074}
   score2Text: {fileID: 229750275}
   resourceText: {fileID: 1596470027}
+  freezeButton: {fileID: 0}
+  freezeAmountText: {fileID: 0}
+  serverOnlyObjects: []
 --- !u!1 &1330002976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1970,6 +1990,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 704855227478598647, guid: 93dff4c8e8fee7a47b2be96bb5652b6f,
+        type: 3}
+      propertyPath: m_SceneId
+      value: 2339728093
+      objectReference: {fileID: 0}
     - target: {fileID: 255797289, guid: 93dff4c8e8fee7a47b2be96bb5652b6f, type: 3}
       propertyPath: controller
       value: 
@@ -2200,24 +2225,6 @@ MonoBehaviour:
   maxInteractionRange: 2
   minHitStrength: 0
   maxHitStrength: 0.8
-  resourceCollectionTime: 2
-  resourceLimit: 1
-  resourcePrefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
-    type: 3}
-  resourceCreationProbabilty: 1
-  prefabPreviewTowers:
-  - {fileID: 6578394846447689622, guid: e5f9722ded65b504a9b422c942c2665d, type: 3}
-  - {fileID: 7937909291865002646, guid: 89bf2b2810f259c4893552d7a39349e5, type: 3}
-  - {fileID: 9094761377070753644, guid: a7c8152ec87f06e46a48fc4dc8789aaa, type: 3}
-  towerCost: 20
-  towerDistance: 0.6
-  prefabTowers:
-  - {fileID: 4144803343209334873, guid: 45088b3a95a687b44930166e5fef52d4, type: 3}
-  - {fileID: 4144803343209334873, guid: ab9692a0272588f4fa482ecaf6b8909b, type: 3}
-  - {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147, type: 3}
-  towerCreationTime: 2
-  cantBuildPrefab: {fileID: 7337655154984085288, guid: ad220660c4ecd1c49a63123bbaf28d7c,
-    type: 3}
 --- !u!114 &1651110049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2230,8 +2237,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8083a22663f27498e1cc85344755a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: Bert
+  syncMode: 0
+  syncInterval: 0.1
+  playerId: 0
   homeAreaAnchor: {fileID: 0}
+  ownedRectangle: {fileID: 0}
+  isUserReady: 0
   score: 0
 --- !u!114 &1651110050
 MonoBehaviour:
@@ -2245,9 +2256,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693c8ca543a3be6449e0e72bc87d013c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mTowerButton: {fileID: 110051735}
-  mPushButton: {fileID: 27668651}
-  bTowerButton: {fileID: 2005847350}
+  previewTowers: []
+  towers: []
+  buildTime: 0
 --- !u!1 &1701282904
 GameObject:
   m_ObjectHideFlags: 0
@@ -2677,8 +2688,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8083a22663f27498e1cc85344755a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: Computer
+  syncMode: 0
+  syncInterval: 0.1
+  playerId: 0
   homeAreaAnchor: {fileID: 0}
+  ownedRectangle: {fileID: 0}
+  isUserReady: 0
   score: 0
 --- !u!4 &1993647748
 Transform:
@@ -2971,6 +2986,11 @@ PrefabInstance:
         type: 3}
       propertyPath: pullStrength
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137711281929361774, guid: 45088b3a95a687b44930166e5fef52d4,
+        type: 3}
+      propertyPath: m_SceneId
+      value: 1698657756
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45088b3a95a687b44930166e5fef52d4, type: 3}

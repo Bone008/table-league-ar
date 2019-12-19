@@ -194,13 +194,16 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     private void RpcPlayBuildEffect(GameObject towerPreview)
     {
-        var particles = towerPreview.GetComponentInChildren<ParticleSystem>();
+        var particles = towerPreview.GetComponentsInChildren<ParticleSystem>();
         if(particles == null)
         {
             Debug.LogWarning("Could not find particles to play build effect on preview!", towerPreview);
             return;
         }
-        particles.Play();
+        foreach(var p in particles)
+        {
+            p.Play();
+        }
     }
 
     [Server]
