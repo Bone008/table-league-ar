@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -141,6 +142,17 @@ public class PlayerNetController : NetworkBehaviour
         player.StartBuildTower(type, position, rotationAngle);
     }
 
+    [Command]
+    public void CmdStartDestroyTower(GameObject tower)
+    {
+        if (!tower.CompareTag(Constants.TOWER_TAG))
+        {
+            Debug.LogWarning("Tried to destroy something that was not a tower: " + tower, tower);
+            return;
+        }
+        player.StartDestroyTower(tower);
+    }
+
     // Called by the client when the click/touch is released while collecting or building something.
     [Command]
     public void CmdCancelInteraction()
@@ -153,5 +165,4 @@ public class PlayerNetController : NetworkBehaviour
     {
         player.UsePowerupFreeze();
     }
-
 }

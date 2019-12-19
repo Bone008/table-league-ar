@@ -5,61 +5,55 @@ using UnityEngine.UI;
 
 public class TowerUIManager : MonoBehaviour
 {
-    public static int towerChoice = 0;
-    public Button mTowerButton;
-    public Button mPushButton;
-    public Button bTowerButton;
+    public static bool destroyMode = false;
+    public static TowerType towerChoice = TowerType.None;
+    
+    [Tooltip("the order should follow the TowerType enum, but first entry (None) represents the destroy button")]
+    public Button[] towerButtons;
+    
+    public void DestroyTower()
+    {
+        destroyMode = !destroyMode;
+        towerChoice = TowerType.None;
+        UpdateButtons();
+    }
 
     public void MagneticTower()
     {
-        if (towerChoice == 1)
-        {
-            towerChoice = 0;
-            mTowerButton.image.color = Color.white;
-        }
-        else
-        {
-            towerChoice = 1;
-            mTowerButton.image.color = Color.red;
-            mPushButton.image.color = Color.white;
-            bTowerButton.image.color = Color.white;
-        }
+        ToggleTowerChoice(TowerType.Magnetic);
     }
 
     public void MagneticPushTower()
     {
-        if (towerChoice == 2)
-        {
-            towerChoice = 0;
-            mPushButton.image.color = Color.white;
-        }
-        else
-        {
-            towerChoice = 2;
-            mPushButton.image.color = Color.red;
-            mTowerButton.image.color = Color.white;
-            bTowerButton.image.color = Color.white;
-        }
+        ToggleTowerChoice(TowerType.MagneticPush);
     }
 
     public void BarrierTower()
     {
-        if (towerChoice == 3)
+        ToggleTowerChoice(TowerType.Barrier);
+    }
+
+    private void ToggleTowerChoice(TowerType newType)
+    {
+        if (towerChoice == newType)
         {
-            towerChoice = 0;
-            bTowerButton.image.color = Color.white;
+            towerChoice = TowerType.None;
         }
         else
         {
-            towerChoice = 3;
-            bTowerButton.image.color = Color.red;
-            mTowerButton.image.color = Color.white;
-            mPushButton.image.color = Color.white;
+            towerChoice = newType;
+            destroyMode = false;
         }
+        UpdateButtons();
     }
 
-    public static int GetTowerChoice()
+    private void UpdateButtons()
     {
-        return towerChoice;
+        towerButtons[0].image.color = (destroyMode ? Color.red : Color.white);
+        for (int i = 1; i < towerButtons.Length; i++)
+        {
+            towerButtons[i].image.color = (i == (int)towerChoice ? Color.red : Color.white);
+        }
     }
+    
 }

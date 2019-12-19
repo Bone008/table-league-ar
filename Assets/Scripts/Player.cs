@@ -32,7 +32,8 @@ public class Player : NetworkBehaviour
     private float timerStart = 0;
     private Collectable activeCollectable = null;
 
-    private GameObject activeBuildTower;
+    private GameObject activeBuildTower = null;
+    private GameObject activeDestroyingTower = null;
     private TowerType activeType = TowerType.None;
 
     /// <summary>Returns how many items of the given type the player has in their inventory.</summary>
@@ -68,6 +69,7 @@ public class Player : NetworkBehaviour
     [ServerCallback]
     void Update()
     {
+        // Finish collecting.
         if (activeCollectable && Time.time > timerStart + activeCollectable.collectDuration)
         {
             EffectsManager.Instance.RpcHideInteraction();
@@ -77,6 +79,7 @@ public class Player : NetworkBehaviour
             activeCollectable = null;
         }
 
+        // Finish building tower.
         if(activeType != TowerType.None && Time.time > timerStart + TowerManager.Instance.buildTime)
         {
             EffectsManager.Instance.RpcHideInteraction();
@@ -91,6 +94,17 @@ public class Player : NetworkBehaviour
             NetworkServer.Destroy(activeBuildTower);
             activeBuildTower = null;
             activeType = TowerType.None;
+        }
+
+        // Finish destroying tower.
+        float destroyGraceTime = TowerManager.Instance.destroyEffectOnlyTime;
+        if(activeDestroyingTower != null && Time.time > timerStart + TowerManager.Instance.destroyTime - destroyGraceTime)
+        {
+            GameObject tower = activeDestroyingTower;
+            activeDestroyingTower = null;
+            // Wait a bit longer for the clients to finish playing the scale effect before actually destroying the tower.
+            // During this time, the destruction should no longer be cancelable. Since network delay can only 
+            this.Delayed(destroyGraceTime, () => NetworkServer.Destroy(tower));
         }
     }
 
@@ -126,7 +140,6 @@ public class Player : NetworkBehaviour
             Debug.LogWarning("Player tried to collect outside of owned rectangle!");
             return;
         }
-        Debug.Log("SERVER starting to collect", collectable);
 
         collectable.StartCollecting(this);
         activeCollectable = collectable;
@@ -160,6 +173,24 @@ public class Player : NetworkBehaviour
         EffectsManager.Instance.RpcShowInteraction(gameObject, position);
     }
 
+    [Server]
+    public void StartDestroyTower(GameObject tower)
+    {
+        if (!ownedRectangle.Contains(tower.transform.position))
+        {
+            Debug.LogWarning("Player tried to destroy tower outside of owned rectangle!");
+            return;
+        }
+        Debug.Log("[SERVER] starting to destroy tower", tower);
+
+        CancelInteraction();
+        activeDestroyingTower = tower;
+        timerStart = Time.time;
+
+        EffectsManager.Instance.RpcPlayTowerDestroyEffect(tower, TowerManager.Instance.destroyTime);
+        EffectsManager.Instance.RpcShowInteraction(gameObject, tower.transform.position);
+    }
+
     [ClientRpc]
     private void RpcPlayBuildEffect(GameObject towerPreview)
     {
@@ -187,6 +218,12 @@ public class Player : NetworkBehaviour
             NetworkServer.Destroy(activeBuildTower);
             activeBuildTower = null;
             activeType = TowerType.None;
+        }
+
+        if(activeDestroyingTower != null)
+        {
+            EffectsManager.Instance.RpcStopTowerDestroyEffect(activeDestroyingTower);
+            activeDestroyingTower = null;
         }
     }
 

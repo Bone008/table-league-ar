@@ -18,6 +18,8 @@ public class TowerManager : MonoBehaviour
     public GameObject[] previewTowers;
     public GameObject[] towers;
     public float buildTime;
+    public float destroyTime;
+    public float destroyEffectOnlyTime;
 
     void Awake() { Instance = this; }
 

@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class EffectsManager : NetworkBehaviour
     public static EffectsManager Instance { get; private set; }
 
     public LineRenderer interactionLine;
+    public GameObject towerDestroyEffectPrefab;
 
     private Transform interactionLineSource = null;
     
@@ -37,5 +39,36 @@ public class EffectsManager : NetworkBehaviour
     {
         interactionLineSource = null;
         interactionLine.enabled = false;
+    }
+
+    [ClientRpc]
+    public void RpcPlayTowerDestroyEffect(GameObject tower, float duration)
+    {
+        float finalStageTime = TowerManager.Instance.destroyEffectOnlyTime * 0.33f;
+
+        var effect = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        effect.name = "__destroy_effect__";
+        effect.GetComponent<Renderer>().material.color = Color.black;
+        Destroy(effect.GetComponent<Collider>());
+        effect.transform.SetParent(tower.transform, false);
+        effect.transform.localScale = new Vector3(0.32f, 0.22f, 0.32f);
+        this.AnimateVector(duration - finalStageTime, -0.24f * Vector3.up, Vector3.zero, Util.EaseInOut01, v =>
+        {
+            if(effect) effect.transform.localPosition = v;
+        });
+        this.Delayed(duration - finalStageTime, () => this.AnimateScalar(finalStageTime, 1f, 0f, Util.EaseOut01, s =>
+        {
+            if (effect) tower.transform.localScale = new Vector3(s, 1, s);
+        }));
+    }
+
+    [ClientRpc]
+    public void RpcStopTowerDestroyEffect(GameObject tower)
+    {
+        var effect = tower.transform.Find("__destroy_effect__");
+        if(effect)
+        {
+            Destroy(effect.gameObject);
+        }
     }
 }

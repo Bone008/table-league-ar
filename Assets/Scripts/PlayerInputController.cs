@@ -45,7 +45,7 @@ public class PlayerInputController : MonoBehaviour
                 isInteracting = false;
             }
 
-            if(netController.player.GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost || TowerUIManager.GetTowerChoice() == 0)
+            if(netController.player.GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost || TowerUIManager.towerChoice == TowerType.None)
             {
                 newTowerChoice = -1;
             }
@@ -69,7 +69,7 @@ public class PlayerInputController : MonoBehaviour
 
                     if (towerFeasible)
                     {
-                        newTowerChoice = TowerUIManager.GetTowerChoice();
+                        newTowerChoice = (int)TowerUIManager.towerChoice;
                     }
                     else
                     {
@@ -136,8 +136,10 @@ public class PlayerInputController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, maxInteractionRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
         {
+            Debug.Log($"CLICK raycast hit: {hit.collider.gameObject.name} tagged {hit.collider.tag}", hit.collider);
+
             float distanceToOrigin = (hit.transform.position - transform.position).magnitude;
-            if (hit.collider.gameObject.CompareTag(Constants.BALL_TAG) && distanceToOrigin < maxInteractionRange)
+            if (hit.collider.CompareTag(Constants.BALL_TAG) && distanceToOrigin < maxInteractionRange)
             {
                 float distFactor = 1 - distanceToOrigin / maxInteractionRange;
                 float hitStrength = Mathf.Lerp(minHitStrength, maxHitStrength, distFactor);
@@ -151,19 +153,29 @@ public class PlayerInputController : MonoBehaviour
                 netController.CmdHitBall(hit.collider.gameObject, force);
             }
 
-            if (hit.collider.gameObject.CompareTag(Constants.COLLECTABLE_TAG) && netController.player.ownedRectangle.Contains(hit.transform.position))
+            else if (hit.collider.CompareTag(Constants.COLLECTABLE_TAG) && netController.player.ownedRectangle.Contains(hit.transform.position))
             {
                 isInteracting = true;
                 netController.CmdStartCollect(hit.collider.gameObject);
             }
 
-            if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG) && towerChoice > 0)
+            else if (hit.collider.CompareTag(Constants.FLOOR_TAG) && towerChoice > 0)
             {
                 Vector3 tempPos = towerPreview.transform.position;
                 Quaternion tempAngle = towerPreview.transform.rotation;
                 isInteracting = true;
                 Destroy(towerPreview);
                 netController.CmdStartBuildTower((TowerType)towerChoice, tempPos, tempAngle);
+            }
+
+            else if(TowerUIManager.destroyMode)
+            {
+                GameObject tower = Util.GetGoInParentWithTag(hit.collider.gameObject, Constants.TOWER_TAG);
+                if (tower != null && netController.player.ownedRectangle.Contains(tower.transform.position))
+                {
+                    isInteracting = true;
+                    netController.CmdStartDestroyTower(tower);
+                }
             }
         }
     }
