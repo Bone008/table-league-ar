@@ -189,4 +189,16 @@ public class Player : NetworkBehaviour
             activeType = TowerType.None;
         }
     }
+
+    [Server]
+    public void UsePowerupFreeze()
+    {
+        if (!ConsumeFromInventory(CollectableType.PowerupFreeze, 1))
+            return;
+
+        foreach(Ball ball in GameManager.Instance.balls)
+        {
+            ball.Freeze(Constants.freezeBallDuration);
+        }
+    }
 }

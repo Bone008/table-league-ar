@@ -147,5 +147,11 @@ public class PlayerNetController : NetworkBehaviour
     {
         player.CancelInteraction();
     }
+    
+    [Command]
+    public void CmdUsePowerupFreeze()
+    {
+        player.UsePowerupFreeze();
+    }
 
 }

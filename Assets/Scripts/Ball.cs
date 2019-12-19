@@ -7,8 +7,11 @@ using UnityEngine;
 
 public class Ball : NetworkBehaviour
 {
+    public GameObject freezeEffect;
     private Rigidbody rbody;
-    
+
+    private Coroutine activeUnfreezeCoroutine = null;
+
     void Awake()
     {
         rbody = GetComponent<Rigidbody>();
@@ -46,6 +49,33 @@ public class Ball : NetworkBehaviour
         rbody.angularVelocity = Vector3.zero;
         transform.localRotation = Quaternion.identity;
         transform.position = targetPosition;
+    }
+
+    [Server]
+    public void Freeze(float duration)
+    {
+        // If the ball is unready frozen, cancel the old timer to unfreeze it.
+        if (activeUnfreezeCoroutine != null)
+            StopCoroutine(activeUnfreezeCoroutine);
+
+        rbody.velocity = Vector3.zero;
+        rbody.angularVelocity = Vector3.zero;
+        rbody.isKinematic = true;
+        RpcSetFrozen(true);
+        
+        activeUnfreezeCoroutine = this.Delayed(duration, () =>
+        {
+            rbody.isKinematic = false;
+            RpcSetFrozen(false);
+            activeUnfreezeCoroutine = null;
+        });
+    }
+
+    [ClientRpc]
+    private void RpcSetFrozen(bool value)
+    {
+        // TODO play more neat effects to activate/deactivate the freeze.
+        freezeEffect.SetActive(value);
     }
 
 }

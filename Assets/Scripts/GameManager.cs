@@ -19,11 +19,12 @@ public class GameManager : MonoBehaviour
     private bool assignedPlayer2 = false;
     private bool hasStarted = false;
     private bool isPaused = false;
+
+    public List<Ball> balls { get; } = new List<Ball>();
+    private GameObject botPlayer = null;
+
     /// <summary>True if the game has started and is NOT paused.</summary>
     public bool isRunning => hasStarted && !isPaused;
-
-    private List<Ball> balls = new List<Ball>();
-    private GameObject botPlayer = null;
 
     void Awake() { Instance = this; }
 

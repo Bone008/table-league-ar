@@ -101,7 +101,6 @@ public class GameUIManager : MonoBehaviour
 
     public void UsePowerupFreeze()
     {
-        // TODO implement
-        Debug.LogWarning("Powerup freeze not implemented yet", this);
+        PlayerNetController.LocalInstance?.CmdUsePowerupFreeze();
     }
 }
