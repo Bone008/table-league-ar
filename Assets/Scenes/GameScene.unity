@@ -298,7 +298,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   interactionLine: {fileID: 1477764088}
-  towerDestroyEffectPrefab: {fileID: 0}
+  towerDestroyEffectPrefab: {fileID: 497476774018426179, guid: 81de296d10852304a9337c40ba89d0f5,
+    type: 3}
 --- !u!114 &36946396
 MonoBehaviour:
   m_ObjectHideFlags: 0

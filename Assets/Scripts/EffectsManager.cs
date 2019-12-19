@@ -46,12 +46,8 @@ public class EffectsManager : NetworkBehaviour
     {
         float finalStageTime = TowerManager.Instance.destroyEffectOnlyTime * 0.33f;
 
-        var effect = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        var effect = Instantiate(towerDestroyEffectPrefab, tower.transform);
         effect.name = "__destroy_effect__";
-        effect.GetComponent<Renderer>().material.color = Color.black;
-        Destroy(effect.GetComponent<Collider>());
-        effect.transform.SetParent(tower.transform, false);
-        effect.transform.localScale = new Vector3(0.32f, 0.22f, 0.32f);
         this.AnimateVector(duration - finalStageTime, -0.24f * Vector3.up, Vector3.zero, Util.EaseInOut01, v =>
         {
             if(effect) effect.transform.localPosition = v;
