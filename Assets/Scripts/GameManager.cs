@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     /// <summary>WARNING: Can NOT be accessed by client!</summary>
     public static GameManager Instance { get; private set; }
 
+    public TimeController timeController;
     public GameObject ballPrefab;
     public GameObject botPlayerPrefab;
     public Player player1;
@@ -36,11 +37,13 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1;
             isPaused = false;
+            timeController.OnGamePause(false);
         }
         else if (isRunning && (!player1.isUserReady || !player2.isUserReady))
         {
             Time.timeScale = 0;
             isPaused = true;
+            timeController.OnGamePause(true);
         }
     }
 
@@ -106,6 +109,8 @@ public class GameManager : MonoBehaviour
             balls.Add(ballObject.GetComponent<Ball>());
         }
         ResetAllBalls();
+
+        timeController.OnGameStart();
     }
 
     // Note: Probably redundant as the scene is destroyed anyway when the game stops.

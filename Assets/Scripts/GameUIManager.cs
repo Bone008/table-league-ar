@@ -16,7 +16,9 @@ public class GameUIManager : MonoBehaviour
     public Material floorEnabledMaterial;
     public Material floorDisabledMaterial;
 
+    public TimeController timeController;
     public GameObject getReadyPanel;
+    public Text gameTimeText;
     public Text score1Text;
     public Text score2Text;
     public Text resourceText;
@@ -57,6 +59,7 @@ public class GameUIManager : MonoBehaviour
     }
     void Update()
     {
+        gameTimeText.text = timeController.GetFormattedTimeRemaining();
         score1Text.text = player1.score.ToString();
         score2Text.text = player2.score.ToString();
         if (localPlayer != null)
