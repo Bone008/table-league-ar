@@ -9,4 +9,5 @@ public static class ServerSettings
     public static bool isMultiplayer = false;
     public static int numberOfBalls = 2;
     public static int winningPoints = 5;
+    public static float gameDurationSeconds = 300f;
 }

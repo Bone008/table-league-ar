@@ -7,7 +7,9 @@ public static class Constants
     public const string FLOOR_TAG = "Floor";
     public const string COLLECTABLE_TAG = "Collectable";
     public const string GOAL_TAG = "Goal";
+
     public const int towerCost = 20;
     public const float towerDistance = 0.4f;
+    public const float freezeBallDuration = 5f;
 
 }
