@@ -16,7 +16,9 @@ public class CaptureTower : TowerBase
     [Tooltip("max degrees/second to spin head while actively targeting some direction")]
     public float activeSpinSpeed;
     
+    [SyncVar]
     private GameObject targetBall = null;
+
     private Rigidbody targetBallRb = null;
     private bool isHoldingBall = false;
     private bool isCapturingBall = false;
@@ -38,7 +40,18 @@ public class CaptureTower : TowerBase
     [Client]
     private void UpdateClient()
     {
-
+        if(targetBall == null && aimLine1.enabled)
+        {
+            aimLine1.enabled = false;
+            aimLine2.enabled = false;
+        }
+        else if(targetBall != null)
+        {
+            aimLine1.enabled = true;
+            aimLine2.enabled = true;
+            aimLine1.SetPosition(1, aimLine1.transform.InverseTransformPoint(targetBall.transform.position));
+            aimLine2.SetPosition(1, aimLine2.transform.InverseTransformPoint(targetBall.transform.position));
+        }
     }
 
     [Server]
@@ -87,10 +100,6 @@ public class CaptureTower : TowerBase
             Vector3 lookAngles = Quaternion.LookRotation(lookDirection).eulerAngles;
             head.RotateTowards(Quaternion.Euler(0, lookAngles.y, 0), activeSpinSpeed * Time.deltaTime);
             verticalAim.RotateTowardsLocal(Quaternion.Euler(lookAngles.x, 0, 0), activeSpinSpeed * Time.deltaTime);
-            aimLine1.SetPosition(1, aimLine1.transform.InverseTransformPoint(targetBall.transform.position));
-            aimLine2.SetPosition(1, aimLine2.transform.InverseTransformPoint(targetBall.transform.position));
-            aimLine1.enabled = true;
-            aimLine2.enabled = true;
         }
     }
 
@@ -139,9 +148,6 @@ public class CaptureTower : TowerBase
         {
             targetBall.transform.position = Vector3.Lerp(startPos, head.position, t);
             verticalAim.localRotation = Quaternion.Slerp(aimStartRot, Quaternion.identity, t);
-
-            aimLine1.SetPosition(1, aimLine1.transform.InverseTransformPoint(targetBall.transform.position));
-            aimLine2.SetPosition(1, aimLine2.transform.InverseTransformPoint(targetBall.transform.position));
         });
 
         isCapturingBall = false;
@@ -156,8 +162,6 @@ public class CaptureTower : TowerBase
     {
         Debug.Log("CT Target is releasing");
         targetBallRb.useGravity = true;
-        aimLine1.enabled = false;
-        aimLine2.enabled = false;
         targetBall = null;
         targetBallRb = null;
         isHoldingBall = false;

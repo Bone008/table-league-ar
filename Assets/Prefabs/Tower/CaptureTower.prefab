@@ -505,8 +505,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverOnly: 0
-  m_AssetId: 30cb00171fba4e74fb6decd9e4bfe141
-  m_SceneId: 0
+  m_AssetId: 
+  m_SceneId: 2622322789
 --- !u!114 &1924760452351503203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,7 +529,7 @@ MonoBehaviour:
   targetLockDuration: 0.66
   captureEffectDuration: 0.3
   idleSpinSpeed: 90
-  activeSpinSpeed: 200
+  activeSpinSpeed: 400
 --- !u!114 &2731026046151591320
 MonoBehaviour:
   m_ObjectHideFlags: 0
