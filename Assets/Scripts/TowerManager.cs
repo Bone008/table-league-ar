@@ -8,7 +8,8 @@ public enum TowerType
     None,
     Magnetic,
     MagneticPush,
-    Barrier
+    Barrier,
+    Capture
 }
 
 public class TowerManager : MonoBehaviour

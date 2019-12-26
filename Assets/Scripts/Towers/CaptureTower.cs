@@ -25,10 +25,14 @@ public class CaptureTower : TowerBase
     private float currentLockTime = 0;
 
     [ServerCallback]
-    void Start()
+    void OnDestroy()
     {
-        aimLine1.enabled = false;
-        aimLine2.enabled = false;
+        if(targetBallRb != null)
+        {
+            // Make sure to reset permanent effects on the captured ball.
+            targetBallRb.isKinematic = false;
+            targetBallRb.useGravity = true;
+        }
     }
     
     void LateUpdate()

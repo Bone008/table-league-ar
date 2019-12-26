@@ -48,7 +48,7 @@ public class EffectsManager : NetworkBehaviour
 
         var effect = Instantiate(towerDestroyEffectPrefab, tower.transform);
         effect.name = "__destroy_effect__";
-        this.AnimateVector(duration - finalStageTime, -0.24f * Vector3.up, Vector3.zero, Util.EaseInOut01, v =>
+        this.AnimateVector(duration - finalStageTime, -0.32f * Vector3.up, Vector3.zero, Util.EaseInOut01, v =>
         {
             if(effect) effect.transform.localPosition = v;
         });

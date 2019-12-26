@@ -33,6 +33,11 @@ public class TowerUIManager : MonoBehaviour
         ToggleTowerChoice(TowerType.Barrier);
     }
 
+    public void CaptureTower()
+    {
+        ToggleTowerChoice(TowerType.Capture);
+    }
+
     private void ToggleTowerChoice(TowerType newType)
     {
         if (towerChoice == newType)
