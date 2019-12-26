@@ -31,7 +31,7 @@ public class GameUIManager : MonoBehaviour
 #if UNITY_EDITOR
     void Awake()
     {
-        if (!NetworkManager.singleton)
+        if (!NetworkManager.singleton && SceneManager.GetActiveScene().name == "GameScene")
         {
             Debug.LogWarning("[Workaround] Pulling in the NetworkManager from the Menu scene and starting in Singleplayer mode. "
                 + "There may be side effects to this, it is recommended to start the game from the Menu scene!");
