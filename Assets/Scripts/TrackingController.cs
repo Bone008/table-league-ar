@@ -43,6 +43,14 @@ public class TrackingController : MonoBehaviour
             Camera.main.transform.Find("BackgroundPlane").gameObject.layer = LayerMask.NameToLayer("BackgroundPlane");
         });
 
+        bool focusSuccess = CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
+        Debug.Log("Focus mode continuous auto supported: " + focusSuccess);
+        if(!focusSuccess)
+        {
+            focusSuccess = CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_NORMAL);
+            Debug.Log("Focus mode fallback default success: " + focusSuccess);
+        }
+
         // Through the editor, we can only set VuMarkWorldCenter,
         // which behaves incorrectly when a VuMark is cloned.
         // We need to keep track of which VuMarkBehavior is the main
