@@ -19,6 +19,16 @@ public class Ball : NetworkBehaviour
         rbody.maxAngularVelocity = 100;
     }
 
+    [ServerCallback]
+    void FixedUpdate()
+    {
+        if (transform.position.y < -100)
+        {
+            Debug.LogWarning("A ball left the play area and had to be reset.");
+            Reset(new Vector3(0, 0.2f, 0.02f));
+        }
+    }
+
     public override void OnStartClient()
     {
         if (!isClientOnly)
