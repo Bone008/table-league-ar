@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
 
         botPlayer = Instantiate(botPlayerPrefab, player.transform);
         botPlayer.GetComponent<BotInputController>().player = player;
+        player.controllerTransform = botPlayer.transform;
         NetworkServer.Spawn(botPlayer);
     }
 

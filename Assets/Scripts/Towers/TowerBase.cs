@@ -9,4 +9,5 @@ using UnityEngine;
 /// </summary>
 public abstract class TowerBase : NetworkBehaviour
 {
+    public Player owner;
 }

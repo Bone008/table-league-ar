@@ -156,6 +156,17 @@ public static class Util
         return null;
     }
 
+    /// <summary>Like Quaterion.RotateTowards(), but applied directly to the transforms world rotation.</summary>
+    public static void RotateTowards(this Transform transform, Quaternion to, float maxDegreesDelta)
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, to, maxDegreesDelta);
+    }
+    /// <summary>Like Quaterion.RotateTowards(), but applied directly to the transforms local rotation.</summary>
+    public static void RotateTowardsLocal(this Transform transform, Quaternion to, float maxDegreesDelta)
+    {
+        transform.localRotation = Quaternion.RotateTowards(transform.localRotation, to, maxDegreesDelta);
+    }
+
     /// <summary>Returns a random element picked from a list.</summary>
     public static T PickRandomElement<T>(IList<T> list)
     {

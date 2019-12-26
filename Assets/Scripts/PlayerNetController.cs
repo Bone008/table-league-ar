@@ -111,6 +111,7 @@ public class PlayerNetController : NetworkBehaviour
                 return;
             }
             playerId = player.playerId;
+            player.controllerTransform = transform;
             transform.SetParent(player.transform, false);
         }
         

@@ -21,6 +21,8 @@ public class Player : NetworkBehaviour
     public SceneRectangle ownedRectangle;
 
     public string playerName => "Player " + playerId;
+    /// <summary>Transform of the GameObject that controls this player (the player's camera or the bot). Can be null!</summary>
+    public Transform controllerTransform { get; set; }
 
     /// <summary>Indicates if the player has tracking and has indicated that they are (still) ready to play.</summary>
     [SyncVar]
@@ -87,6 +89,7 @@ public class Player : NetworkBehaviour
             if (ConsumeFromInventory(CollectableType.TowerResource, Constants.towerCost))
             {
                 var newTower = Instantiate(TowerManager.Instance.getTower(activeType), activeBuildTower.transform.position, activeBuildTower.transform.rotation);
+                newTower.GetComponent<TowerBase>().owner = this;
                 NetworkServer.Spawn(newTower);
             }
             else { Debug.LogWarning("Not enough resources to finish building tower!"); }

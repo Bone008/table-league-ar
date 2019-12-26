@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider))]
 public class CaptureTower : TowerBase
 {
     public Transform head;
@@ -12,37 +11,62 @@ public class CaptureTower : TowerBase
     public LineRenderer aimLine2;
     public float targetLockDuration;
     public float captureEffectDuration;
-
-    private float maxRadius;
+    [Tooltip("degrees/second to spin head while idling")]
+    public float idleSpinSpeed;
+    [Tooltip("max degrees/second to spin head while actively targeting some direction")]
+    public float activeSpinSpeed;
+    
     private GameObject targetBall = null;
     private Rigidbody targetBallRb = null;
     private bool isHoldingBall = false;
+    private bool isCapturingBall = false;
     private float currentLockTime = 0;
 
     [ServerCallback]
     void Start()
     {
-        maxRadius = transform.lossyScale.x * GetComponent<CapsuleCollider>().radius;
         aimLine1.enabled = false;
         aimLine2.enabled = false;
     }
+    
+    void LateUpdate()
+    {
+        if (NetworkServer.active) UpdateServer();
+        if (NetworkClient.active) UpdateClient();
+    }
 
-    [ServerCallback]
-    void FixedUpdate()
+    [Client]
+    private void UpdateClient()
+    {
+
+    }
+
+    [Server]
+    private void UpdateServer()
     {
         if (targetBall == null)
         {
             // Idle spin.
-            head.Rotate(0, 90 * Time.fixedDeltaTime, 0, Space.World);
-            verticalAim.localRotation = Quaternion.RotateTowards(verticalAim.localRotation, Quaternion.identity, 15 * Time.fixedDeltaTime);
+            head.Rotate(0, idleSpinSpeed * Time.deltaTime, 0, Space.World);
+            verticalAim.localRotation = Quaternion.RotateTowards(verticalAim.localRotation, Quaternion.identity, 15 * Time.deltaTime);
         }
-        else if (isHoldingBall && targetBallRb.velocity.sqrMagnitude > 0.01f * 0.01f)
+        else if (isHoldingBall)
         {
-            Debug.Log("CT Detected hit, releasing!");
-            ReleaseBall();
+            if (targetBallRb.velocity.sqrMagnitude > 0.01f * 0.01f)
+            {
+                Debug.Log("CT Detected hit, releasing!");
+                ReleaseBall();
+            }
+            else if(!isCapturingBall && owner.controllerTransform != null)
+            {
+                // Face same way as owner is aiming.
+                head.RotateTowards(Quaternion.Euler(0, owner.controllerTransform.eulerAngles.y, 0), activeSpinSpeed * Time.deltaTime);
+            }
         }
-        else if (!isHoldingBall)
+        else
         {
+            Debug.Assert(!isHoldingBall);
+
             // Check if target left valid area.
             if (!IsWithinTargetArea(targetBall.transform.position))
             {
@@ -51,7 +75,7 @@ public class CaptureTower : TowerBase
             }
 
             // Check if ready to capture locked on target.
-            currentLockTime += Time.fixedDeltaTime;
+            currentLockTime += Time.deltaTime;
             if (currentLockTime >= targetLockDuration)
             {
                 StartCoroutine(CaptureBall());
@@ -61,8 +85,8 @@ public class CaptureTower : TowerBase
             // Visually look at ball.
             Vector3 lookDirection = targetBall.transform.position - head.position;
             Vector3 lookAngles = Quaternion.LookRotation(lookDirection).eulerAngles;
-            head.rotation = Quaternion.Euler(0, lookAngles.y, 0);
-            verticalAim.localRotation = Quaternion.Euler(lookAngles.x, 0, 0);
+            head.RotateTowards(Quaternion.Euler(0, lookAngles.y, 0), activeSpinSpeed * Time.deltaTime);
+            verticalAim.RotateTowardsLocal(Quaternion.Euler(lookAngles.x, 0, 0), activeSpinSpeed * Time.deltaTime);
             aimLine1.SetPosition(1, aimLine1.transform.InverseTransformPoint(targetBall.transform.position));
             aimLine2.SetPosition(1, aimLine2.transform.InverseTransformPoint(targetBall.transform.position));
             aimLine1.enabled = true;
@@ -106,6 +130,7 @@ public class CaptureTower : TowerBase
     {
         Debug.Log("CT Starting to capture ball!");
         isHoldingBall = true;
+        isCapturingBall = true;
         targetBallRb.isKinematic = true;
 
         Vector3 startPos = targetBall.transform.position;
@@ -118,7 +143,8 @@ public class CaptureTower : TowerBase
             aimLine1.SetPosition(1, aimLine1.transform.InverseTransformPoint(targetBall.transform.position));
             aimLine2.SetPosition(1, aimLine2.transform.InverseTransformPoint(targetBall.transform.position));
         });
-        
+
+        isCapturingBall = false;
         targetBallRb.isKinematic = false;
         targetBallRb.velocity = Vector3.zero;
         targetBallRb.angularVelocity = Vector3.zero;

@@ -249,7 +249,7 @@ BoxCollider:
   m_GameObject: {fileID: 2842387462720658484}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -528,6 +528,8 @@ MonoBehaviour:
   aimLine2: {fileID: 3578354834287324661}
   targetLockDuration: 0.66
   captureEffectDuration: 0.3
+  idleSpinSpeed: 90
+  activeSpinSpeed: 200
 --- !u!114 &2731026046151591320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,7 +650,7 @@ BoxCollider:
   m_GameObject: {fileID: 4407273514767262440}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -740,7 +742,7 @@ BoxCollider:
   m_GameObject: {fileID: 4523607459326662830}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -959,7 +961,7 @@ BoxCollider:
   m_GameObject: {fileID: 6049949536702925904}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1051,7 +1053,7 @@ BoxCollider:
   m_GameObject: {fileID: 7373924216435440306}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
