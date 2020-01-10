@@ -23,7 +23,7 @@ public class GameUIManager : MonoBehaviour
     public Text score2Text;
     public Text resourceText;
     public Button freezeButton;
-    public Text freezeAmountText;
+    public TMPro.TextMeshProUGUI freezeAmountText;
 
     public GameObject[] serverOnlyObjects = new GameObject[0];
 
@@ -60,10 +60,10 @@ public class GameUIManager : MonoBehaviour
     void Update()
     {
         gameTimeText.text = timeController.GetFormattedTimeRemaining();
-        score1Text.text = player1.score.ToString();
-        score2Text.text = player2.score.ToString();
         if (localPlayer != null)
         {
+            score1Text.text = localPlayer.score.ToString();
+            score2Text.text = (localPlayer == player1 ? player2 : player1).score.ToString();
             resourceText.text = localPlayer.GetInventoryCount(CollectableType.TowerResource).ToString();
 
             int freezeNum = localPlayer.GetInventoryCount(CollectableType.PowerupFreeze);

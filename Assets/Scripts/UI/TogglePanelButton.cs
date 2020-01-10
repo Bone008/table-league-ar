@@ -45,8 +45,14 @@ public class TogglePanelButton : MonoBehaviour
         if (transitionCoroutine != null)
             StopCoroutine(transitionCoroutine);
 
+        // Animate panel.
         toggleTarget.gameObject.SetActive(true);
-        transitionCoroutine = this.AnimateScalar(openDuration, toggleTarget.localScale.x, targetState ? 1 : 0, Util.EaseOut01, value =>
+        float startScale = toggleTarget.localScale.x;
+        float targetScale = targetState ? 1 : 0;
+        if (targetScale == 1 && startScale == 1)
+            startScale = 0;
+
+        transitionCoroutine = this.AnimateScalar(openDuration, startScale, targetScale, Util.EaseOut01, value =>
         {
             toggleTarget.localScale = value * Vector3.one;
             if(!targetState && value == 0.0f) toggleTarget.gameObject.SetActive(false);

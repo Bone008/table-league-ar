@@ -14,7 +14,6 @@ public class TrackingController : MonoBehaviour
     public LayerMask inactiveCullingMask;
     public GameObject onlyWithTrackingTarget;
     public GameObject onlyWithoutTrackingTarget;
-    public Transform scaleTarget;
     public Text debug;
 
     private int initialCullingMask;
@@ -118,12 +117,6 @@ public class TrackingController : MonoBehaviour
         {
             PlayerNetController.LocalInstance.CmdSetHasTracking(hasTracking);
         }
-    }
-
-    public void SetScale(float scaleExponent)
-    {
-        float s = Mathf.Pow(10, scaleExponent);
-        scaleTarget.localScale = s * Vector3.one;
     }
 
     public void ResetTrackers()
