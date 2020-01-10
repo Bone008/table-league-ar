@@ -10,7 +10,7 @@ public class TowerUIManager : MonoBehaviour
     
     [Tooltip("the order should follow the TowerType enum, but first entry (None) represents the destroy button")]
     public Button[] towerButtons;
-    
+
     public void DestroyTower()
     {
         destroyMode = !destroyMode;
