@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -6014,7 +6014,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playMenu: {fileID: 788601422}
   multiPlayer: {fileID: 105377591}
-  defaultBalls: {fileID: 788937485}
+  defaultBalls: {fileID: 1803117362}
   defaultPoints: {fileID: 154193208}
   statusText: {fileID: 315824193}
   remoteAddressInput: {fileID: 745587937}
@@ -8488,13 +8488,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2033370417}
-    characterCount: 13
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
