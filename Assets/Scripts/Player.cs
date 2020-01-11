@@ -38,6 +38,13 @@ public class Player : NetworkBehaviour
     private GameObject activeDestroyingTower = null;
     private TowerType activeType = TowerType.None;
 
+    /// <summary>C# event to listen for inventory updates.</summary>
+    public event SyncDictionaryCollectableInt.SyncDictionaryChanged InventoryChange
+    {
+        add { inventory.Callback += value; }
+        remove { inventory.Callback -= value; }
+    }
+
     /// <summary>Returns how many items of the given type the player has in their inventory.</summary>
     public int GetInventoryCount(CollectableType type)
     {
@@ -82,7 +89,7 @@ public class Player : NetworkBehaviour
         }
 
         // Finish building tower.
-        if(activeType != TowerType.None && Time.time > timerStart + TowerManager.Instance.buildTime)
+        if (activeType != TowerType.None && Time.time > timerStart + TowerManager.Instance.buildTime)
         {
             EffectsManager.Instance.RpcHideInteraction();
 
@@ -101,7 +108,7 @@ public class Player : NetworkBehaviour
 
         // Finish destroying tower.
         float destroyGraceTime = TowerManager.Instance.destroyEffectOnlyTime;
-        if(activeDestroyingTower != null && Time.time > timerStart + TowerManager.Instance.destroyTime - destroyGraceTime)
+        if (activeDestroyingTower != null && Time.time > timerStart + TowerManager.Instance.destroyTime - destroyGraceTime)
         {
             GameObject tower = activeDestroyingTower;
             activeDestroyingTower = null;
@@ -160,7 +167,7 @@ public class Player : NetworkBehaviour
             Debug.LogWarning("Not enough resources to build a tower!", this);
             return;
         }
-        if(!ownedRectangle.Contains(position))
+        if (!ownedRectangle.Contains(position))
         {
             Debug.LogWarning("Player tried to build outside of owned rectangle!");
             return;
@@ -198,12 +205,12 @@ public class Player : NetworkBehaviour
     private void RpcPlayBuildEffect(GameObject towerPreview)
     {
         var particles = towerPreview.GetComponentsInChildren<ParticleSystem>();
-        if(particles == null)
+        if (particles == null)
         {
             Debug.LogWarning("Could not find particles to play build effect on preview!", towerPreview);
             return;
         }
-        foreach(var p in particles)
+        foreach (var p in particles)
         {
             p.Play();
         }
@@ -213,20 +220,20 @@ public class Player : NetworkBehaviour
     public void CancelInteraction()
     {
         EffectsManager.Instance.RpcHideInteraction();
-        if(activeCollectable)
+        if (activeCollectable)
         {
             activeCollectable.StopCollecting();
             activeCollectable = null;
         }
 
-        if(activeType != TowerType.None)
+        if (activeType != TowerType.None)
         {
             NetworkServer.Destroy(activeBuildTower);
             activeBuildTower = null;
             activeType = TowerType.None;
         }
 
-        if(activeDestroyingTower != null)
+        if (activeDestroyingTower != null)
         {
             EffectsManager.Instance.RpcStopTowerDestroyEffect(activeDestroyingTower);
             activeDestroyingTower = null;
@@ -239,7 +246,7 @@ public class Player : NetworkBehaviour
         if (!ConsumeFromInventory(CollectableType.PowerupFreeze, 1))
             return;
 
-        foreach(Ball ball in GameManager.Instance.balls)
+        foreach (Ball ball in GameManager.Instance.balls)
         {
             ball.Freeze(Constants.freezeBallDuration);
         }

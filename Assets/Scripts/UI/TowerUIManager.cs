@@ -11,6 +11,28 @@ public class TowerUIManager : MonoBehaviour
     [Tooltip("the order should follow the TowerType enum, but first entry (None) represents the destroy button")]
     public Button[] towerButtons;
 
+    private bool hasRegisteredPlayer;
+
+    void Start()
+    {
+        UpdateButtons();
+    }
+
+    void Update()
+    {
+        // Listen to inventory changes as soon as we have a player.
+        if(!hasRegisteredPlayer && PlayerNetController.LocalInstance?.player != null)
+        {
+            hasRegisteredPlayer = true;
+            PlayerNetController.LocalInstance.player.InventoryChange += (_, __, ___) =>
+            {
+                //Debug.Log("towerui change: " + _ + ";" + __ + ";" + ___);
+                // Due to a bug in SyncDictionary, during the callback the change may not be applied yet.
+                Invoke(nameof(UpdateButtons), 0);
+            };
+        }
+    }
+
     public void DestroyTower()
     {
         destroyMode = !destroyMode;
@@ -54,9 +76,15 @@ public class TowerUIManager : MonoBehaviour
 
     private void UpdateButtons()
     {
+        int resources = PlayerNetController.LocalInstance?.player?.GetInventoryCount(CollectableType.TowerResource) ?? 0;
+        bool canBuild = resources >= Constants.towerCost;
+
+        if (!canBuild) towerChoice = TowerType.None;
+
         towerButtons[0].image.color = (destroyMode ? Color.red : Color.white);
         for (int i = 1; i < towerButtons.Length; i++)
         {
+            towerButtons[i].interactable = canBuild;
             towerButtons[i].image.color = (i == (int)towerChoice ? Color.red : Color.white);
         }
     }
