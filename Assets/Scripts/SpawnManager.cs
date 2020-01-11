@@ -8,7 +8,8 @@ public enum CollectableType
 {
     None,
     TowerResource,
-    PowerupFreeze
+    PowerupFreeze,
+    PowerupJamTowers
 }
 
 /// <summary>

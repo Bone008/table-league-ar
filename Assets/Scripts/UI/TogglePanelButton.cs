@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 /// <summary>Script for a button that toggles the visibility of some panel.</summary>
@@ -10,6 +11,8 @@ public class TogglePanelButton : MonoBehaviour
 {
     public Transform toggleTarget;
     public float openDuration;
+    public UnityEvent onOpenPanel = new UnityEvent();
+    public UnityEvent onClosePanel = new UnityEvent();
 
     private Button button;
     private Sprite buttonBaseSprite;
@@ -22,11 +25,7 @@ public class TogglePanelButton : MonoBehaviour
         buttonBaseSprite = button.image.sprite;
         targetState = toggleTarget.gameObject.activeSelf;
 
-        button.onClick.AddListener(() =>
-        {
-            targetState = !targetState;
-            OnChange();
-        });
+        button.onClick.AddListener(() => SetPanelOpen(!targetState));
     }
 
     public void SetPanelOpen(bool value)
@@ -35,6 +34,9 @@ public class TogglePanelButton : MonoBehaviour
             return;
         targetState = value;
         OnChange();
+
+        if (targetState) onOpenPanel.Invoke();
+        else onClosePanel.Invoke();
     }
 
     private void OnChange()

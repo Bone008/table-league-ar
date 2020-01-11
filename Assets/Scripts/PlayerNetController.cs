@@ -160,10 +160,16 @@ public class PlayerNetController : NetworkBehaviour
     {
         player.CancelInteraction();
     }
-    
+
     [Command]
     public void CmdUsePowerupFreeze()
     {
         player.UsePowerupFreeze();
+    }
+
+    [Command]
+    public void CmdUsePowerupJamTowers()
+    {
+        player.UsePowerupJamTowers();
     }
 }

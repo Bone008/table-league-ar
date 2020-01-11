@@ -18,7 +18,8 @@ public abstract class TowerBase : NetworkBehaviour
 
     private float remainingJammedTime = 0;
 
-    void Update()
+    [ServerCallback]
+    protected virtual void Update()
     {
         if(isJammed)
         {

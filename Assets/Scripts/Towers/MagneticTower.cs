@@ -22,8 +22,10 @@ public class MagneticTower : TowerBase
     }
 
     [ServerCallback]
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         // Recharge energy if the tower hasn't triggered for a while.
         if (Time.time - lastActivation >= rechargeDelay)
         {

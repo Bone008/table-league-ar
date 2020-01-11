@@ -24,6 +24,8 @@ public class GameUIManager : MonoBehaviour
     public Text resourceText;
     public Button freezeButton;
     public TMPro.TextMeshProUGUI freezeAmountText;
+    public Button jamButton;
+    public TMPro.TextMeshProUGUI jamAmountText;
 
     public GameObject[] serverOnlyObjects = new GameObject[0];
 
@@ -69,6 +71,9 @@ public class GameUIManager : MonoBehaviour
             int freezeNum = localPlayer.GetInventoryCount(CollectableType.PowerupFreeze);
             freezeAmountText.text = freezeNum.ToString();
             freezeButton.interactable = freezeNum > 0;
+            int jamNum = localPlayer.GetInventoryCount(CollectableType.PowerupJamTowers);
+            jamAmountText.text = jamNum.ToString();
+            jamButton.interactable = jamNum > 0;
         }
     }
 
@@ -105,5 +110,10 @@ public class GameUIManager : MonoBehaviour
     public void UsePowerupFreeze()
     {
         PlayerNetController.LocalInstance?.CmdUsePowerupFreeze();
+    }
+
+    public void UsePowerupJamTowers()
+    {
+        PlayerNetController.LocalInstance?.CmdUsePowerupJamTowers();
     }
 }

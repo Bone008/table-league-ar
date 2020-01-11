@@ -254,11 +254,14 @@ public class Player : NetworkBehaviour
 
     [Server]
     public void UsePowerupJamTowers()
-    { 
-        foreach(var towerGo in GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG))
+    {
+        if (!ConsumeFromInventory(CollectableType.PowerupJamTowers, 1))
+            return;
+
+        foreach (var towerGo in GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG))
         {
             var tower = towerGo.GetComponent<TowerBase>();
-            if (tower.owner != this || true)
+            if (tower.owner != this || GameManager.Instance.allowCheats) // jam all towers with cheats for testing vs bot
             {
                 tower.JamForDuration(Constants.towerJamDuration);
                 EffectsManager.Instance.RpcPlayInterferenceEffect(towerGo, Constants.towerJamDuration);

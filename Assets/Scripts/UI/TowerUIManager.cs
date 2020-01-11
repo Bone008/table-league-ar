@@ -68,6 +68,13 @@ public class TowerUIManager : MonoBehaviour
         ToggleTowerChoice(TowerType.Capture);
     }
 
+    public void DeselectAll()
+    {
+        towerChoice = TowerType.None;
+        destroyMode = false;
+        UpdateButtons();
+    }
+
     private void ToggleTowerChoice(TowerType newType)
     {
         if (towerChoice == newType)
