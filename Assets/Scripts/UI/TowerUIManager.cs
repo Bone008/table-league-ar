@@ -10,11 +10,18 @@ public class TowerUIManager : MonoBehaviour
     
     [Tooltip("the order should follow the TowerType enum, but first entry (None) represents the destroy button")]
     public Button[] towerButtons;
+    public Sprite selectedSpriteBuild;
+    public Sprite selectedSpriteDestroy;
+
+    private Sprite defaultSpriteBuild;
+    private Sprite defaultSpriteDestroy;
 
     private bool hasRegisteredPlayer;
 
     void Start()
     {
+        defaultSpriteBuild = towerButtons[1].image.sprite; // first tower button's default sprite
+        defaultSpriteDestroy = towerButtons[0].image.sprite; // destroy tower button's default sprite
         UpdateButtons();
     }
 
@@ -82,11 +89,11 @@ public class TowerUIManager : MonoBehaviour
 
         if (!canBuild) towerChoice = TowerType.None;
 
-        towerButtons[0].image.color = (destroyMode ? Color.red : Color.white);
+        towerButtons[0].image.sprite = (destroyMode ? selectedSpriteDestroy : defaultSpriteDestroy);
         for (int i = 1; i < towerButtons.Length; i++)
         {
             towerButtons[i].interactable = canBuild;
-            towerButtons[i].image.color = (i == (int)towerChoice ? Color.red : Color.white);
+            towerButtons[i].image.sprite = (i == (int)towerChoice ? selectedSpriteBuild : defaultSpriteBuild);
         }
     }
     
