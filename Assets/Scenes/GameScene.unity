@@ -3418,11 +3418,14 @@ MonoBehaviour:
   - type: 1
     prefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
       type: 3}
-  - type: 2
-    prefab: {fileID: 5828997359253125535, guid: ade64e0729ea83645bace9c5a461ff1f,
+  - type: 1
+    prefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
       type: 3}
   - type: 3
     prefab: {fileID: 5828997359253125535, guid: 28a12bc09dd7ea346ad2a1ad4505fb8b,
+      type: 3}
+  - type: 2
+    prefab: {fileID: 5828997359253125535, guid: ade64e0729ea83645bace9c5a461ff1f,
       type: 3}
 --- !u!114 &768383735
 MonoBehaviour:
