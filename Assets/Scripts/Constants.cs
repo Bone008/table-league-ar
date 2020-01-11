@@ -9,7 +9,7 @@ public static class Constants
     public const string GOAL_TAG = "Goal";
 
     public const int towerCost = 20;
-    public const float towerDistance = 0.4f;
+    public const float towerDistance = 0.35f;
     public const float freezeBallDuration = 5f;
 
 }

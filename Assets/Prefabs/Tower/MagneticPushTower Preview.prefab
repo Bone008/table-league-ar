@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 218653504918809432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.011, z: 0.3}
+  m_LocalScale: {x: 0.24, y: 0.011, z: 0.24}
   m_Children: []
   m_Father: {fileID: 6662438510191187991}
   m_RootOrder: 1
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverOnly: 0
-  m_AssetId: 
+  m_AssetId: 89bf2b2810f259c4893552d7a39349e5
   m_SceneId: 0
 --- !u!1001 &5391538732465205475
 PrefabInstance:

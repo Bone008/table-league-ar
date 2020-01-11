@@ -24,6 +24,7 @@ public class TowerUIManager : MonoBehaviour
         if(!hasRegisteredPlayer && PlayerNetController.LocalInstance?.player != null)
         {
             hasRegisteredPlayer = true;
+            UpdateButtons();
             PlayerNetController.LocalInstance.player.InventoryChange += (_, __, ___) =>
             {
                 //Debug.Log("towerui change: " + _ + ";" + __ + ";" + ___);
