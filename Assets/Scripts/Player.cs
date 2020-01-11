@@ -251,4 +251,18 @@ public class Player : NetworkBehaviour
             ball.Freeze(Constants.freezeBallDuration);
         }
     }
+
+    [Server]
+    public void UsePowerupJamTowers()
+    { 
+        foreach(var towerGo in GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG))
+        {
+            var tower = towerGo.GetComponent<TowerBase>();
+            if (tower.owner != this || true)
+            {
+                tower.JamForDuration(Constants.towerJamDuration);
+                EffectsManager.Instance.RpcPlayInterferenceEffect(towerGo, Constants.towerJamDuration);
+            }
+        }
+    }
 }

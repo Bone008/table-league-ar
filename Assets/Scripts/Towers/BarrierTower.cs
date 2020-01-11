@@ -35,6 +35,16 @@ public class BarrierTower : TowerBase
         }
     }
 
+    [Server]
+    protected override void OnJammedStart()
+    {
+        if (isReady || hitRegionCollider.enabled)
+        {
+            StartCoroutine(KnockOver());
+            RpcAlsoKnockOverOnClient();
+        }
+    }
+
     [ClientRpc]
     private void RpcAlsoKnockOverOnClient()
     {
@@ -57,6 +67,13 @@ public class BarrierTower : TowerBase
         yield return this.AnimateVector(knockOverDuration, Vector3.zero, new Vector3(-85, 0, 0), knockOverCurve, v => anchor.localEulerAngles = v);
         hitRegionCollider.enabled = false;
         yield return new WaitForSeconds(recoverDuration);
+        
+        // Potentially wait for unjam before standing back up.
+        while(isJammed)
+        {
+            yield return null;
+        }
+
         hitRegionCollider.enabled = true;
         yield return this.AnimateVector(2 * knockOverDuration, new Vector3(-85, 0, 0), Vector3.zero, knockOverCurve, v => anchor.localEulerAngles = v);
         isReady = true;

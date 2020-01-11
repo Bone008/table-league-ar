@@ -26,6 +26,7 @@ public class TrackingController : MonoBehaviour
         {
             GetComponent<UnityTemplateProjects.SimpleCameraController>().enabled = true;
             this.enabled = false;
+            GameObject.Find("Game UI").GetComponent<GameUIManager>().ToggleFloorVisibility();
         }
     }
 #endif

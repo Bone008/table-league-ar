@@ -69,9 +69,15 @@ public class CaptureTower : TowerBase
         }
         else if (isHoldingBall)
         {
-            if (targetBallRb.velocity.sqrMagnitude > 0.01f * 0.01f)
+            if (!isCapturingBall && targetBallRb.velocity.sqrMagnitude > 0.01f * 0.01f)
             {
-                Debug.Log("CT Detected hit, releasing!");
+                ReleaseBall();
+            }
+            else if(!isCapturingBall && isJammed)
+            {
+                Vector3 bounce = 0.05f * Random.onUnitSphere;
+                bounce.y = 6 * Mathf.Abs(bounce.y);
+                targetBallRb.AddForce(bounce, ForceMode.Impulse);
                 ReleaseBall();
             }
             else if(!isCapturingBall && owner.controllerTransform != null)
@@ -116,6 +122,8 @@ public class CaptureTower : TowerBase
     [ServerCallback]
     void OnTriggerStay(Collider other)
     {
+        if (isJammed)
+            return;
         if (isHoldingBall || targetBall == other.gameObject)
             return;
         if (other.isTrigger || !other.gameObject.CompareTag(Constants.BALL_TAG))
@@ -135,6 +143,20 @@ public class CaptureTower : TowerBase
         if (!isHoldingBall && other.gameObject == targetBall)
         {
             ReleaseBall();
+        }
+    }
+    
+    [Server]
+    protected override void OnJammedStart()
+    {
+        // Reset ball target if we are currently targeting a ball but
+        // NOT holding it yet. Releasing a held ball is handled in UpdateServer().
+        // If we are currently capturing a ball, we are also holding it and will release it
+        // once capturing is complete.
+        if(!isHoldingBall)
+        {
+            targetBall = null;
+            targetBallRb = null;
         }
     }
 

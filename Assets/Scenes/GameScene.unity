@@ -171,6 +171,8 @@ MonoBehaviour:
   interactionLine: {fileID: 1477764088}
   towerDestroyEffectPrefab: {fileID: 497476774018426179, guid: 81de296d10852304a9337c40ba89d0f5,
     type: 3}
+  interferenceEffectPrefab: {fileID: 3241991724301420958, guid: 951d30310faeae64b873a6920ecf47f1,
+    type: 3}
 --- !u!114 &36946396
 MonoBehaviour:
   m_ObjectHideFlags: 0

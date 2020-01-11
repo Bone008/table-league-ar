@@ -10,6 +10,7 @@ public class EffectsManager : NetworkBehaviour
 
     public LineRenderer interactionLine;
     public GameObject towerDestroyEffectPrefab;
+    public GameObject interferenceEffectPrefab;
 
     private Transform interactionLineSource = null;
     
@@ -66,5 +67,13 @@ public class EffectsManager : NetworkBehaviour
         {
             Destroy(effect.gameObject);
         }
+    }
+
+
+    [ClientRpc]
+    public void RpcPlayInterferenceEffect(GameObject tower, float duration)
+    {
+        var effect = Instantiate(interferenceEffectPrefab, tower.transform);
+        this.Delayed(duration, () => { Destroy(effect); });
     }
 }

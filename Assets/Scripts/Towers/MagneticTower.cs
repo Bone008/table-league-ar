@@ -29,6 +29,9 @@ public class MagneticTower : TowerBase
         {
             energy = Mathf.Min(maxEnergy, energy + Time.deltaTime);
         }
+
+        // Keep energy at 0 if jammed.
+        if (isJammed) energy = 0;
     }
 
     [ServerCallback]
