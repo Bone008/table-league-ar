@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject botPlayerPrefab;
     public Player player1;
     public Player player2;
+    public bool allowCheats;
 
     private bool assignedPlayer1 = false;
     private bool assignedPlayer2 = false;
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
         if (!assignedPlayer1 && !preferPlayer2)
         {
             assignedPlayer1 = true;
-            player1.AddToInventory(CollectableType.TowerResource, 11);
+            if(allowCheats) player1.AddToInventory(CollectableType.TowerResource, 101);
 
             if (!ServerSettings.isMultiplayer && !assignedPlayer2) SpawnAndAssignBot();
             return player1;
@@ -65,7 +66,7 @@ public class GameManager : MonoBehaviour
         if (!assignedPlayer2)
         {
             assignedPlayer2 = true;
-            player2.AddToInventory(CollectableType.TowerResource, 22);
+            if (allowCheats) player2.AddToInventory(CollectableType.TowerResource, 102);
 
             if (!ServerSettings.isMultiplayer && !assignedPlayer1) SpawnAndAssignBot();
             return player2;

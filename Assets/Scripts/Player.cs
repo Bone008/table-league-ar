@@ -122,7 +122,7 @@ public class Player : NetworkBehaviour
     public void HitBall(GameObject ball, Vector3 force)
     {
         if (!GameManager.Instance.isRunning) return;
-        if (!ownedRectangle.Contains(ball.transform.position))
+        if (!ownedRectangle.Contains(ball.transform.position) && !GameManager.Instance.allowCheats)
         {
             Debug.Log("Player " + playerId + ": Cannot hit ball outside of their owned rectangle.");
             return;
@@ -145,7 +145,7 @@ public class Player : NetworkBehaviour
             Debug.LogWarning("Cannot collect this game object!", target);
             return;
         }
-        if (!ownedRectangle.Contains(collectable.transform.position))
+        if (!ownedRectangle.Contains(collectable.transform.position) && !GameManager.Instance.allowCheats)
         {
             Debug.LogWarning("Player tried to collect outside of owned rectangle!");
             return;
@@ -167,7 +167,7 @@ public class Player : NetworkBehaviour
             Debug.LogWarning("Not enough resources to build a tower!", this);
             return;
         }
-        if (!ownedRectangle.Contains(position))
+        if (!ownedRectangle.Contains(position) && !GameManager.Instance.allowCheats)
         {
             Debug.LogWarning("Player tried to build outside of owned rectangle!");
             return;
@@ -186,7 +186,7 @@ public class Player : NetworkBehaviour
     [Server]
     public void StartDestroyTower(GameObject tower)
     {
-        if (!ownedRectangle.Contains(tower.transform.position))
+        if (!ownedRectangle.Contains(tower.transform.position) && !GameManager.Instance.allowCheats)
         {
             Debug.LogWarning("Player tried to destroy tower outside of owned rectangle!");
             return;
