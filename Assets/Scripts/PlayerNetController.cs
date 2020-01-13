@@ -98,11 +98,14 @@ public class PlayerNetController : NetworkBehaviour
         hasTracking = value;
         if (player != null)
             // If the user has been ready before, their ready state should reflect their tracking state.
-            CmdSetReady(value);
+            ServerSetReady(value);
     }
 
     [Command]
-    public void CmdSetReady(bool ready)
+    public void CmdSetReady(bool ready) => ServerSetReady(ready);
+
+    [Server]
+    private void ServerSetReady(bool ready)
     {
         // If this is the first time we get ready, assign a player.
         if(ready && player == null)
