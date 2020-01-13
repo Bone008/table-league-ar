@@ -120,14 +120,14 @@ public class PlayerNetController : NetworkBehaviour
 
     // Called by the client when clicking on a ball.
     [Command]
-    public void CmdHitBall(GameObject ball, Vector3 force)
+    public void CmdHitBall(GameObject ball, Vector3 force, Quaternion angle)
     {
         if (!ball.CompareTag(Constants.BALL_TAG))
         {
             Debug.LogWarning("Tried to hit something that was not a ball: " + ball, ball);
             return;
         }
-        player.HitBall(ball, force);
+        player.HitBall(ball, force, angle);
     }
 
     // Called by the client when clicking on a collectable.

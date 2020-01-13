@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 2876984474660438597}
   - component: {fileID: -4383287404843722069}
   - component: {fileID: 2214776269971768367}
-  - component: {fileID: 2944162416727379770}
   - component: {fileID: 7390517664501850676}
+  - component: {fileID: 875617438289703284}
   m_Layer: 0
   m_Name: PowerupFreeze
   m_TagString: Collectable
@@ -100,19 +100,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2944162416727379770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5828997359253125535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02a5cf772d570914798f29bfd96cf6b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anglePerSecond: 90
 --- !u!23 &7390517664501850676
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -151,6 +138,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &875617438289703284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5828997359253125535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a5cf772d570914798f29bfd96cf6b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anglePerSecond: -90
 --- !u!1001 &776599199995893471
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -233,6 +233,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.003
       objectReference: {fileID: 0}
+    - target: {fileID: -1264038430887815485, guid: 1dea3b84b8bbff1439be1a8ccf990987,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c1c7389e8b172c14db0bb017b5cc5f26, type: 2}
     - target: {fileID: -113181020801827196, guid: 1dea3b84b8bbff1439be1a8ccf990987,
         type: 3}
       propertyPath: m_Enabled
@@ -338,6 +343,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: CollectingEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.57254934
+      objectReference: {fileID: 0}
+    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: TrailModule.widthOverTrail.scalar
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5592891647879232914, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -392,26 +417,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.57254934
-      objectReference: {fileID: 0}
-    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: TrailModule.widthOverTrail.scalar
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20556c5b4f82d7b4c9b65e1817d89fc3, type: 3}

@@ -8,6 +8,7 @@ using UnityEngine;
 public class Ball : NetworkBehaviour
 {
     public GameObject freezeEffect;
+    public GameObject clickEffect;
     private Rigidbody rbody;
 
     private Coroutine activeUnfreezeCoroutine = null;
@@ -72,13 +73,28 @@ public class Ball : NetworkBehaviour
         rbody.angularVelocity = Vector3.zero;
         rbody.isKinematic = true;
         RpcSetFrozen(true);
-        
+
         activeUnfreezeCoroutine = this.Delayed(duration, () =>
         {
             rbody.isKinematic = false;
             RpcSetFrozen(false);
             activeUnfreezeCoroutine = null;
         });
+    }
+
+    [Server]
+    public void Hit(Quaternion angle)
+    {
+        RpcHitEffect(true, angle);
+    }
+
+    [ClientRpc]
+    private void RpcHitEffect(bool value, Quaternion angle)
+    {
+        //Debug.Log("HIT123");
+        clickEffect.SetActive(false);
+        clickEffect.transform.rotation = angle;
+        clickEffect.SetActive(true);
     }
 
     [ClientRpc]

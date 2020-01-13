@@ -119,13 +119,21 @@ public class Player : NetworkBehaviour
     }
 
     [Server]
-    public void HitBall(GameObject ball, Vector3 force)
+    public void HitBall(GameObject ball, Vector3 force, Quaternion angle)
     {
         if (!GameManager.Instance.isRunning) return;
         if (!ownedRectangle.Contains(ball.transform.position) && !GameManager.Instance.allowCheats)
         {
             Debug.Log("Player " + playerId + ": Cannot hit ball outside of their owned rectangle.");
             return;
+        }
+
+        foreach (Ball b in GameManager.Instance.balls)
+        {
+            if(Vector3.Distance(ball.transform.position, b.transform.position) == 0)
+            {
+                b.Hit(angle);
+            }
         }
 
         var rigidbody = ball.GetComponent<Rigidbody>();

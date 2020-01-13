@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2876984474660438597}
   - component: {fileID: -4383287404843722069}
   - component: {fileID: 7567118071388067390}
-  - component: {fileID: 4899307588171460985}
+  - component: {fileID: 4098450441246052119}
   m_Layer: 0
   m_Name: TowerResource
   m_TagString: Collectable
@@ -99,7 +99,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4899307588171460985
+--- !u!114 &4098450441246052119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,6 +123,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CollectingEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.34901962
+      objectReference: {fileID: 0}
+    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.5372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.3254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5592891647879232914, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
         type: 3}
@@ -192,26 +212,6 @@ PrefabInstance:
     - target: {fileID: 5592891647879232914, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.34901962
-      objectReference: {fileID: 0}
-    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.5372549
-      objectReference: {fileID: 0}
-    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.3254902
-      objectReference: {fileID: 0}
-    - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: VelocityModule.enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
