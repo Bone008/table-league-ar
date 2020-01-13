@@ -82,6 +82,9 @@ public class Player : NetworkBehaviour
         if (activeCollectable && Time.time > timerStart + activeCollectable.collectDuration)
         {
             EffectsManager.Instance.RpcHideInteraction();
+            SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.CollectableCollecting, playerId);
+            SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.CollectableCollected, playerId);
+
             AddToInventory(activeCollectable.type, activeCollectable.amount);
 
             NetworkServer.Destroy(activeCollectable.gameObject);
@@ -92,6 +95,7 @@ public class Player : NetworkBehaviour
         if (activeType != TowerType.None && Time.time > timerStart + TowerManager.Instance.buildTime)
         {
             EffectsManager.Instance.RpcHideInteraction();
+            SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.TowerBuilding, playerId);
 
             if (ConsumeFromInventory(CollectableType.TowerResource, Constants.towerCost))
             {
@@ -114,7 +118,11 @@ public class Player : NetworkBehaviour
             activeDestroyingTower = null;
             // Wait a bit longer for the clients to finish playing the scale effect before actually destroying the tower.
             // During this time, the destruction should no longer be cancelable. Since network delay can only 
-            this.Delayed(destroyGraceTime, () => NetworkServer.Destroy(tower));
+            this.Delayed(destroyGraceTime, () =>
+            {
+                NetworkServer.Destroy(tower);
+                SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.TowerDestroying, playerId);
+            });
         }
     }
 
@@ -163,6 +171,7 @@ public class Player : NetworkBehaviour
         activeCollectable = collectable;
         timerStart = Time.time;
         EffectsManager.Instance.RpcShowInteraction(gameObject, collectable.transform.position);
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.CollectableCollecting, playerId);
     }
 
     [Server]
@@ -189,6 +198,7 @@ public class Player : NetworkBehaviour
 
         RpcPlayBuildEffect(activeBuildTower);
         EffectsManager.Instance.RpcShowInteraction(gameObject, position);
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.TowerBuilding, playerId);
     }
 
     [Server]
@@ -207,6 +217,7 @@ public class Player : NetworkBehaviour
 
         EffectsManager.Instance.RpcPlayTowerDestroyEffect(tower, TowerManager.Instance.destroyTime);
         EffectsManager.Instance.RpcShowInteraction(gameObject, tower.transform.position);
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.TowerDestroying, playerId);
     }
 
     [ClientRpc]
@@ -232,6 +243,7 @@ public class Player : NetworkBehaviour
         {
             activeCollectable.StopCollecting();
             activeCollectable = null;
+            SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.CollectableCollecting, playerId);
         }
 
         if (activeType != TowerType.None)
@@ -239,12 +251,14 @@ public class Player : NetworkBehaviour
             NetworkServer.Destroy(activeBuildTower);
             activeBuildTower = null;
             activeType = TowerType.None;
+            SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.TowerBuilding, playerId);
         }
 
         if (activeDestroyingTower != null)
         {
             EffectsManager.Instance.RpcStopTowerDestroyEffect(activeDestroyingTower);
             activeDestroyingTower = null;
+            SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.TowerDestroying, playerId);
         }
     }
 
@@ -258,6 +272,7 @@ public class Player : NetworkBehaviour
         {
             ball.Freeze(Constants.freezeBallDuration);
         }
+        SoundManager.Instance.RpcPlaySoundAll(SoundEffect.BallFreeze);
     }
 
     [Server]

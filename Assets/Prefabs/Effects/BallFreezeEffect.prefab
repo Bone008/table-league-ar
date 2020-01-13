@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 457496931981863939}
   - component: {fileID: 457496931981863940}
   - component: {fileID: 457496931981863941}
-  - component: {fileID: 1220984391306990862}
   m_Layer: 0
   m_Name: BallFreezeEffect
   m_TagString: Untagged
@@ -79,18 +78,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &1220984391306990862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 457496931981863943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverOnly: 0
-  m_AssetId: 6ace04d49b9217b4f88f57349e71bb3d
-  m_SceneId: 0

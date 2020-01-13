@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour
         ResetAllBalls();
 
         timeController.OnGameStart();
+        SoundManager.Instance.RpcPlaySoundAll(SoundEffect.GameStart);
     }
 
     // Note: Probably redundant as the scene is destroyed anyway when the game stops.
@@ -158,6 +159,8 @@ public class GameManager : MonoBehaviour
         Player attacker = GetOpponentOf(defendingPlayer);
         attacker.score++;
         ResetBall(ball, defendingPlayer);
+
+        SoundManager.Instance.RpcPlaySoundAll(SoundEffect.GoalScore);
 
         if (attacker.score >= ServerSettings.winningPoints)
         {
