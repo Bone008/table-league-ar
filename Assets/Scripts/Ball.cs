@@ -83,17 +83,15 @@ public class Ball : NetworkBehaviour
     }
 
     [Server]
-    public void Hit(Quaternion angle)
+    public void Hit()
     {
-        RpcHitEffect(true, angle);
+        RpcHitEffect(true);
     }
 
     [ClientRpc]
-    private void RpcHitEffect(bool value, Quaternion angle)
+    private void RpcHitEffect(bool value)
     {
-        //Debug.Log("HIT123");
         clickEffect.SetActive(false);
-        clickEffect.transform.rotation = angle;
         clickEffect.SetActive(true);
     }
 

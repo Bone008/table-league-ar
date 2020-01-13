@@ -150,7 +150,7 @@ public class PlayerInputController : MonoBehaviour
                 direction.Normalize();
 
                 Vector3 force = hitStrength * direction;
-                netController.CmdHitBall(hit.collider.gameObject, force, Quaternion.Euler(0f, Camera.main.transform.eulerAngles.y, 0f));
+                netController.CmdHitBall(hit.collider.gameObject, force);
             }
 
             else if (hit.collider.CompareTag(Constants.COLLECTABLE_TAG) && netController.player.ownedRectangle.Contains(hit.transform.position))

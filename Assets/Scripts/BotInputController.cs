@@ -134,6 +134,6 @@ public class BotInputController : NetworkBehaviour
         direction.Normalize();
 
         Vector3 force = ballHitStrength * direction;
-        player.HitBall(ball.gameObject, force.normalized, Quaternion.Euler(0f, Camera.main.transform.eulerAngles.y, 0f));
+        player.HitBall(ball.gameObject, force.normalized);
     }
 }

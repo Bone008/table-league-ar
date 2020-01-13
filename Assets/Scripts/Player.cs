@@ -119,7 +119,7 @@ public class Player : NetworkBehaviour
     }
 
     [Server]
-    public void HitBall(GameObject ball, Vector3 force, Quaternion angle)
+    public void HitBall(GameObject ball, Vector3 force)
     {
         if (!GameManager.Instance.isRunning) return;
         if (!ownedRectangle.Contains(ball.transform.position) && !GameManager.Instance.allowCheats)
@@ -128,13 +128,7 @@ public class Player : NetworkBehaviour
             return;
         }
 
-        foreach (Ball b in GameManager.Instance.balls)
-        {
-            if(Vector3.Distance(ball.transform.position, b.transform.position) == 0)
-            {
-                b.Hit(angle);
-            }
-        }
+        ball.GetComponent<Ball>().Hit();
 
         var rigidbody = ball.GetComponent<Rigidbody>();
         rigidbody.velocity = Vector3.zero;
