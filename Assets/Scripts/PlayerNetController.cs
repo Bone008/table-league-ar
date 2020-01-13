@@ -75,7 +75,10 @@ public class PlayerNetController : NetworkBehaviour
 
     void OnDestroy()
     {
-        LocalInstance = null;
+        if (LocalInstance == this)
+        {
+            LocalInstance = null;
+        }
     }
 
     void LateUpdate()
