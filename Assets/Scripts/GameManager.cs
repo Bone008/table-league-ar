@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
         ResetBall(ball, defendingPlayer);
 
         EffectsManager.Instance.RpcPlayGoalEffect(goal);
-        SoundManager.Instance.RpcPlaySoundAll(SoundEffect.GoalScore);
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.GoalScore, defendingPlayer.playerId);
 
         if (attacker.score >= ServerSettings.winningPoints)
         {
