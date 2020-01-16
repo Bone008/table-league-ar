@@ -3414,7 +3414,7 @@ MonoBehaviour:
     type: 3}
   player1: {fileID: 810622631}
   player2: {fileID: 764313429}
-  allowCheats: 0
+  allowCheats: 1
 --- !u!4 &768383733
 Transform:
   m_ObjectHideFlags: 0
@@ -3441,23 +3441,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bce1d07ed0b2024284dffb588502e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnProbability: 0.05
+  spawnIntervalMin: 1
+  spawnIntervalMax: 4
   collectables:
   - type: 1
     prefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
       type: 3}
-  - type: 1
-    prefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
-      type: 3}
+    probabilityWeight: 3
   - type: 3
     prefab: {fileID: 5828997359253125535, guid: 28a12bc09dd7ea346ad2a1ad4505fb8b,
       type: 3}
+    probabilityWeight: 1
   - type: 2
     prefab: {fileID: 5828997359253125535, guid: ade64e0729ea83645bace9c5a461ff1f,
       type: 3}
-  - type: 1
-    prefab: {fileID: 5828997359253125535, guid: c9bf904efc5e5a94abb10af88ad4da3d,
-      type: 3}
+    probabilityWeight: 1
 --- !u!114 &768383735
 MonoBehaviour:
   m_ObjectHideFlags: 0

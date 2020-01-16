@@ -122,6 +122,7 @@ public class GameManager : MonoBehaviour
         }
         ResetAllBalls();
 
+        SpawnManager.Instance.OnGameStart();
         timeController.OnGameStart();
         SoundManager.Instance.RpcPlaySoundAll(SoundEffect.GameStart);
     }
