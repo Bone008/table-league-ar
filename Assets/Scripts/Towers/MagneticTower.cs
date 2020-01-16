@@ -59,5 +59,14 @@ public class MagneticTower : TowerBase
         float distFactor = Mathf.Min(2, maxRadius / dir.magnitude);
         Vector3 force = (pullForce * distFactor) * dir.normalized;
         other.attachedRigidbody.AddForce(force, ForceMode.Force);
+
+        if (pullForce > 0)
+        {
+            EffectsManager.Instance.RpcPlayTowerPullEffect(gameObject);
+        }
+        else
+        {
+            EffectsManager.Instance.RpcPlayTowerPushEffect(gameObject);
+        }
     }
 }

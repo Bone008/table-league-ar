@@ -11,9 +11,11 @@ public class EffectsManager : NetworkBehaviour
     public LineRenderer interactionLine;
     public GameObject towerDestroyEffectPrefab;
     public GameObject interferenceEffectPrefab;
+    public GameObject pushEffectPrefab;
+    public GameObject pullEffectPrefab;
 
     private Transform interactionLineSource = null;
-    
+
     void Awake() { Instance = this; }
 
     [ClientCallback]
@@ -51,7 +53,7 @@ public class EffectsManager : NetworkBehaviour
         effect.name = "__destroy_effect__";
         this.AnimateVector(duration - finalStageTime, -0.32f * Vector3.up, Vector3.zero, Util.EaseInOut01, v =>
         {
-            if(effect) effect.transform.localPosition = v;
+            if (effect) effect.transform.localPosition = v;
         });
         this.Delayed(duration - finalStageTime, () => this.AnimateScalar(finalStageTime, 1f, 0f, Util.EaseOut01, s =>
         {
@@ -59,11 +61,12 @@ public class EffectsManager : NetworkBehaviour
         }));
     }
 
+
     [ClientRpc]
     public void RpcStopTowerDestroyEffect(GameObject tower)
     {
         var effect = tower.transform.Find("__destroy_effect__");
-        if(effect)
+        if (effect)
         {
             Destroy(effect.gameObject);
         }
@@ -76,4 +79,19 @@ public class EffectsManager : NetworkBehaviour
         var effect = Instantiate(interferenceEffectPrefab, tower.transform);
         this.Delayed(duration, () => { Destroy(effect); });
     }
+
+    [ClientRpc]
+    public void RpcPlayTowerPushEffect(GameObject tower)
+    {
+        var effect = Instantiate(pushEffectPrefab, tower.transform);
+        this.Delayed(1, () => { Destroy(effect); });
+    }
+
+    [ClientRpc]
+    public void RpcPlayTowerPullEffect(GameObject tower)
+    {
+        var effect = Instantiate(pullEffectPrefab, tower.transform);
+        this.Delayed(1, () => { Destroy(effect); });
+    }
+
 }

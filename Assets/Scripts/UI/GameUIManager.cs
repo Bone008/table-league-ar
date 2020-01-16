@@ -91,9 +91,15 @@ public class GameUIManager : MonoBehaviour
     public void ExitGame()
     {
         if (NetworkServer.active)
+        {
             NetworkManager.singleton.StopHost();
+            NetworkManager.singleton.ServerChangeScene("EndGame");
+        }
         else if (NetworkClient.active)
+        {
             NetworkManager.singleton.StopClient();
+            NetworkManager.singleton.ServerChangeScene("EndGame");
+        }
         else
         {
             Debug.LogWarning("Neither server nor client active while trying to exit game!");
