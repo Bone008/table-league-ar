@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,15 +11,25 @@ public class MagneticTower : TowerBase
     public float pullForce;
     public float maxEnergy = 0.2f;
     public float rechargeDelay = 1;
+    public float effectCooldown = 0.5f;
+
+    [SyncVar(hook = nameof(OnUpdateEnergy))]
+    private float energy = 0;
 
     private float maxRadius;
-    private float lastActivation = float.NegativeInfinity;
-    private float energy = 0;
+    private float lastActivationTime = float.NegativeInfinity;
+    private float lastEffectTime = float.NegativeInfinity;
+
+    public Transform circleTransform;
+    public Renderer circleRenderer;
+    private Color circleInitialColor;
+    private readonly int shaderColorProp = Shader.PropertyToID("_BaseColor");
 
     [ServerCallback]
     void Start()
     {
         maxRadius = transform.lossyScale.x * GetComponent<CapsuleCollider>().radius;
+        circleInitialColor = circleRenderer.material.GetColor(shaderColorProp);
     }
 
     [ServerCallback]
@@ -27,7 +38,7 @@ public class MagneticTower : TowerBase
         base.Update();
 
         // Recharge energy if the tower hasn't triggered for a while.
-        if (Time.time - lastActivation >= rechargeDelay)
+        if (Time.time - lastActivationTime >= rechargeDelay)
         {
             energy = Mathf.Min(maxEnergy, energy + Time.deltaTime);
         }
@@ -44,12 +55,12 @@ public class MagneticTower : TowerBase
             return;
         }
 
-        lastActivation = Time.time;
         if (energy < Time.fixedDeltaTime)
         {
             return;
         }
         energy -= Time.fixedDeltaTime;
+        lastActivationTime = Time.time;
 
         Vector3 dir = transform.position - other.transform.position;
         dir.y = 0; // Ignore vertical component.
@@ -60,13 +71,21 @@ public class MagneticTower : TowerBase
         Vector3 force = (pullForce * distFactor) * dir.normalized;
         other.attachedRigidbody.AddForce(force, ForceMode.Force);
 
-        if (pullForce > 0)
+        if (Time.time - lastEffectTime >= effectCooldown)
         {
-            EffectsManager.Instance.RpcPlayTowerPullEffect(gameObject);
+            lastEffectTime = Time.time;
+            if (pullForce > 0) EffectsManager.Instance.RpcPlayTowerPullEffect(gameObject);
+            else EffectsManager.Instance.RpcPlayTowerPushEffect(gameObject);
+
+            SoundManager.Instance.RpcPlaySoundAll(SoundEffect.MagnetActivate);
         }
-        else
-        {
-            EffectsManager.Instance.RpcPlayTowerPushEffect(gameObject);
-        }
+    }
+    
+    private void OnUpdateEnergy(float value)
+    {
+        float t = value / maxEnergy;
+        Debug.Log("updating energy to " + t);
+        //circleRenderer.material.SetColor(shaderColorProp, Color.Lerp(Color.black, circleInitialColor, t));
+        circleTransform.localScale = t * Vector3.one;
     }
 }

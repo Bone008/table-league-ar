@@ -3111,14 +3111,16 @@ MonoBehaviour:
   clipGameStart: {fileID: 8300000, guid: c8fae6e9b203fe2498ee45290b7f9e2b, type: 3}
   clipBallHit: {fileID: 0}
   clipGoalScore: {fileID: 8300000, guid: d256de177f34c6c4eac7393679bac498, type: 3}
-  clipCollectableSpawn: {fileID: 0}
+  clipCollectableSpawn: {fileID: 8300000, guid: 7ebb2fe1504d2084787aa27f252849a3,
+    type: 3}
   clipCollectableCollecting: {fileID: 8300000, guid: d37553dec53e73e42b9d07dd6ca31644,
     type: 3}
   clipCollectableCollected: {fileID: 0}
   clipTowerBuilding: {fileID: 8300000, guid: 49f8cfcb3bd04c64892ccaabf782c256, type: 3}
   clipTowerDestroying: {fileID: 8300000, guid: 0ccfae0c1f3c8af41bc044f59b3e34b6, type: 3}
-  clipMagnetActivate: {fileID: 0}
-  clipBarrierKnockOver: {fileID: 0}
+  clipMagnetActivate: {fileID: 8300000, guid: bef34b0fd466bdd478506c19737f41ae, type: 3}
+  clipBarrierKnockOver: {fileID: 8300000, guid: 3402582739d2693488ccfcfad5a69732,
+    type: 3}
   clipBallFreeze: {fileID: 8300000, guid: e96b0d96625504f42bc0bd66e9998404, type: 3}
 --- !u!114 &717608118
 MonoBehaviour:

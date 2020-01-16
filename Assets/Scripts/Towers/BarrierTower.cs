@@ -31,6 +31,8 @@ public class BarrierTower : TowerBase
                 collision.rigidbody.AddForce(ballImpulse * anchor.forward, ForceMode.Impulse);
                 StartCoroutine(KnockOver());
                 RpcAlsoKnockOverOnClient();
+
+                SoundManager.Instance.RpcPlaySoundAll(SoundEffect.BarrierKnockOver);
             }
         }
     }

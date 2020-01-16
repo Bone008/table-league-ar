@@ -141,6 +141,7 @@ public class Player : NetworkBehaviour
         var rigidbody = ball.GetComponent<Rigidbody>();
         rigidbody.velocity = Vector3.zero;
         rigidbody.AddForce(force, ForceMode.Impulse);
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.BallHit, playerId);
     }
 
     [Server]

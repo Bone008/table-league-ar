@@ -76,6 +76,7 @@ public class SpawnManager : MonoBehaviour
 
         var newCollectable = Instantiate(prefab, spawnPos, Quaternion.identity);
         NetworkServer.Spawn(newCollectable);
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.CollectableSpawn, lastSpawnedSide.playerId);
     }
 
     private bool IsSpawnOccupied(Vector3 pos)
