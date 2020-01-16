@@ -154,12 +154,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ScoreGoal(Ball ball, Player defendingPlayer)
+    public void ScoreGoal(Ball ball, Player defendingPlayer, GameObject goal)
     {
         Player attacker = GetOpponentOf(defendingPlayer);
         attacker.score++;
         ResetBall(ball, defendingPlayer);
 
+        EffectsManager.Instance.RpcPlayGoalEffect(goal);
         SoundManager.Instance.RpcPlaySoundAll(SoundEffect.GoalScore);
 
         if (attacker.score >= ServerSettings.winningPoints)

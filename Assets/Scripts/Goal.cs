@@ -18,7 +18,7 @@ public class Goal : MonoBehaviour
                 Debug.LogWarning("Goal does not have an owner!", this);
                 return;
             }
-            GameManager.Instance.ScoreGoal(other.gameObject.GetComponent<Ball>(), owner);
+            GameManager.Instance.ScoreGoal(other.gameObject.GetComponent<Ball>(), owner, gameObject);
         }
     }
 }

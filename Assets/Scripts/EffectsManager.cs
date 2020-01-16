@@ -13,6 +13,7 @@ public class EffectsManager : NetworkBehaviour
     public GameObject interferenceEffectPrefab;
     public GameObject pushEffectPrefab;
     public GameObject pullEffectPrefab;
+    public GameObject goalEffectPrefab;
 
     private Transform interactionLineSource = null;
 
@@ -92,6 +93,13 @@ public class EffectsManager : NetworkBehaviour
     {
         var effect = Instantiate(pullEffectPrefab, tower.transform);
         this.Delayed(1, () => { Destroy(effect); });
+    }
+
+    [ClientRpc]
+    public void RpcPlayGoalEffect(GameObject goal)
+    {
+        var effect = Instantiate(goalEffectPrefab, goal.transform);
+        //Debug.Log("In GOAL AEFSKDHF");
     }
 
 }
