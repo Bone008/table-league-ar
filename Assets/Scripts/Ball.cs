@@ -7,11 +7,13 @@ using UnityEngine;
 
 public class Ball : NetworkBehaviour
 {
+    public GameObject offScreenIndicatorPrefab;
     public GameObject freezeEffect;
     public GameObject clickEffect;
     private Rigidbody rbody;
 
     private Coroutine activeUnfreezeCoroutine = null;
+    private GameObject activeOffScreenIndicator = null;
 
     void Awake()
     {
@@ -32,10 +34,22 @@ public class Ball : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        if (!isClientOnly)
-            return;
-        rbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-        rbody.isKinematic = true;
+        if (isClientOnly)
+        {
+            rbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            rbody.isKinematic = true;
+        }
+
+        Canvas mainCanvas = FindObjectOfType<Canvas>();
+        activeOffScreenIndicator = Instantiate(offScreenIndicatorPrefab, mainCanvas.transform);
+        var script = activeOffScreenIndicator.GetComponent<OffScreenIndicator>();
+        script.targetTransform = transform;
+    }
+
+    [ClientCallback]
+    void OnDestroy()
+    {
+        Destroy(activeOffScreenIndicator);
     }
 
     [Server]
