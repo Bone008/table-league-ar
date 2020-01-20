@@ -10,6 +10,7 @@ public class PlayerInputController : MonoBehaviour
     public float maxInteractionRange = 2f;
     public float minHitStrength;
     public float maxHitStrength;
+    public AnimationCurve hitStrengthCurve;
 
     private GameObject towerPreview = null;
 
@@ -148,9 +149,9 @@ public class PlayerInputController : MonoBehaviour
             float distanceToOrigin = (hit.transform.position - transform.position).magnitude;
             if (hit.collider.CompareTag(Constants.BALL_TAG) && distanceToOrigin < maxInteractionRange)
             {
-                float distFactor = 1 - distanceToOrigin / maxInteractionRange;
+                float distFactor = hitStrengthCurve.Evaluate(distanceToOrigin / maxInteractionRange);
                 float hitStrength = Mathf.Lerp(minHitStrength, maxHitStrength, distFactor);
-                Debug.Log("hit a ball at distance " + distanceToOrigin + ", strength " + hitStrength, hit.collider.gameObject);
+                Debug.Log($"hit a ball at d={distanceToOrigin}, str={hitStrength} ({Mathf.RoundToInt((hitStrength /maxHitStrength)* 100)} %)", hit.collider.gameObject);
 
                 Vector3 direction = transform.rotation * Vector3.forward;
                 if (direction.y < 0) direction.y = 0;
