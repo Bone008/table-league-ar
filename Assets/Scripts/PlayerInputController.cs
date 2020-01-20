@@ -17,6 +17,8 @@ public class PlayerInputController : MonoBehaviour
     
     // Local flag to remember if we need to send CancelInteraction or not.
     private bool isInteracting = false;
+    //Local flag to check if we are building anything
+    private bool isBuilding = false;
 
     void Awake()
     {
@@ -37,19 +39,24 @@ public class PlayerInputController : MonoBehaviour
 
         if (Input.touchCount == 0 && !Input.GetMouseButton(0))
         {
-            int newTowerChoice;
+            isBuilding = false;
 
             if (isInteracting)
             {
                 netController.CmdCancelInteraction();
                 isInteracting = false;
             }
+        }
 
-            if(netController.player.GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost || TowerUIManager.towerChoice == TowerType.None)
+        if (!isBuilding)
+        {
+            int newTowerChoice;
+
+            if (netController.player.GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost || TowerUIManager.towerChoice == TowerType.None)
             {
                 newTowerChoice = -1;
             }
-            else if (Physics.Raycast(ray, out hit, maxInteractionRange, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+            else if (Physics.Raycast(ray, out hit, maxInteractionRange, LayerMask.GetMask("Floor"), QueryTriggerInteraction.Collide))
             {
                 if (hit.collider.gameObject.CompareTag(Constants.FLOOR_TAG))
                 {
@@ -159,16 +166,7 @@ public class PlayerInputController : MonoBehaviour
                 netController.CmdStartCollect(hit.collider.gameObject);
             }
 
-            else if (hit.collider.CompareTag(Constants.FLOOR_TAG) && towerChoice > 0)
-            {
-                Vector3 tempPos = towerPreview.transform.position;
-                Quaternion tempAngle = towerPreview.transform.rotation;
-                isInteracting = true;
-                Destroy(towerPreview);
-                netController.CmdStartBuildTower((TowerType)towerChoice, tempPos, tempAngle);
-            }
-
-            else if(TowerUIManager.destroyMode)
+            else if (TowerUIManager.destroyMode)
             {
                 GameObject tower = Util.GetGoInParentWithTag(hit.collider.gameObject, Constants.TOWER_TAG);
                 if (tower != null && netController.player.ownedRectangle.Contains(tower.transform.position))
@@ -177,6 +175,16 @@ public class PlayerInputController : MonoBehaviour
                     netController.CmdStartDestroyTower(tower);
                 }
             }
+            else if(towerChoice > 0)
+            {
+                Vector3 tempPos = towerPreview.transform.position;
+                Quaternion tempAngle = towerPreview.transform.rotation;
+                isInteracting = true;
+                isBuilding = true;
+                Destroy(towerPreview);
+                netController.CmdStartBuildTower((TowerType)towerChoice, tempPos, tempAngle);
+            }
+            
         }
     }
 }
