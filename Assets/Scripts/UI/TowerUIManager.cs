@@ -16,7 +16,7 @@ public class TowerUIManager : MonoBehaviour
     private Sprite defaultSpriteBuild;
     private Sprite defaultSpriteDestroy;
 
-    private bool hasRegisteredPlayer;
+    private bool hasRegisteredInventoryCallback;
 
     void Start()
     {
@@ -28,9 +28,9 @@ public class TowerUIManager : MonoBehaviour
     void Update()
     {
         // Listen to inventory changes as soon as we have a player.
-        if(!hasRegisteredPlayer && PlayerNetController.LocalInstance?.player != null)
+        if(!hasRegisteredInventoryCallback && PlayerNetController.LocalInstance?.player != null)
         {
-            hasRegisteredPlayer = true;
+            hasRegisteredInventoryCallback = true;
             UpdateButtons();
             PlayerNetController.LocalInstance.player.InventoryChange += (_, __, ___) =>
             {
