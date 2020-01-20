@@ -98,7 +98,7 @@ public static class Util
             yield return null;
             t += (realtime ? Time.unscaledDeltaTime : Time.deltaTime);
         }
-        progressCallback(1.0f);
+        progressCallback(easingFunc(1.0f));
     }
 
 

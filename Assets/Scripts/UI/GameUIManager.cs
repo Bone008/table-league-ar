@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static Mirror.SyncIDictionary<CollectableType, int>;
 
 /// <summary>Singleton responsible for showing information about the game on the UI.</summary>
 public class GameUIManager : MonoBehaviour
@@ -21,14 +22,17 @@ public class GameUIManager : MonoBehaviour
     public Text gameTimeText;
     public Text score1Text;
     public Text score2Text;
-    public Text resourceText;
+    public TMPro.TextMeshProUGUI resourceText;
     public Button freezeButton;
     public TMPro.TextMeshProUGUI freezeAmountText;
     public Button jamButton;
     public TMPro.TextMeshProUGUI jamAmountText;
 
+    public AnimationCurve valueUpdatePopCurve;
+    public float valueUpdatePopSize;
     public GameObject[] serverOnlyObjects = new GameObject[0];
 
+    private bool hasRegisteredInventoryCallback = false;
 
 #if UNITY_EDITOR
     void Awake()
@@ -74,6 +78,30 @@ public class GameUIManager : MonoBehaviour
             int jamNum = localPlayer.GetInventoryCount(CollectableType.PowerupJamTowers);
             jamAmountText.text = jamNum.ToString();
             jamButton.interactable = jamNum > 0;
+
+            if (!hasRegisteredInventoryCallback)
+            {
+                localPlayer.InventoryChange += LocalPlayer_InventoryChange;
+                hasRegisteredInventoryCallback = true;
+            }
+        }
+    }
+
+    private void LocalPlayer_InventoryChange(Operation op, CollectableType key, int newAmount)
+    {
+        if(op == Operation.OP_SET)
+        {
+            int oldAmount = localPlayer.GetInventoryCount(key);
+            Debug.Log(key + " from " + oldAmount + " to " + newAmount);
+            Transform target;
+            switch(key)
+            {
+                case CollectableType.PowerupFreeze: target = freezeAmountText.transform; break;
+                case CollectableType.PowerupJamTowers: target = jamAmountText.transform; break;
+                case CollectableType.TowerResource: target = resourceText.transform; break;
+                default: return;
+            }
+            this.AnimateVector(0.3f, Vector3.one, valueUpdatePopSize * Vector3.one, valueUpdatePopCurve, v => target.localScale = v);
         }
     }
 
