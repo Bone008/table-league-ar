@@ -24,6 +24,9 @@ public class Player : NetworkBehaviour
     /// <summary>Transform of the GameObject that controls this player (the player's camera or the bot). Can be null!</summary>
     public Transform controllerTransform { get; set; }
 
+    /// <summary>Only available on server.</summary>
+    public GameStatistics statistics { get; } = new GameStatistics();
+
     /// <summary>Indicates if the player has tracking and has indicated that they are (still) ready to play.</summary>
     [SyncVar]
     public bool isUserReady = false;
@@ -43,6 +46,11 @@ public class Player : NetworkBehaviour
     {
         add { inventory.Callback += value; }
         remove { inventory.Callback -= value; }
+    }
+
+    void Start()
+    {
+        statistics.playerId = playerId;
     }
 
     /// <summary>Returns how many items of the given type the player has in their inventory.</summary>

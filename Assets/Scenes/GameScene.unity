@@ -208,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  postGameScene: EndGame
 --- !u!1 &48471773
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,13 +315,13 @@ Transform:
   m_Children:
   - {fileID: 400646628}
   - {fileID: 819034882}
-  - {fileID: 1477316116}
+  - {fileID: 1929091715}
   - {fileID: 1114978136}
   - {fileID: 250008516}
   - {fileID: 1043427987}
   - {fileID: 403901220}
   - {fileID: 246176138}
-  - {fileID: 1929091715}
+  - {fileID: 1477316116}
   - {fileID: 1174078449}
   - {fileID: 1236027381}
   - {fileID: 1985599347}
@@ -3120,7 +3121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  clipButtonClick: {fileID: 8300000, guid: dd1ffd42c3fbe274fb8c75731ab92fb4, type: 3}
+  clipButtonClick: {fileID: 8300000, guid: d661bfd67647b194299110d1a3ce47fc, type: 3}
   clipInvalid: {fileID: 0}
   clipTime: {fileID: 0}
   clipGameStart: {fileID: 8300000, guid: c8fae6e9b203fe2498ee45290b7f9e2b, type: 3}
@@ -3423,6 +3424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69db72437f1ddaf4fab442a4ed96d664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  postGameScene: EndGame
   timeController: {fileID: 36946397}
   ballPrefab: {fileID: 6463811477164468258, guid: 93dff4c8e8fee7a47b2be96bb5652b6f,
     type: 3}
@@ -7151,7 +7153,7 @@ Transform:
   - {fileID: 1587742204}
   - {fileID: 1967444658}
   m_Father: {fileID: 109237786}
-  m_RootOrder: 2
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1477764087
 GameObject:

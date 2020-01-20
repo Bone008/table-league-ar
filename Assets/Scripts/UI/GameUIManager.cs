@@ -121,12 +121,10 @@ public class GameUIManager : MonoBehaviour
         if (NetworkServer.active)
         {
             NetworkManager.singleton.StopHost();
-            //NetworkManager.singleton.ServerChangeScene("EndGame");
         }
         else if (NetworkClient.active)
         {
             NetworkManager.singleton.StopClient();
-            //NetworkManager.singleton.ServerChangeScene("EndGame");
         }
         else
         {

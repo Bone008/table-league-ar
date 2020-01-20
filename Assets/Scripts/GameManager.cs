@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     /// <summary>WARNING: Can NOT be accessed by client!</summary>
     public static GameManager Instance { get; private set; }
 
+    [Scene]
+    public string postGameScene;
     public TimeController timeController;
     public GameObject ballPrefab;
     public GameObject botPlayerPrefab;
@@ -45,6 +47,11 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             isPaused = true;
             timeController.OnGamePause(true);
+        }
+
+        if(isRunning && timeController.GetTimeRemaining() <= 0 && !allowCheats)
+        {
+            FinishGame();
         }
     }
 
@@ -127,6 +134,44 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.RpcPlaySoundAll(SoundEffect.GameStart);
     }
 
+    private void FinishGame()
+    {
+        Debug.Log("FINISHING GAME!");
+        hasStarted = false;
+        UnassignPlayer(player1);
+        UnassignPlayer(player2);
+
+        foreach (Ball ball in balls)
+            ball.gameObject.SetActive(false);
+
+        // Gather statistics.
+        player1.statistics.finalScoreSelf = player1.score;
+        player1.statistics.finalScoreOpponent = player2.score;
+        player2.statistics.finalScoreSelf = player2.score;
+        player2.statistics.finalScoreOpponent = player1.score;
+        if (player1.score > player2.score)
+        {
+            player1.statistics.result = WinResult.Winner;
+            player2.statistics.result = WinResult.Loser;
+        }
+        else if (player1.score < player2.score)
+        {
+            player1.statistics.result = WinResult.Loser;
+            player2.statistics.result = WinResult.Winner;
+        }
+        else
+        {
+            player1.statistics.result = WinResult.Draw;
+            player2.statistics.result = WinResult.Draw;
+        }
+
+        SoundManager.Instance.RpcPlaySoundAll(SoundEffect.GameStart);
+        this.Delayed(3, () =>
+        {
+            timeController.RpcFinishGame(player1.statistics, player2.statistics);
+        });
+    }
+
     // Note: Probably redundant as the scene is destroyed anyway when the game stops.
     public void StopGame()
     {
@@ -163,13 +208,6 @@ public class GameManager : MonoBehaviour
 
         EffectsManager.Instance.RpcPlayGoalEffect(goal);
         SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.GoalScore, defendingPlayer.playerId);
-
-        if (attacker.score >= ServerSettings.winningPoints)
-        {
-            Debug.Log("[SERVER] !!!!!!!!!!");
-            Debug.Log("[SERVER] " + attacker.playerName + " has won! In the future, this will redirect to the winning screen ...");
-            Debug.Log("[SERVER] !!!!!!!!!!");
-        }
     }
 
     /// <summary>Spawns a ball back in the home area of the given player.</summary>
