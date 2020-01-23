@@ -10,7 +10,8 @@ public enum CollectableType
     None,
     TowerResource,
     PowerupFreeze,
-    PowerupJamTowers
+    PowerupJamTowers,
+    PowerupGrapplingHook
 }
 
 /// <summary>

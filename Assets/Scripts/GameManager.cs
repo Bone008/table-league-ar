@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
                 player1.AddToInventory(CollectableType.TowerResource, 101);
                 player1.AddToInventory(CollectableType.PowerupFreeze, 3);
                 player1.AddToInventory(CollectableType.PowerupJamTowers, 3);
+                player1.AddToInventory(CollectableType.PowerupGrapplingHook, 30);
             }
 
             if (!ServerSettings.isMultiplayer && !assignedPlayer2) SpawnAndAssignBot();
@@ -83,6 +84,7 @@ public class GameManager : MonoBehaviour
                 player2.AddToInventory(CollectableType.TowerResource, 102);
                 player2.AddToInventory(CollectableType.PowerupFreeze, 3);
                 player2.AddToInventory(CollectableType.PowerupJamTowers, 3);
+                player2.AddToInventory(CollectableType.PowerupGrapplingHook, 30);
             }
 
             if (!ServerSettings.isMultiplayer && !assignedPlayer1) SpawnAndAssignBot();

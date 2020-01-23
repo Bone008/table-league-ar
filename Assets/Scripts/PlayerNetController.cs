@@ -172,10 +172,16 @@ public class PlayerNetController : NetworkBehaviour
     {
         player.UsePowerupFreeze();
     }
-
+    
     [Command]
     public void CmdUsePowerupJamTowers()
     {
         player.UsePowerupJamTowers();
+    }
+
+    [Command]
+    public void CmdUsePowerupGrapple()
+    {
+        player.UsePowerupGrapple();
     }
 }

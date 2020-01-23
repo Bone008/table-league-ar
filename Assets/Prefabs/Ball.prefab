@@ -144,7 +144,7 @@ Rigidbody:
   m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!114 &6463811477164468260
@@ -165,6 +165,57 @@ MonoBehaviour:
     type: 3}
   freezeEffect: {fileID: 6518375332273469068}
   clickEffect: {fileID: 9159760869181978086}
+  grappleYCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.2136962
+      outSlope: 1.2136962
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.15854219
+      value: 0.19242206
+      inSlope: 0.07938155
+      outSlope: 0.07938155
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11315452
+    - serializedVersion: 3
+      time: 0.4712103
+      value: 0.15416595
+      inSlope: -0.3022506
+      outSlope: -0.3022506
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11241798
+      outWeight: 0.22541676
+    - serializedVersion: 3
+      time: 0.8357735
+      value: 0.023384199
+      inSlope: -0.24963923
+      outSlope: -0.24963923
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.51092595
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -0.002357483
+      inSlope: -0.15674502
+      outSlope: -0.15674502
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!135 &6404268565237890774
 SphereCollider:
   m_ObjectHideFlags: 0

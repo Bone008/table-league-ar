@@ -12,5 +12,7 @@ public static class Constants
     public const float towerDistance = 0.35f;
     public const float freezeBallDuration = 5f;
     public const float towerJamDuration = 10f;
-
+    public const float grappleTargetDistance = 0.15f;
+    public const float grappleTransitionDuration = 1.2f;
+    public const float grappleHoldDuration = 0.5f;
 }

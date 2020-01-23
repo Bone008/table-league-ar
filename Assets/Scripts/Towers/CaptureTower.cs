@@ -98,8 +98,9 @@ public class CaptureTower : TowerBase
             }
 
             // Check if ready to capture locked on target.
+            // Ignore if some other higher force is already controlling the ball (isKinematic == true).
             currentLockTime += Time.deltaTime;
-            if (currentLockTime >= targetLockDuration)
+            if (currentLockTime >= targetLockDuration && !targetBallRb.isKinematic)
             {
                 StartCoroutine(CaptureBall());
                 return;
@@ -124,7 +125,7 @@ public class CaptureTower : TowerBase
     {
         if (isJammed)
             return;
-        if (isHoldingBall || targetBall == other.gameObject)
+        if (targetBall != null)
             return;
         if (other.isTrigger || !other.gameObject.CompareTag(Constants.BALL_TAG))
             return;

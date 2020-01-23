@@ -10,9 +10,11 @@ public class Ball : NetworkBehaviour
     public GameObject offScreenIndicatorPrefab;
     public GameObject freezeEffect;
     public GameObject clickEffect;
+    public AnimationCurve grappleYCurve;
     private Rigidbody rbody;
 
     private Coroutine activeUnfreezeCoroutine = null;
+    private Coroutine activeGrappleCoroutine = null;
     private GameObject activeOffScreenIndicator = null;
 
     void Awake()
@@ -94,6 +96,59 @@ public class Ball : NetworkBehaviour
             RpcSetFrozen(false);
             activeUnfreezeCoroutine = null;
         });
+    }
+    
+    [Server]
+    public bool CanGrapple() => activeGrappleCoroutine != null;
+
+    [Server]
+    public void Grapple(Transform grapplerTransform, Vector3 relativeTargetPos, SceneRectangle validRect)
+    {
+        if (activeGrappleCoroutine != null)
+        {
+            Debug.LogError("Grapple is still active!", this);
+        }
+        activeGrappleCoroutine = StartCoroutine(DoGrapple(grapplerTransform, relativeTargetPos, validRect));
+    }
+
+    private IEnumerator DoGrapple(Transform grapplerTransform, Vector3 relativeTargetPos, SceneRectangle validRect)
+    {
+        //rbody.detectCollisions = false;
+        rbody.isKinematic = true;
+
+        Vector3 startPos = transform.position;
+        float radius = transform.localScale.y / 2;
+
+        Vector3 lastValidTargetPos = grapplerTransform.TransformPoint(relativeTargetPos);
+        Func<Vector3> currentTargetPos = () =>
+        {
+            Vector3 newTarget = grapplerTransform.TransformPoint(relativeTargetPos);
+            if (validRect.Contains(newTarget))
+                lastValidTargetPos = newTarget;
+            lastValidTargetPos.y = Mathf.Max(radius, lastValidTargetPos.y);
+            return lastValidTargetPos;
+        };
+        Func<Vector3> randomOffset = () => 0.001f * new Vector3(Mathf.Sin(100 * (100+Time.time)), Mathf.Sin(102 * (100+Time.time)), Mathf.Sin(104 * (100+Time.time)));
+
+        yield return this.Animate(Constants.grappleTransitionDuration, Util.EaseOut01, t =>
+        {
+            Vector3 targetPos = currentTargetPos();
+            targetPos.y += grappleYCurve.Evaluate(t);
+            rbody.MovePosition(Vector3.Lerp(startPos, targetPos, t) + randomOffset());
+        });
+        // Hold in place.
+        yield return this.Animate(Constants.grappleHoldDuration, _ =>
+        {
+            rbody.MovePosition(currentTargetPos() + randomOffset());
+        });
+        rbody.MovePosition(currentTargetPos());
+        rbody.velocity = Vector3.zero;
+        rbody.angularVelocity = Vector3.zero;
+
+        // Go!
+        rbody.isKinematic = false;
+        //rbody.detectCollisions = true;
+        activeGrappleCoroutine = null;
     }
 
     [Server]
