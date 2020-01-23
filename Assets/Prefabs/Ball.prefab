@@ -216,6 +216,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  grapplingHookPrefab: {fileID: 530311015501395036, guid: bf1c909c3bc154a4f93069e37f12c2a5,
+    type: 3}
 --- !u!135 &6404268565237890774
 SphereCollider:
   m_ObjectHideFlags: 0

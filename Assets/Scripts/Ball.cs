@@ -11,11 +11,16 @@ public class Ball : NetworkBehaviour
     public GameObject freezeEffect;
     public GameObject clickEffect;
     public AnimationCurve grappleYCurve;
+    public GameObject grapplingHookPrefab;
     private Rigidbody rbody;
 
+    // Server-side.
     private Coroutine activeUnfreezeCoroutine = null;
     private Coroutine activeGrappleCoroutine = null;
     private GameObject activeOffScreenIndicator = null;
+
+    // Client-side.
+    private GameObject currentGrapplingHook = null;
 
     void Awake()
     {
@@ -89,6 +94,7 @@ public class Ball : NetworkBehaviour
         {
             StopCoroutine(activeGrappleCoroutine);
             activeGrappleCoroutine = null;
+            RpcHideGrapple();
         }
 
         rbody.velocity = Vector3.zero;
@@ -112,14 +118,16 @@ public class Ball : NetworkBehaviour
     {
         if (activeGrappleCoroutine != null)
         {
-            Debug.LogError("Grapple is still active!", this);
+            Debug.LogError("Grapple is already active!", this);
             return;
         }
         activeGrappleCoroutine = StartCoroutine(DoGrapple(grapplerTransform, relativeTargetPos, validRect));
+        RpcShowGrapple(grapplerTransform.gameObject);
     }
 
     private IEnumerator DoGrapple(Transform grapplerTransform, Vector3 relativeTargetPos, SceneRectangle validRect)
     {
+        yield return new WaitForSeconds(Constants.grappleShootDuration);
         rbody.isKinematic = true;
 
         Vector3 startPos = transform.position;
@@ -133,25 +141,24 @@ public class Ball : NetworkBehaviour
             pos.y = Mathf.Clamp(pos.y, radius, Constants.CEILING_HEIGHT - radius);
             return pos;
         };
-        Func<Vector3> randomOffset = () => 0.001f * new Vector3(Mathf.Sin(50 * (100+Time.time)), Mathf.Sin(52 * (100+Time.time)), Mathf.Sin(54 * (100+Time.time)));
 
-        yield return Util.DoAnimate(Constants.grappleTransitionDuration, Util.EaseOut01, t =>
+        yield return Util.DoAnimate(Constants.grapplePullDuration, Util.EaseOut01, t =>
         {
             Vector3 targetPos = currentTargetPos();
             targetPos.y += grappleYCurve.Evaluate(t);
-            rbody.MovePosition(Vector3.Lerp(startPos, targetPos, t) + randomOffset());
+            rbody.MovePosition(Vector3.Lerp(startPos, targetPos, t));
         });
         // Hold in place.
         yield return Util.DoAnimate(Constants.grappleHoldDuration, _ =>
         {
-            rbody.MovePosition(currentTargetPos() + randomOffset());
+            rbody.MovePosition(currentTargetPos());
         });
-        rbody.MovePosition(currentTargetPos());
         rbody.velocity = Vector3.zero;
         rbody.angularVelocity = Vector3.zero;
 
         // Go!
         rbody.isKinematic = false;
+        RpcHideGrapple();
         activeGrappleCoroutine = null;
     }
 
@@ -174,6 +181,26 @@ public class Ball : NetworkBehaviour
     {
         // TODO play more neat effects to activate/deactivate the freeze.
         freezeEffect.SetActive(value);
+    }
+
+    [ClientRpc]
+    private void RpcShowGrapple(GameObject source)
+    {
+        if(currentGrapplingHook == null)
+            currentGrapplingHook = Instantiate(grapplingHookPrefab);
+        var effect = currentGrapplingHook.GetComponent<GrappleEffect>();
+        effect.source = source.transform;
+        effect.target = transform;
+    }
+
+    [ClientRpc]
+    private void RpcHideGrapple()
+    {
+        if(currentGrapplingHook != null)
+        {
+            Destroy(currentGrapplingHook);
+            currentGrapplingHook = null;
+        }
     }
 
 }
