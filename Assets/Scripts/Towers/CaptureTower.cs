@@ -171,7 +171,7 @@ public class CaptureTower : TowerBase
 
         Vector3 startPos = targetBall.transform.position;
         Quaternion aimStartRot = verticalAim.localRotation;
-        yield return this.Animate(captureEffectDuration, Util.EaseOut01, t =>
+        yield return Util.DoAnimate(captureEffectDuration, Util.EaseOut01, t =>
         {
             targetBall.transform.position = Vector3.Lerp(startPos, head.position, t);
             verticalAim.localRotation = Quaternion.Slerp(aimStartRot, Quaternion.identity, t);

@@ -84,6 +84,12 @@ public class Ball : NetworkBehaviour
         // If the ball is unready frozen, cancel the old timer to unfreeze it.
         if (activeUnfreezeCoroutine != null)
             StopCoroutine(activeUnfreezeCoroutine);
+        // If the ball is getting grappled, cancel the grapple.
+        if (activeGrappleCoroutine != null)
+        {
+            StopCoroutine(activeGrappleCoroutine);
+            activeGrappleCoroutine = null;
+        }
 
         rbody.velocity = Vector3.zero;
         rbody.angularVelocity = Vector3.zero;
@@ -99,7 +105,7 @@ public class Ball : NetworkBehaviour
     }
     
     [Server]
-    public bool CanGrapple() => activeGrappleCoroutine != null;
+    public bool CanGrapple() => activeGrappleCoroutine == null && activeUnfreezeCoroutine == null;
 
     [Server]
     public void Grapple(Transform grapplerTransform, Vector3 relativeTargetPos, SceneRectangle validRect)
@@ -107,6 +113,7 @@ public class Ball : NetworkBehaviour
         if (activeGrappleCoroutine != null)
         {
             Debug.LogError("Grapple is still active!", this);
+            return;
         }
         activeGrappleCoroutine = StartCoroutine(DoGrapple(grapplerTransform, relativeTargetPos, validRect));
     }
@@ -130,14 +137,14 @@ public class Ball : NetworkBehaviour
         };
         Func<Vector3> randomOffset = () => 0.001f * new Vector3(Mathf.Sin(100 * (100+Time.time)), Mathf.Sin(102 * (100+Time.time)), Mathf.Sin(104 * (100+Time.time)));
 
-        yield return this.Animate(Constants.grappleTransitionDuration, Util.EaseOut01, t =>
+        yield return Util.DoAnimate(Constants.grappleTransitionDuration, Util.EaseOut01, t =>
         {
             Vector3 targetPos = currentTargetPos();
             targetPos.y += grappleYCurve.Evaluate(t);
             rbody.MovePosition(Vector3.Lerp(startPos, targetPos, t) + randomOffset());
         });
         // Hold in place.
-        yield return this.Animate(Constants.grappleHoldDuration, _ =>
+        yield return Util.DoAnimate(Constants.grappleHoldDuration, _ =>
         {
             rbody.MovePosition(currentTargetPos() + randomOffset());
         });

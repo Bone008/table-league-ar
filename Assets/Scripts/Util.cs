@@ -89,6 +89,73 @@ public static class Util
         return component.StartCoroutine(_AnimateCoroutine(duration, easingFunc, progressCallback, useRealtime));
     }
 
+    #region equivalent DoAnimate versions without nested coroutines
+    public static IEnumerator DoAnimate<T>(float duration, T from, T to, Func<T, T, float, T> interpolationFunc, Action<T> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, progress => valueCallback(interpolationFunc(from, to, progress)), useRealtime);
+    }
+    public static IEnumerator DoAnimate<T>(float duration, T from, T to, Func<T, T, float, T> interpolationFunc, AnimationCurve curve, Action<T> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, curve.Evaluate, progress => valueCallback(interpolationFunc(from, to, progress)), useRealtime);
+    }
+    public static IEnumerator DoAnimate<T>(float duration, T from, T to, Func<T, T, float, T> interpolationFunc, Func<float, float> easingFunc, Action<T> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, easingFunc, progress => valueCallback(interpolationFunc(from, to, progress)), useRealtime);
+    }
+
+    public static IEnumerator DoAnimateScalar(float duration, float from, float to, Action<float> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, progress => valueCallback(Mathf.Lerp(from, to, progress)), useRealtime);
+    }
+    public static IEnumerator DoAnimateScalar(float duration, float from, float to, AnimationCurve curve, Action<float> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, curve.Evaluate, progress => valueCallback(Mathf.Lerp(from, to, progress)), useRealtime);
+    }
+    public static IEnumerator DoAnimateScalar(float duration, float from, float to, Func<float, float> easingFunc, Action<float> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, easingFunc, progress => valueCallback(Mathf.Lerp(from, to, progress)), useRealtime);
+    }
+
+    public static IEnumerator DoAnimateVector(float duration, Vector3 from, Vector3 to, Action<Vector3> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, progress => valueCallback(Vector3.Lerp(from, to, progress)), useRealtime);
+    }
+    public static IEnumerator DoAnimateVector(float duration, Vector3 from, Vector3 to, AnimationCurve curve, Action<Vector3> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, curve.Evaluate, progress => valueCallback(Vector3.Lerp(from, to, progress)), useRealtime);
+    }
+    public static IEnumerator DoAnimateVector(float duration, Vector3 from, Vector3 to, Func<float, float> easingFunc, Action<Vector3> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, easingFunc, progress => valueCallback(Vector3.Lerp(from, to, progress)), useRealtime);
+    }
+
+    public static IEnumerator DoAnimateQuaternion(float duration, Quaternion from, Quaternion to, Action<Quaternion> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, progress => valueCallback(Quaternion.Slerp(from, to, progress)), useRealtime);
+    }
+    public static IEnumerator DoAnimateQuaternion(float duration, Quaternion from, Quaternion to, AnimationCurve curve, Action<Quaternion> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, curve.Evaluate, progress => valueCallback(Quaternion.Slerp(from, to, progress)), useRealtime);
+    }
+    public static IEnumerator DoAnimateQuaternion(float duration, Quaternion from, Quaternion to, Func<float, float> easingFunc, Action<Quaternion> valueCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, easingFunc, progress => valueCallback(Quaternion.Slerp(from, to, progress)), useRealtime);
+    }
+
+    public static IEnumerator DoAnimate(float duration, Action<float> progressCallback, bool useRealtime = false)
+    {
+        return DoAnimate(duration, t => t, progressCallback, useRealtime);
+    }
+    public static IEnumerator DoAnimate(float duration, AnimationCurve curve, Action<float> progressCallback, bool useRealtime = false)
+    {
+        return _AnimateCoroutine(duration, curve.Evaluate, progressCallback, useRealtime);
+    }
+    public static IEnumerator DoAnimate(float duration, Func<float, float> easingFunc, Action<float> progressCallback, bool useRealtime = false)
+    {
+        return _AnimateCoroutine(duration, easingFunc, progressCallback, useRealtime);
+    }
+    #endregion
+
     private static IEnumerator _AnimateCoroutine(float duration, Func<float, float> easingFunc, Action<float> progressCallback, bool realtime)
     {
         float t = 0;

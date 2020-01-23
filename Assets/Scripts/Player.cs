@@ -315,11 +315,18 @@ public class Player : NetworkBehaviour
             SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.Invalid, playerId);
             return;
         }
-        if (!ConsumeFromInventory(CollectableType.PowerupGrapplingHook, 1))
-            return;
 
         var balls = new List<Ball>(GameManager.Instance.balls);
         if (balls.Count == 0)
+            return;
+        if(balls.Any(ball => !ball.CanGrapple()))
+        {
+            Debug.Log("Cannot use grapple: a ball is already blocked");
+            SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.Invalid, playerId);
+            return;
+        }
+
+        if (!ConsumeFromInventory(CollectableType.PowerupGrapplingHook, 1))
             return;
 
         float ballDiameter = balls[0].transform.localScale.y;

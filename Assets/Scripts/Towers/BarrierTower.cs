@@ -66,7 +66,7 @@ public class BarrierTower : TowerBase
     private IEnumerator KnockOver()
     {
         isReady = false;
-        yield return this.AnimateVector(knockOverDuration, Vector3.zero, new Vector3(-85, 0, 0), knockOverCurve, v => anchor.localEulerAngles = v);
+        yield return Util.DoAnimateVector(knockOverDuration, Vector3.zero, new Vector3(-85, 0, 0), knockOverCurve, v => anchor.localEulerAngles = v);
         hitRegionCollider.enabled = false;
         yield return new WaitForSeconds(recoverDuration);
         
@@ -77,7 +77,7 @@ public class BarrierTower : TowerBase
         }
 
         hitRegionCollider.enabled = true;
-        yield return this.AnimateVector(2 * knockOverDuration, new Vector3(-85, 0, 0), Vector3.zero, knockOverCurve, v => anchor.localEulerAngles = v);
+        yield return Util.DoAnimateVector(2 * knockOverDuration, new Vector3(-85, 0, 0), Vector3.zero, knockOverCurve, v => anchor.localEulerAngles = v);
         isReady = true;
     }
 
