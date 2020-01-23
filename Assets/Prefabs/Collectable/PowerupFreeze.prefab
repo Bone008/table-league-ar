@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverOnly: 0
-  m_AssetId: ade64e0729ea83645bace9c5a461ff1f
+  m_AssetId: 
   m_SceneId: 0
 --- !u!114 &2876984474660438597
 MonoBehaviour:
@@ -86,6 +86,7 @@ MonoBehaviour:
   type: 2
   amount: 1
   collectDuration: 1.2
+  timeToLive: 40
   collectEffect: {fileID: 8873007817454280583}
 --- !u!135 &2214776269971768367
 SphereCollider:
@@ -158,11 +159,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1391763885677002458}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 1dea3b84b8bbff1439be1a8ccf990987,
-        type: 3}
-      propertyPath: m_Name
-      value: Snowflake
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 1dea3b84b8bbff1439be1a8ccf990987,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -238,6 +234,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c1c7389e8b172c14db0bb017b5cc5f26, type: 2}
+    - target: {fileID: -927199367670048503, guid: 1dea3b84b8bbff1439be1a8ccf990987,
+        type: 3}
+      propertyPath: m_Name
+      value: Snowflake
+      objectReference: {fileID: 0}
     - target: {fileID: -113181020801827196, guid: 1dea3b84b8bbff1439be1a8ccf990987,
         type: 3}
       propertyPath: m_Enabled
@@ -338,11 +339,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1391763885677002458}
     m_Modifications:
-    - target: {fileID: 8090992375337036222, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
-        type: 3}
-      propertyPath: m_Name
-      value: CollectingEffect
-      objectReference: {fileID: 0}
     - target: {fileID: 973378908819220886, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
@@ -417,6 +413,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8090992375337036222, guid: 20556c5b4f82d7b4c9b65e1817d89fc3,
+        type: 3}
+      propertyPath: m_Name
+      value: CollectingEffect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20556c5b4f82d7b4c9b65e1817d89fc3, type: 3}

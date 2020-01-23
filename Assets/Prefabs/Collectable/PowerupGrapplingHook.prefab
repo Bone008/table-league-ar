@@ -166,6 +166,7 @@ MonoBehaviour:
   type: 4
   amount: 1
   collectDuration: 1.2
+  timeToLive: 40
   collectEffect: {fileID: 3478743316611286335}
 --- !u!135 &2214776269971768367
 SphereCollider:
