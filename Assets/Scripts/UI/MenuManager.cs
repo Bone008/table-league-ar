@@ -16,6 +16,7 @@ public class MenuManager : MonoBehaviour
     public Button defaultDuration;
     public TMPro.TextMeshProUGUI statusText;
     public TMPro.TMP_InputField remoteAddressInput;
+    public AudioSource altClickyAudio;
 
     private bool attemptingConnect = false;
 
@@ -32,6 +33,8 @@ public class MenuManager : MonoBehaviour
 
         // Highlights the default buttons and calls SetBalls and SetDuration,
         // to reset ServerSettings properly after quitting a previous game.
+        altClickyAudio.mute = true;
+        this.Delayed(0.4f, () => altClickyAudio.mute = false);
         defaultBalls.onClick.Invoke();
         defaultDuration.onClick.Invoke();
     }
