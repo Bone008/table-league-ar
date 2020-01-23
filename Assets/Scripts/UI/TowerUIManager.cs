@@ -48,7 +48,6 @@ public class TowerUIManager : MonoBehaviour
         destroyMode = !destroyMode;
         towerChoice = TowerType.None;
         UpdateButtons();
-        ToggleTowerRange(false);
     }
 
     public void MagneticTower()
@@ -83,13 +82,11 @@ public class TowerUIManager : MonoBehaviour
         if (towerChoice == newType)
         {
             towerChoice = TowerType.None;
-            ToggleTowerRange(false);
         }
         else
         {
             towerChoice = newType;
             destroyMode = false;
-            ToggleTowerRange(true);
         }
         UpdateButtons();
     }
@@ -98,13 +95,8 @@ public class TowerUIManager : MonoBehaviour
     {
         int resources = PlayerNetController.LocalInstance?.player?.GetInventoryCount(CollectableType.TowerResource) ?? 0;
         bool canBuild = resources >= Constants.towerCost;
-
-
         if (!canBuild)
-        {
             towerChoice = TowerType.None;
-            ToggleTowerRange(false);
-        }
 
         towerButtons[0].image.sprite = (destroyMode ? selectedSpriteDestroy : defaultSpriteDestroy);
         for (int i = 1; i < towerButtons.Length; i++)
@@ -112,6 +104,8 @@ public class TowerUIManager : MonoBehaviour
             towerButtons[i].interactable = canBuild;
             towerButtons[i].image.sprite = (i == (int)towerChoice ? selectedSpriteBuild : defaultSpriteBuild);
         }
+
+        ToggleTowerRange(towerChoice != TowerType.None);
     }
 
     private void ToggleTowerRange(bool showRange)
