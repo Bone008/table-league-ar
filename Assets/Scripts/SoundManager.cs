@@ -27,6 +27,8 @@ public enum SoundEffect
     MagnetActivate,
     BarrierKnockOver,
     BallFreeze,
+    TowerJamming,
+    BallUnfreeze,
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -48,6 +50,8 @@ public class SoundManager : NetworkBehaviour
     public AudioClip clipMagnetActivate;
     public AudioClip clipBarrierKnockOver;
     public AudioClip clipBallFreeze;
+    public AudioClip clipTowerJamming;
+    public AudioClip clipBallUnfreeze;
 
     private Dictionary<SoundEffect, AudioClip> clipsByEffect = new Dictionary<SoundEffect, AudioClip>();
     private AudioSource source;
@@ -71,6 +75,8 @@ public class SoundManager : NetworkBehaviour
         clipsByEffect.Add(SoundEffect.MagnetActivate, clipMagnetActivate);
         clipsByEffect.Add(SoundEffect.BarrierKnockOver, clipBarrierKnockOver);
         clipsByEffect.Add(SoundEffect.BallFreeze, clipBallFreeze);
+        clipsByEffect.Add(SoundEffect.TowerJamming, clipTowerJamming);
+        clipsByEffect.Add(SoundEffect.BallUnfreeze, clipBallUnfreeze);
         
         // Completeness check.
         foreach(SoundEffect sound in System.Enum.GetValues(typeof(SoundEffect)))
