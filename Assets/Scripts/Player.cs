@@ -274,8 +274,13 @@ public class Player : NetworkBehaviour
         foreach (Ball ball in GameManager.Instance.balls)
         {
             ball.Freeze(Constants.freezeBallDuration);
+           
         }
         SoundManager.Instance.RpcPlaySoundAll(SoundEffect.BallFreeze);
+        this.Delayed(Constants.freezeBallDuration, () =>
+        {
+            SoundManager.Instance.RpcPlaySoundAll(SoundEffect.BallUnfreeze);
+        });
     }
 
     [Server]

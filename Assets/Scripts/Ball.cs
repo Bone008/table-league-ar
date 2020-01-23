@@ -93,7 +93,6 @@ public class Ball : NetworkBehaviour
             rbody.isKinematic = false;
             RpcSetFrozen(false);
             activeUnfreezeCoroutine = null;
-            SoundManager.Instance.RpcPlaySoundAll(SoundEffect.BallUnfreeze);
         });
     }
 
