@@ -12,6 +12,8 @@ public abstract class TowerBase : NetworkBehaviour
 {
     public Player owner;
 
+    public GameObject cannotBuildRange;
+
     /// <summary>Server- & client-side jam status of the tower.</summary>
     [SyncVar]
     protected bool isJammed = false;
