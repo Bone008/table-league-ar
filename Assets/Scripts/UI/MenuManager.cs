@@ -13,12 +13,12 @@ public class MenuManager : MonoBehaviour
     public GameObject playMenu;
     public GameObject multiPlayer;
     public Button defaultBalls;
-    public Button defaultPoints;
+    public Button defaultDuration;
     public TMPro.TextMeshProUGUI statusText;
     public TMPro.TMP_InputField remoteAddressInput;
 
     private bool attemptingConnect = false;
-    
+
     void Start()
     {
         remoteAddress = PlayerPrefs.GetString(PREFS_KEY_ADDRESS, "localhost");
@@ -30,13 +30,15 @@ public class MenuManager : MonoBehaviour
             PlayerPrefs.Save();
         });
 
-        defaultBalls.interactable = false;
-        defaultPoints.interactable = false;
+        // Highlights the default buttons and calls SetBalls and SetDuration,
+        // to reset ServerSettings properly after quitting a previous game.
+        defaultBalls.onClick.Invoke();
+        defaultDuration.onClick.Invoke();
     }
 
     void Update()
     {
-        if(attemptingConnect && !NetworkClient.active)
+        if (attemptingConnect && !NetworkClient.active)
         {
             statusText.text = "Connection failed! Please try again.";
             attemptingConnect = false;
@@ -68,21 +70,21 @@ public class MenuManager : MonoBehaviour
     {
         ServerSettings.isMultiplayer = true;
     }
-    
+
     public void SetBalls(int balls)
     {
         ServerSettings.numberOfBalls = balls;
     }
 
-    public void SetPoints(int points)
+    public void SetDuration(float durationMinutes)
     {
-        ServerSettings.winningPoints = points;
+        ServerSettings.gameDurationSeconds = durationMinutes * 60;
     }
-    
+
     public void StartGame()
     {
-        Debug.Log(string.Format("Starting game with settings: multiplayer={0}, #balls={1}, #points={2}",
-            ServerSettings.isMultiplayer, ServerSettings.numberOfBalls, ServerSettings.winningPoints));
+        Debug.Log(string.Format("Starting game with settings: multiplayer={0}, #balls={1}, duration={2:0.#}",
+            ServerSettings.isMultiplayer, ServerSettings.numberOfBalls, ServerSettings.gameDurationSeconds / 60));
 
         // For singleplayer, we still host a pseudo "server", but we don't open any ports.
         NetworkServer.dontListen = !ServerSettings.isMultiplayer;
@@ -104,5 +106,5 @@ public class MenuManager : MonoBehaviour
         attemptingConnect = false;
         NetworkManager.singleton.StopClient();
     }
-    
+
 }
