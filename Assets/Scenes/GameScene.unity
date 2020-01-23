@@ -3456,7 +3456,7 @@ MonoBehaviour:
     type: 3}
   player1: {fileID: 810622631}
   player2: {fileID: 764313429}
-  allowCheats: 0
+  allowCheats: 1
 --- !u!4 &768383733
 Transform:
   m_ObjectHideFlags: 0
@@ -4868,7 +4868,7 @@ MonoBehaviour:
   - {fileID: 4144803343209334873, guid: c82a892376f4d26438283a9bbb427147, type: 3}
   - {fileID: 4144803343209334873, guid: 30cb00171fba4e74fb6decd9e4bfe141, type: 3}
   buildTime: 1.5
-  destroyTime: 1.5
+  destroyTime: 1
   destroyEffectOnlyTime: 0.5
 --- !u!4 &1018032060
 Transform:

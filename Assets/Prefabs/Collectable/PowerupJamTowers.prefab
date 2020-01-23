@@ -165,7 +165,7 @@ MonoBehaviour:
   syncInterval: 0.1
   type: 3
   amount: 1
-  collectDuration: 2
+  collectDuration: 1.2
   collectEffect: {fileID: 3478743316611286335}
 --- !u!135 &2214776269971768367
 SphereCollider:
