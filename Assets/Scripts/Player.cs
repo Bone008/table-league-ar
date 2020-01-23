@@ -293,5 +293,6 @@ public class Player : NetworkBehaviour
                 EffectsManager.Instance.RpcPlayInterferenceEffect(towerGo, Constants.towerJamDuration);
             }
         }
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.TowerJamming, playerId);
     }
 }
