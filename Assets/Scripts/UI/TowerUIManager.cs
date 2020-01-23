@@ -7,7 +7,9 @@ public class TowerUIManager : MonoBehaviour
 {
     public static bool destroyMode = false;
     public static TowerType towerChoice = TowerType.None;
-    
+
+    public PlayerNetController netController => PlayerNetController.LocalInstance;
+
     [Tooltip("the order should follow the TowerType enum, but first entry (None) represents the destroy button")]
     public Button[] towerButtons;
     public Sprite selectedSpriteBuild;
@@ -80,11 +82,13 @@ public class TowerUIManager : MonoBehaviour
         if (towerChoice == newType)
         {
             towerChoice = TowerType.None;
+            ToggleTowerRange(false);
         }
         else
         {
             towerChoice = newType;
             destroyMode = false;
+            ToggleTowerRange(true);
         }
         UpdateButtons();
     }
@@ -93,8 +97,10 @@ public class TowerUIManager : MonoBehaviour
     {
         int resources = PlayerNetController.LocalInstance?.player?.GetInventoryCount(CollectableType.TowerResource) ?? 0;
         bool canBuild = resources >= Constants.towerCost;
+       
 
-        if (!canBuild) towerChoice = TowerType.None;
+        if (!canBuild)
+            towerChoice = TowerType.None;
 
         towerButtons[0].image.sprite = (destroyMode ? selectedSpriteDestroy : defaultSpriteDestroy);
         for (int i = 1; i < towerButtons.Length; i++)
@@ -103,5 +109,17 @@ public class TowerUIManager : MonoBehaviour
             towerButtons[i].image.sprite = (i == (int)towerChoice ? selectedSpriteBuild : defaultSpriteBuild);
         }
     }
-    
+
+    private void ToggleTowerRange(bool showRange)
+    {
+        GameObject[] towers = GameObject.FindGameObjectsWithTag(Constants.TOWER_TAG);
+
+        foreach (GameObject t in towers)
+        {
+            if (netController.player.ownedRectangle.Contains(t.transform.position))
+            {
+                t.transform.Find("cannotbuildrange").gameObject.SetActive(showRange);
+            }
+        }
+    }
 }

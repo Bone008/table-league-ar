@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverOnly: 0
-  m_AssetId: 
+  m_AssetId: ab9692a0272588f4fa482ecaf6b8909b
   m_SceneId: 0
 --- !u!1 &7087048251132628352
 GameObject:
