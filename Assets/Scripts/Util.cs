@@ -8,6 +8,41 @@ using UnityEngine;
 // Note: Reused from Lukas' HackerJedi project: https://github.com/Bone008/HackerJedi/blob/master/Assets/Scripts/Util.cs
 public static class Util
 {
+    /// <summary>
+    /// Projects a 2D point onto the bounds of a rectangle, preserving directions.
+    /// </summary>
+    public static Vector2 ProjectPointOntoRect(Rect rect, Vector2 point)
+    {
+        if (rect.Contains(point))
+            return point;
+
+        Vector2 rectHalfSize = rect.size / 2;
+        Vector2 dir = (point - rect.center).normalized;
+        if (dir.x == 0)
+            dir.x = 1e-4f;
+
+        float dirRatio = dir.y / dir.x;
+        Vector2 p;
+        // Expand direction from center to right edge of rect.
+        // Then check if its y coordinate is within the vertical bounds.
+        // If yes --> left or right edge. If no --> top or bottom edge.
+        if (Mathf.Abs(dirRatio) * rectHalfSize.x < rectHalfSize.y)
+        {
+            // Point is somewhere on left or right edge.
+            p.x = Mathf.Sign(dir.x) * rectHalfSize.x;
+            p.y = Mathf.Sign(dir.x) * dirRatio * rectHalfSize.x;
+        }
+        else
+        {
+            // Point is somewhere on top or bottom edge.
+            p.y = Mathf.Sign(dir.y) * rectHalfSize.y;
+            p.x = Mathf.Sign(dir.y) * rectHalfSize.y / dirRatio;
+        }
+
+        return rect.center + p;
+    }
+
+
     public static float EaseInOut01(float t)
     {
         return Mathf.SmoothStep(0, 1, t);

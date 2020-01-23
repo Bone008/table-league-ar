@@ -18,4 +18,14 @@ public class SceneRectangle : MonoBehaviour
         return point.x >= min.x && point.x <= max.x
             && point.z >= min.z && point.z <= max.z;
     }
+
+    /// <summary>Projects the X and Z coordinates of a point to lie within this rectangle.</summary>
+    /// <param name="padding">minimum necessary distance from the border</param>
+    /// <returns>the projected vector</returns>
+    public Vector3 ProjectPoint(Vector3 point, float padding = 0)
+    {
+        Rect rect2d = new Rect(min.x + padding, min.z + padding, max.x - min.x - 2*padding, max.z - min.z - 2*padding);
+        var projected2d = Util.ProjectPointOntoRect(rect2d, new Vector2(point.x, point.z));
+        return new Vector3(projected2d.x, point.y, projected2d.y);
+    }
 }

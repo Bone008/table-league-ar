@@ -8,6 +8,8 @@ public static class Constants
     public const string COLLECTABLE_TAG = "Collectable";
     public const string GOAL_TAG = "Goal";
 
+    public const float CEILING_HEIGHT = 1f;
+
     public const int towerCost = 20;
     public const float towerDistance = 0.35f;
     public const float freezeBallDuration = 5f;

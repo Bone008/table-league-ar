@@ -120,22 +120,20 @@ public class Ball : NetworkBehaviour
 
     private IEnumerator DoGrapple(Transform grapplerTransform, Vector3 relativeTargetPos, SceneRectangle validRect)
     {
-        //rbody.detectCollisions = false;
         rbody.isKinematic = true;
 
         Vector3 startPos = transform.position;
         float radius = transform.localScale.y / 2;
-
-        Vector3 lastValidTargetPos = grapplerTransform.TransformPoint(relativeTargetPos);
+        
         Func<Vector3> currentTargetPos = () =>
         {
-            Vector3 newTarget = grapplerTransform.TransformPoint(relativeTargetPos);
-            if (validRect.Contains(newTarget))
-                lastValidTargetPos = newTarget;
-            lastValidTargetPos.y = Mathf.Max(radius, lastValidTargetPos.y);
-            return lastValidTargetPos;
+            Vector3 pos = grapplerTransform.TransformPoint(relativeTargetPos);
+            pos = validRect.ProjectPoint(pos, radius + 0.01f);
+            // Make sure point is above ground and below ceiling
+            pos.y = Mathf.Clamp(pos.y, radius, Constants.CEILING_HEIGHT - radius);
+            return pos;
         };
-        Func<Vector3> randomOffset = () => 0.001f * new Vector3(Mathf.Sin(100 * (100+Time.time)), Mathf.Sin(102 * (100+Time.time)), Mathf.Sin(104 * (100+Time.time)));
+        Func<Vector3> randomOffset = () => 0.001f * new Vector3(Mathf.Sin(50 * (100+Time.time)), Mathf.Sin(52 * (100+Time.time)), Mathf.Sin(54 * (100+Time.time)));
 
         yield return Util.DoAnimate(Constants.grappleTransitionDuration, Util.EaseOut01, t =>
         {
@@ -154,14 +152,14 @@ public class Ball : NetworkBehaviour
 
         // Go!
         rbody.isKinematic = false;
-        //rbody.detectCollisions = true;
         activeGrappleCoroutine = null;
     }
 
     [Server]
     public void Hit()
     {
-        RpcHitEffect(true);
+        if (!rbody.isKinematic)
+            RpcHitEffect(true);
     }
 
     [ClientRpc]

@@ -309,12 +309,6 @@ public class Player : NetworkBehaviour
             Debug.LogWarning("Cannot use grapple: controllerTransform was not assigned!", this);
             return;
         }
-        if(!ownedRectangle.Contains(controllerTransform.position))
-        {
-            Debug.Log("cannot use grapple outside of play area");
-            SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.Invalid, playerId);
-            return;
-        }
 
         var balls = new List<Ball>(GameManager.Instance.balls);
         if (balls.Count == 0)
@@ -332,11 +326,9 @@ public class Player : NetworkBehaviour
         float ballDiameter = balls[0].transform.localScale.y;
         float spacing = 1.7f * ballDiameter;
         float maxX = spacing * (balls.Count - 1) / 2f;
-
         // Sort balls by their current x position local to the player, to avoid crossing them over in weird ways.
         balls.Sort((a, b) =>  controllerTransform.InverseTransformPoint(a.transform.position).x.CompareTo(
             controllerTransform.InverseTransformPoint(b.transform.position).x));
-
         for (int i = 0; i < balls.Count; i++)
         {
             Ball ball = balls[i];
