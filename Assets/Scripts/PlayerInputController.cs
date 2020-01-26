@@ -154,6 +154,25 @@ public class PlayerInputController : MonoBehaviour
                 Debug.Log($"hit a ball at d={distanceToOrigin}, str={hitStrength} ({Mathf.RoundToInt((hitStrength /maxHitStrength)* 100)} %)", hit.collider.gameObject);
 
                 Vector3 direction = transform.rotation * Vector3.forward;
+
+                //Code for nice save
+                Rigidbody rbodyBall = hit.collider.gameObject.GetComponent<Rigidbody>();
+                Vector3 pos = rbodyBall.position + (rbodyBall.velocity * .2f);
+                GameObject[] goals = GameObject.FindGameObjectsWithTag(Constants.GOAL_TAG);
+                
+                foreach (GameObject g in goals)
+                {
+                    if (g.GetComponent<Goal>().owner == PlayerNetController.LocalInstance?.player)
+                    {
+                        if(Vector3.Distance(pos, g.transform.position) < .15f)
+                        {
+                            Debug.Log("SAVE!!");
+                            SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.NiceSave, PlayerNetController.LocalInstance.player.playerId);
+                        }
+                    }
+                }
+                
+
                 if (direction.y < 0) direction.y = 0;
                 direction.Normalize();
 

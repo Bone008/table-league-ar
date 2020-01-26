@@ -29,6 +29,7 @@ public enum SoundEffect
     BallFreeze,
     TowerJamming,
     BallUnfreeze,
+    NiceSave,
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -52,6 +53,7 @@ public class SoundManager : NetworkBehaviour
     public AudioClip clipBallFreeze;
     public AudioClip clipTowerJamming;
     public AudioClip clipBallUnfreeze;
+    public AudioClip clipNiceSave;
 
     private Dictionary<SoundEffect, AudioClip> clipsByEffect = new Dictionary<SoundEffect, AudioClip>();
     private AudioSource source;
@@ -77,9 +79,10 @@ public class SoundManager : NetworkBehaviour
         clipsByEffect.Add(SoundEffect.BallFreeze, clipBallFreeze);
         clipsByEffect.Add(SoundEffect.TowerJamming, clipTowerJamming);
         clipsByEffect.Add(SoundEffect.BallUnfreeze, clipBallUnfreeze);
-        
+        clipsByEffect.Add(SoundEffect.NiceSave, clipNiceSave);
+
         // Completeness check.
-        foreach(SoundEffect sound in System.Enum.GetValues(typeof(SoundEffect)))
+        foreach (SoundEffect sound in System.Enum.GetValues(typeof(SoundEffect)))
         {
             if (!clipsByEffect.ContainsKey(sound))
                 Debug.LogError("Sound effect " + sound + " has no associated clip! Please add it in SoundManager.");
