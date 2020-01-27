@@ -19,6 +19,9 @@ public class PlayerInputController : MonoBehaviour
     public float unscaledMaxHitStrength;
     public AnimationCurve hitStrengthCurve;
 
+    public float distanceFromGoal;
+    public float ballVelocity;
+
     private float maxInteractionRange => unscaledMaxInteractionRange * Scale.gameScale;
     private float minHitStrength => unscaledMinHitStrength * Scale.gameScale;
     private float maxHitStrength => unscaledMaxHitStrength * Scale.gameScale;
@@ -168,7 +171,7 @@ public class PlayerInputController : MonoBehaviour
 
                 //Code for nice save
                 Rigidbody rbodyBall = hit.collider.gameObject.GetComponent<Rigidbody>();
-                Vector3 pos = rbodyBall.position + (rbodyBall.velocity * .2f);
+                Vector3 pos = rbodyBall.position + (rbodyBall.velocity);
                 GameObject[] goals = GameObject.FindGameObjectsWithTag(Constants.GOAL_TAG);
                 Player p = netController.player;
 
@@ -176,11 +179,14 @@ public class PlayerInputController : MonoBehaviour
                 {
                     if (g.GetComponent<Goal>().owner == p)
                     {
-                        if(Vector3.Distance(pos, g.transform.position) < .15f && rbodyBall.velocity.x > 0.5f)
+                        Debug.Log("Distance: " + Vector3.Distance(pos, g.transform.position) + " Velocity: " + rbodyBall.velocity.x);
+                        
+                        if (Vector3.Distance(pos, g.transform.position) < distanceFromGoal && rbodyBall.velocity.x > ballVelocity)
                         {
                             SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.NiceSave, p.playerId);
                             p.NiceSave();
                         }
+                        
                     }
                 }
                 
