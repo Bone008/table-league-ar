@@ -469,7 +469,7 @@ Transform:
   m_GameObject: {fileID: 4144803343209334873}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4144803343150681146}
   - {fileID: 4144803342831441348}
@@ -506,7 +506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverOnly: 0
-  m_AssetId: 30cb00171fba4e74fb6decd9e4bfe141
+  m_AssetId: 
   m_SceneId: 0
 --- !u!114 &1924760452351503203
 MonoBehaviour:
@@ -1100,11 +1100,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4144803343209334872}
     m_Modifications:
-    - target: {fileID: 457496931981863943, guid: 6ace04d49b9217b4f88f57349e71bb3d,
-        type: 3}
-      propertyPath: m_Name
-      value: BallFreezeEffect
-      objectReference: {fileID: 0}
     - target: {fileID: 457496931981863939, guid: 6ace04d49b9217b4f88f57349e71bb3d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1175,6 +1170,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.05200003
       objectReference: {fileID: 0}
+    - target: {fileID: 457496931981863943, guid: 6ace04d49b9217b4f88f57349e71bb3d,
+        type: 3}
+      propertyPath: m_Name
+      value: BallFreezeEffect
+      objectReference: {fileID: 0}
     - target: {fileID: 1220984391306990862, guid: 6ace04d49b9217b4f88f57349e71bb3d,
         type: 3}
       propertyPath: m_AssetId
@@ -1195,11 +1195,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4144803343209334872}
     m_Modifications:
-    - target: {fileID: 6021805989188584219, guid: 6f820e763be5e7e42851973bcfb0404e,
-        type: 3}
-      propertyPath: m_Name
-      value: cannotbuildrange
-      objectReference: {fileID: 0}
     - target: {fileID: 2888305314959553428, guid: 6f820e763be5e7e42851973bcfb0404e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1253,6 +1248,16 @@ PrefabInstance:
     - target: {fileID: 2888305314959553428, guid: 6f820e763be5e7e42851973bcfb0404e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6021805989188584219, guid: 6f820e763be5e7e42851973bcfb0404e,
+        type: 3}
+      propertyPath: m_Name
+      value: cannotbuildrange
+      objectReference: {fileID: 0}
+    - target: {fileID: 6021805989188584219, guid: 6f820e763be5e7e42851973bcfb0404e,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

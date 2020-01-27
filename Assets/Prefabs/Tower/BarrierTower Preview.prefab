@@ -520,7 +520,7 @@ Transform:
   m_GameObject: {fileID: 9094761377070753644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 3323099389118889209}
   - {fileID: 2614633469574015881}
@@ -582,7 +582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverOnly: 0
-  m_AssetId: a7c8152ec87f06e46a48fc4dc8789aaa
+  m_AssetId: 
   m_SceneId: 0
 --- !u!1001 &3594975638229228573
 PrefabInstance:
@@ -591,11 +591,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7781591793185147519}
     m_Modifications:
-    - target: {fileID: 2305260278610764011, guid: 03aa5993568972141b4cfee9caf03f62,
-        type: 3}
-      propertyPath: m_Name
-      value: TowerBuildEffect
-      objectReference: {fileID: 0}
     - target: {fileID: 2305260278610764004, guid: 03aa5993568972141b4cfee9caf03f62,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -650,6 +645,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2305260278610764011, guid: 03aa5993568972141b4cfee9caf03f62,
+        type: 3}
+      propertyPath: m_Name
+      value: TowerBuildEffect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03aa5993568972141b4cfee9caf03f62, type: 3}

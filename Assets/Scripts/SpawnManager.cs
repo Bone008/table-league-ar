@@ -77,7 +77,7 @@ public class SpawnManager : MonoBehaviour
             // All spawn points occupied
             return;
         }
-        Vector3 spawnPos = Util.PickRandomElement(freeSpawns) + 0.04f * Vector3.up;
+        Vector3 spawnPos = Util.PickRandomElement(freeSpawns) + 0.02f * Vector3.up;
         
         // Pick which collectable type to spawn.
         CollectableConfig config = PickSpawnedType(lastSpawnedPlayer);

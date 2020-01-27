@@ -229,7 +229,7 @@ Transform:
   m_GameObject: {fileID: 4144803343209334873}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4144803342831441348}
   - {fileID: 6322953339490159844}
@@ -267,7 +267,7 @@ MonoBehaviour:
   syncInterval: 0
   owner: {fileID: 0}
   cannotBuildRange: {fileID: 7140356853830741508}
-  pullForce: 1.8
+  pullForce: 0.9
   maxEnergy: 1
   rechargeDelay: 3
   effectCooldown: 0.4
@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverOnly: 0
-  m_AssetId: 45088b3a95a687b44930166e5fef52d4
+  m_AssetId: 
   m_SceneId: 0
 --- !u!1 &7087048251132628352
 GameObject:
@@ -451,11 +451,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4144803343209334872}
     m_Modifications:
-    - target: {fileID: 6021805989188584219, guid: 6f820e763be5e7e42851973bcfb0404e,
-        type: 3}
-      propertyPath: m_Name
-      value: cannotbuildrange
-      objectReference: {fileID: 0}
     - target: {fileID: 2888305314959553428, guid: 6f820e763be5e7e42851973bcfb0404e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -509,6 +504,16 @@ PrefabInstance:
     - target: {fileID: 2888305314959553428, guid: 6f820e763be5e7e42851973bcfb0404e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6021805989188584219, guid: 6f820e763be5e7e42851973bcfb0404e,
+        type: 3}
+      propertyPath: m_Name
+      value: cannotbuildrange
+      objectReference: {fileID: 0}
+    - target: {fileID: 6021805989188584219, guid: 6f820e763be5e7e42851973bcfb0404e,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

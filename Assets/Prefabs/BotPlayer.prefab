@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5517505443447124628}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.662, y: 0.115, z: -0.274}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 9081192917685423355}
   - {fileID: 9081192917685423311}
@@ -80,11 +80,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   player: {fileID: 0}
-  moveSpeed: 0.5
+  moveSpeed: 0.3
   moveSpeedAngle: 90
   ballMaxVelocity: 0.6
-  ballDesiredHitDistance: 0.3
-  ballHitStrength: 1
+  ballDesiredHitDistance: 0.15
+  ballHitStrength: 0.6
   ballHitCooldown: 3
   ballHitScatterAngle: 6
   collectInterval: 5

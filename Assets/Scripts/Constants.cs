@@ -11,10 +11,10 @@ public static class Constants
     public const float CEILING_HEIGHT = 1f;
 
     public const int towerCost = 20;
-    public const float towerDistance = 0.35f;
+    public const float towerDistance = 0.35f * 0.5f;
     public const float freezeBallDuration = 5f;
     public const float towerJamDuration = 10f;
-    public const float grappleTargetDistance = 0.25f;
+    public const float grappleTargetDistance = 0.25f * 0.5f;
     public const float grappleShootDuration = 0.7f;
     public const float grapplePullDuration = 1.2f;
     public const float grappleHoldDuration = 0.5f;
