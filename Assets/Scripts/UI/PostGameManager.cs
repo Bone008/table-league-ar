@@ -36,13 +36,13 @@ public class PostGameManager : MonoBehaviour
         switch(statistics.result)
         {
             case WinResult.Winner:
-                resultText.text = "You WON the game!";
+                resultText.text = "You WON!";
                 break;
             case WinResult.Loser:
-                resultText.text = "You LOST the game!";
+                resultText.text = "You LOST!";
                 break;
             case WinResult.Draw:
-                resultText.text = "The game was a DRAW!";
+                resultText.text = "DRAW!";
                 break;
         }
         scoreOwn.text = statistics.finalScoreSelf.ToString();
