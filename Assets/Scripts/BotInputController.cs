@@ -35,6 +35,12 @@ public class BotInputController : NetworkBehaviour
     {
         // Bots were born ready.
         player.isUserReady = true;
+
+        moveSpeed *= Scale.gameScale;
+        ballMaxVelocity *= Scale.gameScale;
+        ballDesiredHitDistance *= Scale.gameScale;
+        ballHitStrength *= Scale.gameScale;
+        ballMaxVelocity *= Scale.gameScale;
     }
 
     [ServerCallback]

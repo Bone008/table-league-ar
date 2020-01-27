@@ -11,23 +11,23 @@ public class SceneRectangleEditor : Editor
 
         Vector3[] verts = new Vector3[]
         {
-            t.min,
-            t.min + new Vector3(t.max.x - t.min.x, 0, 0),
-            t.max,
-            t.min + new Vector3(0, 0, t.max.z - t.min.z),
+            t.unscaledMin,
+            t.unscaledMin + new Vector3(t.unscaledMax.x - t.unscaledMin.x, 0, 0),
+            t.unscaledMax,
+            t.unscaledMin + new Vector3(0, 0, t.unscaledMax.z - t.unscaledMin.z),
         };
 
         Handles.DrawSolidRectangleWithOutline(verts, new Color(0.5f, 0.5f, 0.5f, 0.1f), new Color(0, 0, 0, 1));
 
         EditorGUI.BeginChangeCheck();
-        Vector3 newMin = Handles.PositionHandle(t.min, Quaternion.identity);
-        Vector3 newMax = Handles.PositionHandle(t.max, Quaternion.identity);
+        Vector3 newMin = Handles.PositionHandle(t.unscaledMin, Quaternion.identity);
+        Vector3 newMax = Handles.PositionHandle(t.unscaledMax, Quaternion.identity);
         newMin.y = newMax.y = 0;
         if (EditorGUI.EndChangeCheck())
         {
             Undo.RecordObject(t, "Change scene rectangle");
-            t.min = Vector3.Min(newMin, newMax);
-            t.max = Vector3.Max(newMin, newMax);
+            t.unscaledMin = Vector3.Min(newMin, newMax);
+            t.unscaledMax = Vector3.Max(newMin, newMax);
         }
     }
 }

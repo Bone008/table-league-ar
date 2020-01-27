@@ -77,7 +77,7 @@ public class SpawnManager : MonoBehaviour
             // All spawn points occupied
             return;
         }
-        Vector3 spawnPos = Util.PickRandomElement(freeSpawns) + 0.02f * Vector3.up;
+        Vector3 spawnPos = Util.PickRandomElement(freeSpawns) + 0.04f * Scale.gameScale * Vector3.up;
         
         // Pick which collectable type to spawn.
         CollectableConfig config = PickSpawnedType(lastSpawnedPlayer);
@@ -88,7 +88,7 @@ public class SpawnManager : MonoBehaviour
 
     private bool IsSpawnOccupied(Vector3 pos)
     {
-        Collider[] hits = Physics.OverlapSphere(pos, 0.1f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
+        Collider[] hits = Physics.OverlapSphere(pos, 0.1f * Scale.gameScale, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
         return hits.Any(hit => hit.CompareTag(Constants.COLLECTABLE_TAG));
     }
 

@@ -210,6 +210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4144803343209334872}
+  - component: {fileID: -2653443311008303483}
   - component: {fileID: 4144803343209334875}
   - component: {fileID: 4144803343209334874}
   - component: {fileID: -8399088779508527641}
@@ -229,7 +230,7 @@ Transform:
   m_GameObject: {fileID: 4144803343209334873}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4144803342831441348}
   - {fileID: 6322953339490159844}
@@ -237,6 +238,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2653443311008303483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144803343209334873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309a73df17d50254696c82ad8a6b091a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &4144803343209334875
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -267,7 +280,7 @@ MonoBehaviour:
   syncInterval: 0
   owner: {fileID: 0}
   cannotBuildRange: {fileID: 7140356853830741508}
-  pullForce: 0.9
+  pullForce: 1.8
   maxEnergy: 1
   rechargeDelay: 3
   effectCooldown: 0.4

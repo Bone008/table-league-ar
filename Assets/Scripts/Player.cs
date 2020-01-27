@@ -333,7 +333,7 @@ public class Player : NetworkBehaviour
         {
             Ball ball = balls[i];
             float x = Mathf.Lerp(-maxX, maxX, (float)i / (balls.Count - 1));
-            Vector3 targetPos = new Vector3(x, 0, Constants.grappleTargetDistance);
+            Vector3 targetPos = new Vector3(x, 0, Constants.scaledGrappleTargetDistance);
             ball.Grapple(controllerTransform, targetPos, ownedRectangle);
         }
     }

@@ -75,7 +75,7 @@ public class CaptureTower : TowerBase
             }
             else if(!isCapturingBall && isJammed)
             {
-                Vector3 bounce = 0.05f * Random.onUnitSphere;
+                Vector3 bounce = 0.05f * Scale.gameScale * Random.onUnitSphere;
                 bounce.y = 6 * Mathf.Abs(bounce.y);
                 targetBallRb.AddForce(bounce, ForceMode.Impulse);
                 ReleaseBall();

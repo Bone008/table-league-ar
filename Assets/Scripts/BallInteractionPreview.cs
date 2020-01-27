@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class BallInteractionPreview : MonoBehaviour
 {
-    // TODO: This somehow needs to be kept in sync with the value in PlayerInputController :(
-    // Not sure how to read it directly from there though ...
-    public float maxInteractionRange = 1.5f;
-
     public Renderer visual;
     public Material validMaterial;
     public Material invalidMaterial;
@@ -18,7 +14,8 @@ public class BallInteractionPreview : MonoBehaviour
         if (controller == null || controller.player == null)
             return;
 
-        bool inRange = (controller.transform.position - transform.position).sqrMagnitude < maxInteractionRange * maxInteractionRange;
+        float maxRange = PlayerInputController.s_unscaledMaxInteractionRange * Scale.gameScale;
+        bool inRange = (controller.transform.position - transform.position).sqrMagnitude < maxRange * maxRange;
         bool inControl = controller.player.ownedRectangle.Contains(transform.position);
 
         visual.enabled = inRange;

@@ -2,12 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SceneRectangle : MonoBehaviour
 {
-    public Vector3 min;
-    public Vector3 max;
-    public Vector3 center => (max + min) / 2;
+    [FormerlySerializedAs("min")]
+    public Vector3 unscaledMin;
+    [FormerlySerializedAs("max")]
+    public Vector3 unscaledMax;
+
+    public Vector3 min => unscaledMin * Scale.gameScale;
+    public Vector3 max => unscaledMax * Scale.gameScale;
+    public Vector3 center => (unscaledMin + unscaledMax) / 2 * Scale.gameScale;
 
     /// <summary>List of locations where resources can spawn within this rectangle.</summary>
     public Transform[] resourceSpawnPoints;

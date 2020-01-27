@@ -35,8 +35,15 @@ public class Ball : NetworkBehaviour
         if (transform.position.y < -100)
         {
             Debug.LogWarning("A ball left the play area and had to be reset.");
-            Reset(new Vector3(0, 0.2f, 0.02f));
+            Reset(Scale.gameScale * new Vector3(0, 0.2f, 0.02f));
         }
+    }
+
+    public override void OnStartServer()
+    {
+        // Drag should be quadratic in the velocity.
+        rbody.drag *= Scale.gameScale * Scale.gameScale;
+        rbody.angularDrag *= Scale.gameScale * Scale.gameScale;
     }
 
     public override void OnStartClient()
@@ -138,14 +145,14 @@ public class Ball : NetworkBehaviour
             Vector3 pos = grapplerTransform.TransformPoint(relativeTargetPos);
             pos = validRect.ProjectPoint(pos, radius + 0.01f);
             // Make sure point is above ground and below ceiling
-            pos.y = Mathf.Clamp(pos.y, radius, Constants.CEILING_HEIGHT - radius);
+            pos.y = Mathf.Clamp(pos.y, radius, Constants.scaledCeilingHeight - radius);
             return pos;
         };
 
         yield return Util.DoAnimate(Constants.grapplePullDuration, Util.EaseOut01, t =>
         {
             Vector3 targetPos = currentTargetPos();
-            targetPos.y += grappleYCurve.Evaluate(t);
+            targetPos.y += grappleYCurve.Evaluate(t) * Scale.gameScale;
             rbody.MovePosition(Vector3.Lerp(startPos, targetPos, t));
         });
         // Hold in place.

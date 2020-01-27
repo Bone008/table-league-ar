@@ -68,7 +68,7 @@ public class MagneticTower : TowerBase
         // increasing linearly with proximity up to 200%.
         // In reality, it should be quadratic, but that is way too extreme.
         float distFactor = Mathf.Min(2, maxRadius / dir.magnitude);
-        Vector3 force = (pullForce * distFactor) * dir.normalized;
+        Vector3 force = (pullForce * distFactor * Scale.gameScale) * dir.normalized;
         other.attachedRigidbody.AddForce(force, ForceMode.Force);
 
         if (Time.time - lastEffectTime >= effectCooldown)

@@ -26,9 +26,9 @@ public class BarrierTower : TowerBase
             Vector3 velocityBeforeImpact = collision.rigidbody.velocity - collision.impulse / collision.rigidbody.mass;
             float impactVelocity = Vector3.Dot(-anchor.forward, velocityBeforeImpact);
             Debug.Log("barrier impact velocity: " + impactVelocity);
-            if (impactVelocity >= ballMinImpactVelocity)
+            if (impactVelocity >= ballMinImpactVelocity * Scale.gameScale)
             {
-                collision.rigidbody.AddForce(ballImpulse * anchor.forward, ForceMode.Impulse);
+                collision.rigidbody.AddForce(ballImpulse * Scale.gameScale * anchor.forward, ForceMode.Impulse);
                 StartCoroutine(KnockOver());
                 RpcAlsoKnockOverOnClient();
 

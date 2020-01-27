@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class PlayerInputController : MonoBehaviour
 {
+    // Hacky helper to access this value from BallInteractionPreview.
+    public static float s_unscaledMaxInteractionRange;
+
     public PlayerNetController netController => PlayerNetController.LocalInstance;
 
-    public float maxInteractionRange = 2f;
-    public float minHitStrength;
-    public float maxHitStrength;
+    [FormerlySerializedAs("maxInteractionRange")]
+    public float unscaledMaxInteractionRange;
+    [FormerlySerializedAs("minHitStrength")]
+    public float unscaledMinHitStrength;
+    [FormerlySerializedAs("maxHitStrength")]
+    public float unscaledMaxHitStrength;
     public AnimationCurve hitStrengthCurve;
 
-    private GameObject towerPreview = null;
+    private float maxInteractionRange => unscaledMaxInteractionRange * Scale.gameScale;
+    private float minHitStrength => unscaledMinHitStrength * Scale.gameScale;
+    private float maxHitStrength => unscaledMaxHitStrength * Scale.gameScale;
 
+    private GameObject towerPreview = null;
     private int towerChoice = -1;
     
     // Local flag to remember if we need to send CancelInteraction or not.
@@ -24,6 +34,7 @@ public class PlayerInputController : MonoBehaviour
     void Awake()
     {
         Input.simulateMouseWithTouches = false;
+        s_unscaledMaxInteractionRange = unscaledMaxInteractionRange;
     }
 
     void LateUpdate()
@@ -64,7 +75,7 @@ public class PlayerInputController : MonoBehaviour
                     bool towerFeasible = true;
                     foreach (GameObject t in towers)
                     {
-                        if (Vector3.SqrMagnitude(t.transform.position - hit.point) < Constants.towerDistance * Constants.towerDistance)
+                        if (Vector3.SqrMagnitude(t.transform.position - hit.point) < Constants.scaledTowerDistance * Constants.scaledTowerDistance)
                         {
                             towerFeasible = false;
                             break;

@@ -52,13 +52,16 @@ public class EffectsManager : NetworkBehaviour
 
         var effect = Instantiate(towerDestroyEffectPrefab, tower.transform);
         effect.name = "__destroy_effect__";
+        // Note: Unscaled constant is fine because we are using localPosition.
         this.AnimateVector(duration - finalStageTime, -0.32f * Vector3.up, Vector3.zero, Util.EaseInOut01, v =>
         {
             if (effect) effect.transform.localPosition = v;
         });
+
+        var initialScale = tower.transform.localScale;
         this.Delayed(duration - finalStageTime, () => this.AnimateScalar(finalStageTime, 1f, 0f, Util.EaseOut01, s =>
         {
-            if (effect) tower.transform.localScale = new Vector3(s, 1, s);
+            if (effect) tower.transform.localScale = Vector3.Scale(initialScale, new Vector3(s, 1, s));
         }));
     }
 
