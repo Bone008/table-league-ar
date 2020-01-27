@@ -70,18 +70,27 @@ public class TimeController : NetworkBehaviour
     {
         // Find our statistic and remember them.
         GameStatistics localStats;
+        GameStatistics opStats;
         if (stats1.playerId == PlayerNetController.LocalInstance?.playerId)
+        {
             localStats = stats1;
+            opStats = stats2;
+        }
         else if (stats2.playerId == PlayerNetController.LocalInstance?.playerId)
+        {
             localStats = stats2;
+            opStats = stats1;
+        }
         else
         {
             // This is probably a way to detect spectator mode later.
             Debug.LogWarning("Could not locate own stats.", this);
             localStats = new GameStatistics();
+            opStats = new GameStatistics();
         }
 
         PostGameManager.statistics = localStats;
+        PostGameManager.opStatistics = opStats;
 
         // Change to postGameScene.
         SceneManager.LoadSceneAsync(postGameScene);

@@ -16,5 +16,10 @@ public class GameStatistics
     public WinResult result;
     public int finalScoreSelf;
     public int finalScoreOpponent;
-    public int numberOfBallHits;
+    public int powerupsUsed = 0;
+    public int numberOfBallHits = 0;
+    public int saves = 0;
+    public int towersBuilt = 0;
+    public float distanceTravelled = 0f;
+        
 }
