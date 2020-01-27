@@ -159,15 +159,16 @@ public class PlayerInputController : MonoBehaviour
                 Rigidbody rbodyBall = hit.collider.gameObject.GetComponent<Rigidbody>();
                 Vector3 pos = rbodyBall.position + (rbodyBall.velocity * .2f);
                 GameObject[] goals = GameObject.FindGameObjectsWithTag(Constants.GOAL_TAG);
-                
+                Player p = netController.player;
+
                 foreach (GameObject g in goals)
                 {
-                    if (g.GetComponent<Goal>().owner == PlayerNetController.LocalInstance?.player)
+                    if (g.GetComponent<Goal>().owner == p)
                     {
-                        if(Vector3.Distance(pos, g.transform.position) < .15f)
+                        if(Vector3.Distance(pos, g.transform.position) < .15f && rbodyBall.velocity.x > 0.5f)
                         {
-                            Debug.Log("SAVE!!");
-                            SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.NiceSave, PlayerNetController.LocalInstance.player.playerId);
+                            SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.NiceSave, p.playerId);
+                            p.NiceSave();
                         }
                     }
                 }

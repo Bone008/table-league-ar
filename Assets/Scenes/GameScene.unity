@@ -3743,7 +3743,7 @@ MonoBehaviour:
   syncInterval: 0.1
   clipButtonClick: {fileID: 8300000, guid: d661bfd67647b194299110d1a3ce47fc, type: 3}
   clipInvalid: {fileID: 8300000, guid: 2941a996d42c6e04f8e595c0fa7c8adf, type: 3}
-  clipTime: {fileID: 0}
+  clipTime: {fileID: 8300000, guid: 3993cdf03584b1f44874fb084eaf0680, type: 3}
   clipGameStart: {fileID: 8300000, guid: c8fae6e9b203fe2498ee45290b7f9e2b, type: 3}
   clipBallHit: {fileID: 8300000, guid: e8def84ca4b8aba4f886b12d6062ca76, type: 3}
   clipGoalScore: {fileID: 8300000, guid: d256de177f34c6c4eac7393679bac498, type: 3}
@@ -4055,7 +4055,7 @@ MonoBehaviour:
     type: 3}
   player1: {fileID: 810622631}
   player2: {fileID: 764313429}
-  allowCheats: 1
+  allowCheats: 0
 --- !u!4 &768383733
 Transform:
   m_ObjectHideFlags: 0

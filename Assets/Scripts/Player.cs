@@ -51,6 +51,8 @@ public class Player : NetworkBehaviour
     void Start()
     {
         statistics.playerId = playerId;
+
+        StartCoroutine(MeasureDistanceLoop());
     }
 
     /// <summary>Returns how many items of the given type the player has in their inventory.</summary>
@@ -81,6 +83,27 @@ public class Player : NetworkBehaviour
         if (value < amount) return false;
         inventory[type] = value - amount;
         return true;
+    }
+
+    [Server]
+    private IEnumerator MeasureDistanceLoop()
+    {
+        Vector3 lastPos = new Vector3 (0,0,0);
+
+        while (true)
+        {
+            if (controllerTransform == null)
+            {
+                Debug.LogWarning("ControllerTransform was not assigned!", this);
+            }
+            else
+            {
+                statistics.distanceTravelled += Vector3.Distance(controllerTransform.position, lastPos);
+                lastPos = controllerTransform.position;
+                Debug.Log(statistics.distanceTravelled);
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     [ServerCallback]
@@ -150,6 +173,7 @@ public class Player : NetworkBehaviour
         rigidbody.velocity = Vector3.zero;
         rigidbody.AddForce(force, ForceMode.Impulse);
         SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.BallHit, playerId);
+        statistics.numberOfBallHits += 1;
     }
 
     [Server]
@@ -202,6 +226,7 @@ public class Player : NetworkBehaviour
         RpcPlayBuildEffect(activeBuildTower);
         EffectsManager.Instance.RpcShowInteraction(gameObject, position);
         SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.TowerBuilding, playerId);
+        statistics.towersBuilt += 1;
     }
 
     [Server]
@@ -255,6 +280,7 @@ public class Player : NetworkBehaviour
             activeBuildTower = null;
             activeType = TowerType.None;
             SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.TowerBuilding, playerId);
+            statistics.towersBuilt -= 1;
         }
 
         if (activeDestroyingTower != null)
@@ -281,6 +307,7 @@ public class Player : NetworkBehaviour
         {
             SoundManager.Instance.RpcPlaySoundAll(SoundEffect.BallUnfreeze);
         });
+        statistics.powerupsUsed += 1;
     }
 
     [Server]
@@ -299,6 +326,7 @@ public class Player : NetworkBehaviour
             }
         }
         SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.TowerJamming, playerId);
+        statistics.powerupsUsed += 1;
     }
 
     [Server]
@@ -336,5 +364,12 @@ public class Player : NetworkBehaviour
             Vector3 targetPos = new Vector3(x, 0, Constants.grappleTargetDistance);
             ball.Grapple(controllerTransform, targetPos, ownedRectangle);
         }
+        statistics.powerupsUsed += 1;
+    }
+
+    [Server]
+    public void NiceSave()
+    {
+        statistics.saves += 1;
     }
 }
