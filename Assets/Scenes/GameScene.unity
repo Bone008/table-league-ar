@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -7415,7 +7415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5a070e4d8a2d447bb8fe0cf7ed6450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unscaledMaxInteractionRange: 2
+  unscaledMaxInteractionRange: 3
   unscaledMinHitStrength: 0.8
   unscaledMaxHitStrength: 1.5
   hitStrengthCurve:
@@ -7431,8 +7431,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.37454888
     - serializedVersion: 3
-      time: 0.16670382
-      value: 0.9354895
+      time: 0.09918368
+      value: 0.9543646
       inSlope: -1.0554038
       outSlope: -1.0554038
       tangentMode: 0
@@ -7440,8 +7440,8 @@ MonoBehaviour:
       inWeight: 0.21828088
       outWeight: 0.49523523
     - serializedVersion: 3
-      time: 0.2730716
-      value: 0.5254295
+      time: 0.18517038
+      value: 0.5207145
       inSlope: -3.3256414
       outSlope: -3.3256414
       tangentMode: 0
@@ -7449,8 +7449,8 @@ MonoBehaviour:
       inWeight: 0.20802349
       outWeight: 0.049891494
     - serializedVersion: 3
-      time: 0.473828
-      value: 0.113444656
+      time: 0.31841397
+      value: 0.10872667
       inSlope: -0.85816604
       outSlope: -0.85816604
       tangentMode: 0
