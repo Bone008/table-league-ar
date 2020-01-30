@@ -5093,7 +5093,7 @@ MonoBehaviour:
   clipBarrierKnockOver: {fileID: 8300000, guid: 3402582739d2693488ccfcfad5a69732,
     type: 3}
   clipBallFreeze: {fileID: 8300000, guid: e96b0d96625504f42bc0bd66e9998404, type: 3}
-  clipTowerJamming: {fileID: 8300000, guid: e0f591264ed9c37419dc5683fb2a2e17, type: 3}
+  clipTowerJamming: {fileID: 8300000, guid: a39fbe9dfe3b6ea4eb16cf15d52bffed, type: 3}
   clipBallUnfreeze: {fileID: 8300000, guid: a116e4837de68b049ad4a01cb1d78943, type: 3}
   clipNiceSave: {fileID: 8300000, guid: 1ee399772e3789142a189623589ef50c, type: 3}
   clipClockTick: {fileID: 8300000, guid: cca5be7379a432143a40305f311a4304, type: 3}
