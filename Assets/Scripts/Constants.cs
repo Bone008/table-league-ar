@@ -15,8 +15,13 @@ public static class Constants
     public const float grapplePullDuration = 1.2f;
     public const float grappleHoldDuration = 0.5f;
 
+    
+
     // IMPORTANT: All constants that are somehow connected to in-game units need to be scaled (and property getters, not actually const).
     public static float scaledCeilingHeight => 1f * Scale.gameScale;
     public static float scaledGrappleTargetDistance => 0.25f * Scale.gameScale;
     public static float scaledTowerDistance => 0.35f * Scale.gameScale;
+
+    public static float scaledDistanceFromGoal => 0.13f * Scale.gameScale;
+    public static float scaledDallVelocity => 0.5f * Scale.gameScale;
 }

@@ -170,6 +170,23 @@ public class Player : NetworkBehaviour
         ball.GetComponent<Ball>().Hit();
 
         var rigidbody = ball.GetComponent<Rigidbody>();
+
+        Vector3 pos = rigidbody.position;
+        GameObject[] goals = GameObject.FindGameObjectsWithTag(Constants.GOAL_TAG);
+
+        foreach (GameObject g in goals)
+        {
+            if (g.GetComponent<Goal>().owner.playerId == playerId)
+            {
+                if (Math.Abs(pos.x - g.transform.position.x) < Constants.scaledDistanceFromGoal && Math.Abs(rigidbody.velocity.x) > Constants.scaledDallVelocity)
+                {
+                    Debug.Log("Player: " + playerId + " " + "Distance: " + Math.Abs(pos.x - g.transform.position.x) + " Velocity: " + Math.Abs(rigidbody.velocity.x));
+                    SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.NiceSave, playerId);
+                    statistics.saves += 1;
+                }
+            }
+        }
+
         rigidbody.velocity = Vector3.zero;
         rigidbody.AddForce(force, ForceMode.Impulse);
         SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.BallHit, playerId);
@@ -365,11 +382,5 @@ public class Player : NetworkBehaviour
             ball.Grapple(controllerTransform, targetPos, ownedRectangle);
         }
         statistics.powerupsUsed += 1;
-    }
-
-    [Server]
-    public void NiceSave()
-    {
-        statistics.saves += 1;
     }
 }
