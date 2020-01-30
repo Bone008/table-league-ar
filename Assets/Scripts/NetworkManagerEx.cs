@@ -12,6 +12,9 @@ public class NetworkManagerEx : NetworkManager
         // and sets it up as the local player-controlled object on the connecting client.
         // The "Player" (in the game sense) will be assigned once CmdSetReady is invoked.
         NetworkServer.AddPlayerForConnection(conn, netPlayer);
+
+        // Initially send the current scale, in case it was already changed before the player connected.
+        Scale.Instance.TargetRpcChangeScale(conn, Scale.gameScale);
     }
 
     public override void OnServerReady(NetworkConnection conn)

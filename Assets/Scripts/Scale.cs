@@ -6,7 +6,7 @@ using UnityEngine;
 public class Scale : NetworkBehaviour
 {
     /// <summary>Shared factor of scaling of the scene.</summary>
-    public static float gameScale = 0.5f;
+    public static float gameScale = 1f;
     public static Scale Instance { get; private set; }
 
     public event System.Action GameScaleChanged;
@@ -23,11 +23,18 @@ public class Scale : NetworkBehaviour
     [Server]
     public void SetScale(float value)
     {
+        // Broadcast scale change to all connected clients.
         RpcChangeScale(value);
     }
-
+    
     [ClientRpc]
-    private void RpcChangeScale(float value)
+    private void RpcChangeScale(float value) => DoSetScale(value);
+    
+    /// <summary>Necessary to transfer the current scale to a new connected client.</summary>
+    [TargetRpc]
+    public void TargetRpcChangeScale(NetworkConnection conn, float value) => DoSetScale(value);
+
+    private void DoSetScale(float value)
     {
         // Update static accessor.
         gameScale = value;

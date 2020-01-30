@@ -12,13 +12,21 @@ public class GameUIManager : MonoBehaviour
     public Player player1;
     public Player player2;
     public Player localPlayer => PlayerNetController.LocalInstance?.player;
+    public TimeController timeController;
 
+    [Header("Scene")]
+    public GameObject scene;
     public Renderer floorRenderer;
     public Material floorEnabledMaterial;
     public Material floorDisabledMaterial;
 
-    public TimeController timeController;
+    [Header("Pregame")]
+    public GameObject scaleSetupVisual;
+    public GameObject scaleSetupPanel;
     public GameObject getReadyPanel;
+
+    [Header("Ingame UI")]
+    public GameObject ingameUI;
     public Text gameTimeText;
     public Text score1Text;
     public Text score2Text;
@@ -59,12 +67,21 @@ public class GameUIManager : MonoBehaviour
 
     void Start()
     {
-        if (!NetworkServer.active)
+        scene.SetActive(false);
+        this.Delayed(0, () =>
         {
+            if (NetworkServer.active)
+                return;
+
+            Debug.Log("Skipping scale setup as we are client-only.");
+            SetScaleSetupComplete();
+
+            // Legacy.
             foreach (var go in serverOnlyObjects)
                 go.SetActive(false);
-        }
+        });
     }
+
     void Update()
     {
         gameTimeText.text = timeController.GetFormattedTimeRemaining();
@@ -98,7 +115,7 @@ public class GameUIManager : MonoBehaviour
             int oldAmount = localPlayer.GetInventoryCount(key);
             Debug.Log(key + " from " + oldAmount + " to " + newAmount);
             Transform target;
-            switch(key)
+            switch (key)
             {
                 case CollectableType.PowerupFreeze: target = freezeAmountText.transform; break;
                 case CollectableType.PowerupJamTowers: target = jamAmountText.transform; break;
@@ -116,12 +133,21 @@ public class GameUIManager : MonoBehaviour
         button.interactable = amount > 0;
     }
 
+    public void SetScaleSetupComplete()
+    {
+        scaleSetupVisual.SetActive(false);
+        scaleSetupPanel.SetActive(false);
+        getReadyPanel.SetActive(true);
+        scene.SetActive(true);
+    }
+
     public void SetReady()
     {
         if (PlayerNetController.LocalInstance)
         {
             PlayerNetController.LocalInstance.CmdSetReady(true);
             getReadyPanel.SetActive(false);
+            ingameUI.SetActive(true);
         }
         else
             Debug.LogWarning("Cannot send ready command without a network player!");
