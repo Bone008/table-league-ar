@@ -6,9 +6,12 @@ public class ScaleSetup : MonoBehaviour
 {
     public float minWidth;
     public float referenceWidth;
+    public float referenceLength;
     public Transform previewLineNeg;
     public Transform previewLinePos;
     public GameObject playingAreaPreview;
+    public TMPro.TextMeshProUGUI[] widthTexts;
+    public TMPro.TextMeshProUGUI[] lengthTexts;
 
     private float currentHalfWidth;
 
@@ -21,7 +24,13 @@ public class ScaleSetup : MonoBehaviour
 
     public void ConfirmScale()
     {
-        Scale.Instance.SetScale(currentHalfWidth * 2 / referenceWidth);
+        float newScale = currentHalfWidth * 2 / referenceWidth;
+        Scale.Instance.SetScale(newScale);
+
         playingAreaPreview.SetActive(true);
+        foreach (var text in widthTexts)
+            text.text = Mathf.RoundToInt(referenceWidth * newScale * 100f) + " cm";
+        foreach (var text in lengthTexts)
+            text.text = Mathf.RoundToInt(referenceLength * newScale * 100f) + " cm";
     }
 }

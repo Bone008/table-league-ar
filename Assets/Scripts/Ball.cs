@@ -41,9 +41,11 @@ public class Ball : NetworkBehaviour
 
     public override void OnStartServer()
     {
+        // Note: Disabled since it seems to be very inaccurate.
+        // Just leaving drag unchanged feels much more consistent.
         // Drag should be quadratic in the velocity.
-        rbody.drag *= Scale.gameScale * Scale.gameScale;
-        rbody.angularDrag *= Scale.gameScale * Scale.gameScale;
+        //rbody.drag /= Scale.gameScale * Scale.gameScale;
+        //rbody.angularDrag /= Scale.gameScale * Scale.gameScale;
     }
 
     public override void OnStartClient()

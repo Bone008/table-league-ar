@@ -34,12 +34,10 @@ public class FollowScale : MonoBehaviour
 
     void OnDisable()
     {
+        // Instance can be null when the scene is unloaded. This is fine, since there is nothing to
+        // unregister if there is no scale manager (yet | any more).
         if (Scale.Instance == null)
-        {
-            Debug.LogError("Scale manager not initialized while disabling " + gameObject.name + "!", this);
             return;
-        }
-
         Scale.Instance.GameScaleChanged -= OnGameScaleChanged;
     }
     

@@ -7,11 +7,17 @@ public class Scale : NetworkBehaviour
 {
     /// <summary>Shared factor of scaling of the scene.</summary>
     public static float gameScale = 1f;
+
     public static Scale Instance { get; private set; }
+
+    // Lazily initialized because physics settings cannot be read from a static initializer.
+    // It has to be static because after we change the initial values once, we need to remember them
+    // even when reloading GameScene.
+    private static ScaledPhysics _scaledPhysics = null;
+    private static ScaledPhysics scaledPhysics => _scaledPhysics ?? (_scaledPhysics = new ScaledPhysics());
 
     public event System.Action GameScaleChanged;
 
-    private Vector3 initialGravity;
     
     // Hack: We need to use the constructor here, because somehow in a standalone player,
     // Awake() is called way too late for networked GameObjects. In the Editor, it is properly
@@ -20,11 +26,11 @@ public class Scale : NetworkBehaviour
     public Scale()
     {
         Instance = this;
-        initialGravity = Physics.gravity;
         //Debug.Log("SCALE MANAGER INSTANTIATED");
     }
 
-    /// <summary>Centralized way to control the scale. Note that this shouldn't be touched after the game has started.</summary>
+    /// <summary>Centralized way to control the scale. Note that this shouldn't be touched after the game has started.
+    /// IMPORTANT: Scale.gameScale is not immediately changed after calling SetScale, since it dispatches an RPC.</summary>
     [Server]
     public void SetScale(float value)
     {
@@ -44,11 +50,22 @@ public class Scale : NetworkBehaviour
         // Update static accessor.
         gameScale = value;
         GameScaleChanged?.Invoke();
-        UpdatePhysics();
+        scaledPhysics.Set(value);
     }
-
-    private void UpdatePhysics()
+    
+    private class ScaledPhysics
     {
-        Physics.gravity = initialGravity * gameScale;
+        private readonly Vector3 gravity =  Physics.gravity;
+        private readonly float bounceThreshold = Physics.bounceThreshold;
+        private readonly float sleepThreshold = Physics.sleepThreshold;
+        private readonly float defaultContactOffset = Physics.defaultContactOffset;
+
+        public void Set(float scale)
+        {
+            Physics.gravity = gravity * scale;
+            Physics.bounceThreshold = bounceThreshold * scale;
+            Physics.sleepThreshold = sleepThreshold * scale;
+            Physics.defaultContactOffset = defaultContactOffset * scale;
+        }
     }
 }
