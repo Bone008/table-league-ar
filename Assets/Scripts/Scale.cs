@@ -11,12 +11,17 @@ public class Scale : NetworkBehaviour
 
     public event System.Action GameScaleChanged;
 
-    private Vector3 initialGravity = Physics.gravity;
-
-    void Awake()
+    private Vector3 initialGravity;
+    
+    // Hack: We need to use the constructor here, because somehow in a standalone player,
+    // Awake() is called way too late for networked GameObjects. In the Editor, it is properly
+    // called before any other events, but after building, scripts like FollowScale will not find
+    // this instance if Scale's initialization is done in Awake();
+    public Scale()
     {
         Instance = this;
-        UpdatePhysics();
+        initialGravity = Physics.gravity;
+        //Debug.Log("SCALE MANAGER INSTANTIATED");
     }
 
     /// <summary>Centralized way to control the scale. Note that this shouldn't be touched after the game has started.</summary>

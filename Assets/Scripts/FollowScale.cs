@@ -10,25 +10,42 @@ public class FollowScale : MonoBehaviour
 
     void Awake()
     {
+        initialScale = transform.localScale;
+    }
+
+    void OnEnable()
+    {
         // Ignore on the client, but only if the transform is networked.
         if (!NetworkServer.active && TryGetComponent<NetworkTransform>(out _))
         {
-            enabled = false;
+            Debug.Log("DO NOT scale " + gameObject.name + " on the client.", this);
             return;
         }
-
-        initialScale = transform.localScale;
+        
         OnGameScaleChanged();
+
+        if(Scale.Instance == null)
+        {
+            Debug.LogError("Scale manager not initialized while enabling " + gameObject.name + "!", this);
+            return;
+        }
         Scale.Instance.GameScaleChanged += OnGameScaleChanged;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
+        if (Scale.Instance == null)
+        {
+            Debug.LogError("Scale manager not initialized while disabling " + gameObject.name + "!", this);
+            return;
+        }
+
         Scale.Instance.GameScaleChanged -= OnGameScaleChanged;
     }
     
     private void OnGameScaleChanged()
     {
         transform.localScale = initialScale * Scale.gameScale;
+        Debug.Log($"Scaling {gameObject.name} from {initialScale} to {transform.localScale}.", this);
     }
 }

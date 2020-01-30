@@ -48,10 +48,10 @@ public class Player : NetworkBehaviour
         remove { inventory.Callback -= value; }
     }
 
+    [ServerCallback]
     void Start()
     {
         statistics.playerId = playerId;
-
         StartCoroutine(MeasureDistanceLoop());
     }
 
@@ -94,13 +94,13 @@ public class Player : NetworkBehaviour
         {
             if (controllerTransform == null)
             {
-                Debug.LogWarning("ControllerTransform was not assigned!", this);
+                //Debug.LogWarning("ControllerTransform was not assigned!", this);
             }
             else
             {
                 statistics.distanceTravelled += Vector3.Distance(controllerTransform.position, lastPos);
                 lastPos = controllerTransform.position;
-                Debug.Log(statistics.distanceTravelled);
+                //Debug.Log(statistics.distanceTravelled);
             }
             yield return new WaitForSeconds(0.5f);
         }
