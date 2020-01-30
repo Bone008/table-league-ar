@@ -4557,6 +4557,8 @@ MonoBehaviour:
   clipTowerJamming: {fileID: 8300000, guid: e0f591264ed9c37419dc5683fb2a2e17, type: 3}
   clipBallUnfreeze: {fileID: 8300000, guid: a116e4837de68b049ad4a01cb1d78943, type: 3}
   clipNiceSave: {fileID: 8300000, guid: 1ee399772e3789142a189623589ef50c, type: 3}
+  clipClockTick: {fileID: 8300000, guid: cca5be7379a432143a40305f311a4304, type: 3}
+  clipTimeWarning: {fileID: 8300000, guid: 3993cdf03584b1f44874fb084eaf0680, type: 3}
 --- !u!114 &717608118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4850,7 +4852,7 @@ MonoBehaviour:
     type: 3}
   player1: {fileID: 810622631}
   player2: {fileID: 764313429}
-  allowCheats: 1
+  allowCheats: 0
 --- !u!4 &768383733
 Transform:
   m_ObjectHideFlags: 0
@@ -6921,8 +6923,6 @@ MonoBehaviour:
     m_PreInfinity: 1
     m_PostInfinity: 2
     m_RotationOrder: 4
-  distanceFromGoal: 0.55
-  ballVelocity: 0.3
 --- !u!114 &1046193792
 MonoBehaviour:
   m_ObjectHideFlags: 0
