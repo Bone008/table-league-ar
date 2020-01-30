@@ -44,6 +44,6 @@ public class FollowScale : MonoBehaviour
     private void OnGameScaleChanged()
     {
         transform.localScale = initialScale * Scale.gameScale;
-        Debug.Log($"Scaling {gameObject.name} from {initialScale} to {transform.localScale}.", this);
+        //Debug.Log($"Scaling {gameObject.name} from {initialScale} to {transform.localScale}.", this);
     }
 }

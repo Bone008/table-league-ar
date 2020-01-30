@@ -16,6 +16,7 @@ public class MenuManager : MonoBehaviour
     public Button defaultDuration;
     public TMPro.TextMeshProUGUI statusText;
     public TMPro.TMP_InputField remoteAddressInput;
+    public Toggle enableCheatsToggle;
     public AudioSource altClickyAudio;
 
     private bool attemptingConnect = false;
@@ -29,6 +30,12 @@ public class MenuManager : MonoBehaviour
             remoteAddress = value;
             PlayerPrefs.SetString(PREFS_KEY_ADDRESS, value);
             PlayerPrefs.Save();
+        });
+
+        enableCheatsToggle.isOn = ServerSettings.allowCheats;
+        enableCheatsToggle.onValueChanged.AddListener(value =>
+        {
+            ServerSettings.allowCheats = value;
         });
 
         // Highlights the default buttons and calls SetBalls and SetDuration,

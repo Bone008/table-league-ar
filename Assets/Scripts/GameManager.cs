@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour
     public GameObject botPlayerPrefab;
     public Player player1;
     public Player player2;
-    public bool allowCheats;
+    public bool _allowCheats;
+    public bool allowCheats => _allowCheats || ServerSettings.allowCheats;
 
     private bool assignedPlayer1 = false;
     private bool assignedPlayer2 = false;

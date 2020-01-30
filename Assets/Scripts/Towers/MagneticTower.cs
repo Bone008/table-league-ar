@@ -84,7 +84,7 @@ public class MagneticTower : TowerBase
     private void OnUpdateEnergy(float value)
     {
         float t = value / maxEnergy;
-        Debug.Log("updating energy to " + t);
+        //Debug.Log("updating energy to " + t);
         //circleRenderer.material.SetColor(shaderColorProp, Color.Lerp(Color.black, circleInitialColor, t));
         circleTransform.localScale = t * Vector3.one;
     }

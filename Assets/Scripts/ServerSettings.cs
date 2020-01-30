@@ -8,5 +8,6 @@ public static class ServerSettings
     /// <summary>If false, the game will be started with a Bot opponent after the first player connects.</summary>
     public static bool isMultiplayer = false;
     public static int numberOfBalls = 4;
-    public static float gameDurationSeconds = 10f;
+    public static float gameDurationSeconds = 60f;
+    public static bool allowCheats = false;
 }
