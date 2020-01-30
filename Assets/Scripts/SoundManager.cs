@@ -37,8 +37,11 @@ public enum SoundEffect
 [RequireComponent(typeof(AudioSource))]
 public class SoundManager : NetworkBehaviour
 {
+    private const float FADE_OUT_DURATION = 0.15f;
+
     public static SoundManager Instance { get; private set; }
 
+    public SoundEffect[] interruptibleEffects;
     public AudioClip clipButtonClick;
     public AudioClip clipInvalid;
     public AudioClip clipTime;
@@ -60,6 +63,7 @@ public class SoundManager : NetworkBehaviour
     public AudioClip clipTimeWarning;
 
     private Dictionary<SoundEffect, AudioClip> clipsByEffect = new Dictionary<SoundEffect, AudioClip>();
+    private Dictionary<SoundEffect, AudioSource> spawnedSourcesByEffect = new Dictionary<SoundEffect, AudioSource>();
     private AudioSource source;
 
     void Awake()
@@ -98,18 +102,60 @@ public class SoundManager : NetworkBehaviour
     [Client]
     private void ClientPlaySound(SoundEffect sound)
     {
-        if(!clipsByEffect.TryGetValue(sound, out AudioClip clip))
+        if (!clipsByEffect.TryGetValue(sound, out AudioClip clip))
         {
             Debug.LogError("Cannot play sound effect without registered clip: " + sound);
             return;
         }
-        if(clip == null)
+        if (clip == null)
         {
             Debug.LogWarning("Cannot play null sound effect: " + sound);
             return;
         }
-        
-        source.PlayOneShot(clip);
+
+        if (interruptibleEffects.Contains(sound))
+        {
+            if (spawnedSourcesByEffect.TryGetValue(sound, out var existingSource) && existingSource)
+            {
+                existingSource.Stop();
+                Destroy(existingSource.gameObject);
+            }
+
+            var go = new GameObject("Audio-" + sound);
+            var source = go.AddComponent<AudioSource>();
+            source.clip = clip;
+            source.Play();
+            spawnedSourcesByEffect[sound] = source;
+
+            this.Delayed(clip.length + 0.1f, () =>
+            {
+                if (go) Destroy(go);
+                if (spawnedSourcesByEffect[sound] == source) spawnedSourcesByEffect[sound] = null;
+            });
+        }
+        else
+        {
+            source.PlayOneShot(clip);
+        }
+    }
+
+    [Client]
+    private void ClientStopSound(SoundEffect sound)
+    {
+        if (!interruptibleEffects.Contains(sound))
+        {
+            Debug.LogWarning($"Tried to stop sound effect \"{sound}\", but it is not marked as interruptible.", this);
+            return;
+        }
+
+        if (spawnedSourcesByEffect.TryGetValue(sound, out var source) && source)
+        {
+            // Simply fade it out. The source will automatically be destroyed when the clip ends.
+            this.AnimateScalar(FADE_OUT_DURATION, source.volume, 0, v =>
+            {
+                if (source) source.volume = v;
+            }, true);
+        }
     }
 
     [ClientRpc]
@@ -129,8 +175,7 @@ public class SoundManager : NetworkBehaviour
     [ClientRpc]
     public void RpcStopSoundAll(SoundEffect sound)
     {
-        // TODO currently no good way to stop a specific sound that was played with PlayOneShot :(
-        source.Stop();
+        ClientStopSound(sound);
     }
 
     [ClientRpc]
@@ -138,6 +183,6 @@ public class SoundManager : NetworkBehaviour
     {
         // TODO currently no good way to stop a specific sound that was played with PlayOneShot :(
         if (PlayerNetController.LocalInstance?.player?.playerId == playerId)
-            source.Stop();
+            ClientStopSound(sound);
     }
 }

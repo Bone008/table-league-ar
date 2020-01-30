@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5074,6 +5074,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  interruptibleEffects: 07000000090000000a000000
   clipButtonClick: {fileID: 8300000, guid: d661bfd67647b194299110d1a3ce47fc, type: 3}
   clipInvalid: {fileID: 8300000, guid: 2941a996d42c6e04f8e595c0fa7c8adf, type: 3}
   clipTime: {fileID: 8300000, guid: 3993cdf03584b1f44874fb084eaf0680, type: 3}
@@ -5120,7 +5121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 717608115}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 725.725, y: 278.9975, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
