@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6161258037603711389}
   - component: {fileID: 6161258037603711388}
+  - component: {fileID: -1444153568252214600}
   m_Layer: 0
   m_Name: Marker Indicator
   m_TagString: Untagged
@@ -28,9 +29,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1223742441342704356}
-  - {fileID: 6161258038146396973}
-  - {fileID: 6161258038098665819}
+  - {fileID: 4765341846238938763}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48,6 +47,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   markerId: 0
   spin: 1
+--- !u!114 &-1444153568252214600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6161258037603711390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309a73df17d50254696c82ad8a6b091a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6161258037912840286
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,12 +162,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6161258038098665796}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0.04}
   m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
   m_Children:
   - {fileID: 6161258038828680887}
-  m_Father: {fileID: 6161258037603711389}
+  m_Father: {fileID: 4765341846238938763}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -255,7 +266,7 @@ RectTransform:
   m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
   m_Children:
   - {fileID: 6161258037912840285}
-  m_Father: {fileID: 6161258037603711389}
+  m_Father: {fileID: 4765341846238938763}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -400,18 +411,46 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 0
+--- !u!1 &8252630322405303551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4765341846238938763}
+  m_Layer: 0
+  m_Name: debug-group
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4765341846238938763
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8252630322405303551}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1223742441342704356}
+  - {fileID: 6161258038146396973}
+  - {fileID: 6161258038098665819}
+  m_Father: {fileID: 6161258037603711389}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6161258038349312510
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6161258037603711389}
+    m_TransformParent: {fileID: 4765341846238938763}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: f34fcadb8795d18429b40cf752f37fe4,
-        type: 3}
-      propertyPath: m_Name
-      value: marker_indicator
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f34fcadb8795d18429b40cf752f37fe4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -481,6 +520,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: f34fcadb8795d18429b40cf752f37fe4,
+        type: 3}
+      propertyPath: m_Name
+      value: marker_indicator
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f34fcadb8795d18429b40cf752f37fe4, type: 3}
