@@ -100,7 +100,7 @@ public class Player : NetworkBehaviour
             {
                 statistics.distanceTravelled += Vector3.Distance(controllerTransform.position, lastPos);
                 lastPos = controllerTransform.position;
-                Debug.Log(statistics.distanceTravelled);
+                //Debug.Log(statistics.distanceTravelled);
             }
             yield return new WaitForSeconds(0.5f);
         }

@@ -16,14 +16,40 @@ public class TimeController : NetworkBehaviour
     private float gameDuration = 0;
     [SyncVar]
     private double gamePausedTime = double.NaN;
+    [SyncVar]
+    private int ticksRemaining = Constants.totalTicks;
 
     public bool IsPaused => !double.IsNaN(gamePausedTime);
+
+    private bool timeWarningPlayed = false;
     
     [Server]
     public void OnGameStart()
     {
         gameStartTime = NetworkTime.time;
         gameDuration = ServerSettings.gameDurationSeconds;
+    }
+
+    [ServerCallback]
+    void Update()
+    {
+        if (!Double.IsNaN(gameStartTime))
+        {
+            float time = GetTimeRemaining();
+            
+            if(Mathf.Ceil(time) <= ticksRemaining && ticksRemaining > 0)
+            {
+                Debug.Log("Time: " + time);
+                SoundManager.Instance.RpcPlaySoundAll(SoundEffect.ClockTick);
+                ticksRemaining--;
+            }
+
+            if (!timeWarningPlayed && Mathf.Ceil(time) <= Constants.timeWarning)
+            {
+                SoundManager.Instance.RpcPlaySoundAll(SoundEffect.TimeWarning);
+                timeWarningPlayed = true;
+            }
+        }
     }
 
     [Server]

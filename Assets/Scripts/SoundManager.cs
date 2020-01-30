@@ -30,6 +30,8 @@ public enum SoundEffect
     TowerJamming,
     BallUnfreeze,
     NiceSave,
+    ClockTick,
+    TimeWarning,
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -54,6 +56,8 @@ public class SoundManager : NetworkBehaviour
     public AudioClip clipTowerJamming;
     public AudioClip clipBallUnfreeze;
     public AudioClip clipNiceSave;
+    public AudioClip clipClockTick;
+    public AudioClip clipTimeWarning;
 
     private Dictionary<SoundEffect, AudioClip> clipsByEffect = new Dictionary<SoundEffect, AudioClip>();
     private AudioSource source;
@@ -80,6 +84,8 @@ public class SoundManager : NetworkBehaviour
         clipsByEffect.Add(SoundEffect.TowerJamming, clipTowerJamming);
         clipsByEffect.Add(SoundEffect.BallUnfreeze, clipBallUnfreeze);
         clipsByEffect.Add(SoundEffect.NiceSave, clipNiceSave);
+        clipsByEffect.Add(SoundEffect.ClockTick, clipClockTick);
+        clipsByEffect.Add(SoundEffect.TimeWarning, clipTimeWarning);
 
         // Completeness check.
         foreach (SoundEffect sound in System.Enum.GetValues(typeof(SoundEffect)))
