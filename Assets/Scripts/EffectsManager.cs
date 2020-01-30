@@ -15,9 +15,14 @@ public class EffectsManager : NetworkBehaviour
     public GameObject pullEffectPrefab;
     public GameObject goalEffectPrefab;
 
+    private float initialLineWidth;
     private Transform interactionLineSource = null;
 
-    void Awake() { Instance = this; }
+    void Awake()
+    {
+        Instance = this;
+        initialLineWidth = interactionLine.widthMultiplier;
+    }
 
     [ClientCallback]
     void LateUpdate()
@@ -34,6 +39,7 @@ public class EffectsManager : NetworkBehaviour
         if (PlayerNetController.LocalInstance?.player?.gameObject == playerObject)
             return;
         interactionLineSource = playerObject.transform.GetChild(0);
+        interactionLine.widthMultiplier = initialLineWidth * Scale.gameScale;
         interactionLine.SetPosition(1, targetPos);
         interactionLine.enabled = true;
     }
