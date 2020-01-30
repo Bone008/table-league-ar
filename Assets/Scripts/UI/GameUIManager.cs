@@ -26,7 +26,9 @@ public class GameUIManager : MonoBehaviour
     public GameObject getReadyPanel;
 
     [Header("Ingame UI")]
-    public GameObject ingameUI;
+    public GameObject ingameUIAll;
+    public GameObject ingameUIPlayer;
+    public GameObject ingameUISpectator;
     public Text gameTimeText;
     public Text score1Text;
     public Text score2Text;
@@ -147,10 +149,19 @@ public class GameUIManager : MonoBehaviour
         {
             PlayerNetController.LocalInstance.CmdSetReady(true);
             getReadyPanel.SetActive(false);
-            ingameUI.SetActive(true);
+            ingameUIAll.SetActive(true);
+            ingameUIPlayer.SetActive(true);
         }
         else
             Debug.LogWarning("Cannot send ready command without a network player!");
+    }
+
+    public void SetSpectator()
+    {
+        Debug.Log("Switched to spectator mode.");
+        getReadyPanel.SetActive(false);
+        ingameUIAll.SetActive(true);
+        ingameUISpectator.SetActive(true);
     }
 
     public void ExitGame()

@@ -56,10 +56,14 @@ public class Ball : NetworkBehaviour
             rbody.isKinematic = true;
         }
 
-        Canvas mainCanvas = FindObjectOfType<Canvas>();
-        activeOffScreenIndicator = Instantiate(offScreenIndicatorPrefab, mainCanvas.transform);
-        var script = activeOffScreenIndicator.GetComponent<OffScreenIndicator>();
-        script.targetTransform = transform;
+        // Spawn off screen UI elements. But not for spectators.
+        if (PlayerNetController.LocalInstance?.player != null)
+        {
+            Canvas mainCanvas = FindObjectOfType<Canvas>();
+            activeOffScreenIndicator = Instantiate(offScreenIndicatorPrefab, mainCanvas.transform);
+            var script = activeOffScreenIndicator.GetComponent<OffScreenIndicator>();
+            script.targetTransform = transform;
+        }
     }
 
     [ClientCallback]

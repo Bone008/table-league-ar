@@ -109,10 +109,10 @@ public class TimeController : NetworkBehaviour
         }
         else
         {
-            // This is probably a way to detect spectator mode later.
-            Debug.LogWarning("Could not locate own stats.", this);
-            localStats = new GameStatistics();
-            opStats = new GameStatistics();
+            // Spectator.
+            Debug.Log("Could not locate own stats. Pretending to be player 1.", this);
+            localStats = stats1;
+            opStats = stats2;
         }
 
         PostGameManager.statistics = localStats;

@@ -11,8 +11,11 @@ public class BallInteractionPreview : MonoBehaviour
     void LateUpdate()
     {
         var controller = PlayerNetController.LocalInstance;
-        if (controller == null || controller.player == null)
+        if (controller?.player == null)
+        {
+            visual.enabled = false;
             return;
+        }
 
         float maxRange = PlayerInputController.s_unscaledMaxInteractionRange * Scale.gameScale;
         bool inRange = (controller.transform.position - transform.position).sqrMagnitude < maxRange * maxRange;
