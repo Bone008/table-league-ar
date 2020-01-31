@@ -42,12 +42,16 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             isPaused = false;
             timeController.OnGamePause(false);
+            player1.PlayerHidePanel();
+            player2.PlayerHidePanel();
         }
         else if (isRunning && (!player1.isUserReady || !player2.isUserReady))
         {
             Time.timeScale = 0;
             isPaused = true;
             timeController.OnGamePause(true);
+            player1.PlayerGamePaused();
+            player2.PlayerGamePaused();
         }
 
         if(isRunning && timeController.GetTimeRemaining() <= 0 && !allowCheats)

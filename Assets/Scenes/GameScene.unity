@@ -5877,7 +5877,7 @@ MonoBehaviour:
     type: 3}
   player1: {fileID: 810622631}
   player2: {fileID: 764313429}
-  _allowCheats: 1
+  _allowCheats: 0
 --- !u!4 &768383733
 Transform:
   m_ObjectHideFlags: 0

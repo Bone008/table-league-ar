@@ -88,7 +88,7 @@ public class Player : NetworkBehaviour
     [Server]
     private IEnumerator MeasureDistanceLoop()
     {
-        Vector3 lastPos = new Vector3 (0,0,0);
+        Vector3 lastPos = new Vector3(0, 0, 0);
 
         while (true)
         {
@@ -317,7 +317,7 @@ public class Player : NetworkBehaviour
         foreach (Ball ball in GameManager.Instance.balls)
         {
             ball.Freeze(Constants.freezeBallDuration);
-           
+
         }
         SoundManager.Instance.RpcPlaySoundAll(SoundEffect.BallFreeze);
         this.Delayed(Constants.freezeBallDuration, () =>
@@ -358,7 +358,7 @@ public class Player : NetworkBehaviour
         var balls = new List<Ball>(GameManager.Instance.balls);
         if (balls.Count == 0)
             return;
-        if(balls.Any(ball => !ball.CanGrapple()))
+        if (balls.Any(ball => !ball.CanGrapple()))
         {
             Debug.Log("Cannot use grapple: a ball is already blocked");
             SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.Invalid, playerId);
@@ -372,7 +372,7 @@ public class Player : NetworkBehaviour
         float spacing = 1.7f * ballDiameter;
         float maxX = spacing * (balls.Count - 1) / 2f;
         // Sort balls by their current x position local to the player, to avoid crossing them over in weird ways.
-        balls.Sort((a, b) =>  controllerTransform.InverseTransformPoint(a.transform.position).x.CompareTo(
+        balls.Sort((a, b) => controllerTransform.InverseTransformPoint(a.transform.position).x.CompareTo(
             controllerTransform.InverseTransformPoint(b.transform.position).x));
         for (int i = 0; i < balls.Count; i++)
         {
@@ -382,5 +382,17 @@ public class Player : NetworkBehaviour
             ball.Grapple(controllerTransform, targetPos, ownedRectangle);
         }
         statistics.powerupsUsed += 1;
+    }
+
+    [ClientRpc]
+    public void PlayerGamePaused()
+    {
+        StatusUIMananger.LocalInstance?.GamesPaused();
+    }
+
+    [ClientRpc]
+    public void PlayerHidePanel()
+    {
+        StatusUIMananger.LocalInstance?.HidePanel();
     }
 }

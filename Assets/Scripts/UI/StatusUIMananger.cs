@@ -48,10 +48,21 @@ public class StatusUIMananger : MonoBehaviour
         statusMessagePanel.SetActive(true);
     }
 
+    public void GamesPaused()
+    {
+        statusMessageText.text = "Game is Paused";
+        statusMessagePanel.SetActive(true);
+    }
+
     public void HidePanel()
     {
         if (!destroyMode)
             statusMessagePanel.SetActive(false);
+    }
+
+    public void ToggleDestroy(bool mode)
+    {
+        destroyMode = mode;
     }
 
 
