@@ -67,6 +67,7 @@ public class PlayerInputController : MonoBehaviour
             if (netController.player.GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost || TowerUIManager.towerChoice == TowerType.None)
             {
                 newTowerChoice = -1;
+                StatusUIMananger.LocalInstance.HidePanel();
             }
             else if (Physics.Raycast(ray, out hit, maxInteractionRange, LayerMask.GetMask("Floor"), QueryTriggerInteraction.Collide))
             {
@@ -78,12 +79,14 @@ public class PlayerInputController : MonoBehaviour
                         if (Vector3.SqrMagnitude(t.transform.position - hit.point) < Constants.scaledTowerDistance * Constants.scaledTowerDistance)
                         {
                             towerFeasible = false;
+                            StatusUIMananger.LocalInstance?.TowerTooClose();
                             break;
                         }
                     }
                     if(!netController.player.ownedRectangle.Contains(hit.point))
                     {
                         towerFeasible = false;
+                        StatusUIMananger.LocalInstance?.BuildOwnSide();
                     }
 
                     if (towerFeasible)
@@ -121,6 +124,7 @@ public class PlayerInputController : MonoBehaviour
                 {
                     Destroy(towerPreview);
                     towerPreview = Instantiate(TowerManager.Instance.getTowerPreview((TowerType)newTowerChoice), hit.point, previewAngle);
+                    StatusUIMananger.LocalInstance.HoldToBuild();
                 }
                 else
                 {
