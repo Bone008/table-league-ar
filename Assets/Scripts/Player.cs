@@ -128,7 +128,8 @@ public class Player : NetworkBehaviour
             EffectsManager.Instance.RpcHideInteraction();
             SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.TowerBuilding, playerId);
 
-            if (ConsumeFromInventory(CollectableType.TowerResource, Constants.towerCost))
+            int cost = TowerManager.Instance.getTowerCost(activeType);
+            if (ConsumeFromInventory(CollectableType.TowerResource, cost))
             {
                 var newTower = Instantiate(TowerManager.Instance.getTower(activeType), activeBuildTower.transform.position, activeBuildTower.transform.rotation);
                 newTower.GetComponent<TowerBase>().owner = this;
@@ -223,7 +224,8 @@ public class Player : NetworkBehaviour
     {
         if (!GameManager.Instance.isRunning) return;
 
-        if (GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost)
+        int cost = TowerManager.Instance.getTowerCost(activeType);
+        if (GetInventoryCount(CollectableType.TowerResource) < cost)
         {
             Debug.LogWarning("Not enough resources to build a tower!", this);
             return;
@@ -382,16 +384,17 @@ public class Player : NetworkBehaviour
             ball.Grapple(controllerTransform, targetPos, ownedRectangle);
         }
         statistics.powerupsUsed += 1;
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.GrapplingHook, playerId);
     }
 
     [ClientRpc]
-    public void PlayerGamePaused()
+    public void RpcPlayerGamePaused()
     {
         StatusUIMananger.LocalInstance?.GamesPaused();
     }
 
     [ClientRpc]
-    public void PlayerHidePanel()
+    public void RpcPlayerHidePanel()
     {
         StatusUIMananger.LocalInstance?.HidePanel();
     }

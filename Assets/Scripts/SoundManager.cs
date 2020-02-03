@@ -32,6 +32,7 @@ public enum SoundEffect
     NiceSave,
     ClockTick,
     TimeWarning,
+    GrapplingHook,
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -61,6 +62,7 @@ public class SoundManager : NetworkBehaviour
     public AudioClip clipNiceSave;
     public AudioClip clipClockTick;
     public AudioClip clipTimeWarning;
+    public AudioClip clipGrapplingHook;
 
     private Dictionary<SoundEffect, AudioClip> clipsByEffect = new Dictionary<SoundEffect, AudioClip>();
     private Dictionary<SoundEffect, AudioSource> spawnedSourcesByEffect = new Dictionary<SoundEffect, AudioSource>();
@@ -90,6 +92,7 @@ public class SoundManager : NetworkBehaviour
         clipsByEffect.Add(SoundEffect.NiceSave, clipNiceSave);
         clipsByEffect.Add(SoundEffect.ClockTick, clipClockTick);
         clipsByEffect.Add(SoundEffect.TimeWarning, clipTimeWarning);
+        clipsByEffect.Add(SoundEffect.GrapplingHook, clipGrapplingHook);
 
         // Completeness check.
         foreach (SoundEffect sound in System.Enum.GetValues(typeof(SoundEffect)))
