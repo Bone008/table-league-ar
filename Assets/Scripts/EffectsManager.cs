@@ -108,7 +108,6 @@ public class EffectsManager : NetworkBehaviour
     public void RpcPlayGoalEffect(GameObject goal)
     {
         var effect = Instantiate(goalEffectPrefab, goal.transform);
-        //Debug.Log("In GOAL AEFSKDHF");
     }
 
 }
