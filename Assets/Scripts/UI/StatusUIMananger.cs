@@ -13,10 +13,7 @@ public class StatusUIMananger : MonoBehaviour
 
     void Awake()
     {
-        if (LocalInstance == null)
-        {
-            LocalInstance = this;
-        }
+        LocalInstance = this;
     }
 
     public void TowerDestroyToggle(bool mode)

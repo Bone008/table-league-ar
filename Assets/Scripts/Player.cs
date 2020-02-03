@@ -128,7 +128,8 @@ public class Player : NetworkBehaviour
             EffectsManager.Instance.RpcHideInteraction();
             SoundManager.Instance.RpcStopSoundPlayer(SoundEffect.TowerBuilding, playerId);
 
-            if (ConsumeFromInventory(CollectableType.TowerResource, Constants.towerCost))
+            int cost = TowerManager.Instance.getTowerCost(activeType);
+            if (ConsumeFromInventory(CollectableType.TowerResource, cost))
             {
                 var newTower = Instantiate(TowerManager.Instance.getTower(activeType), activeBuildTower.transform.position, activeBuildTower.transform.rotation);
                 newTower.GetComponent<TowerBase>().owner = this;
@@ -223,7 +224,8 @@ public class Player : NetworkBehaviour
     {
         if (!GameManager.Instance.isRunning) return;
 
-        if (GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost)
+        int cost = TowerManager.Instance.getTowerCost(activeType);
+        if (GetInventoryCount(CollectableType.TowerResource) < cost)
         {
             Debug.LogWarning("Not enough resources to build a tower!", this);
             return;

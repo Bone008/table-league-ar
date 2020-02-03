@@ -64,7 +64,7 @@ public class PlayerInputController : MonoBehaviour
         {
             int newTowerChoice;
 
-            if (netController.player.GetInventoryCount(CollectableType.TowerResource) < Constants.towerCost || TowerUIManager.towerChoice == TowerType.None)
+            if (TowerUIManager.towerChoice == TowerType.None || netController.player.GetInventoryCount(CollectableType.TowerResource) < TowerManager.Instance.getTowerCost(TowerUIManager.towerChoice))
             {
                 newTowerChoice = -1;
                 StatusUIMananger.LocalInstance.HidePanel();

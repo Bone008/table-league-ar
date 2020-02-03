@@ -25,6 +25,13 @@ public class TowerUIManager : MonoBehaviour
         defaultSpriteBuild = towerButtons[1].image.sprite; // first tower button's default sprite
         defaultSpriteDestroy = towerButtons[0].image.sprite; // destroy tower button's default sprite
         UpdateButtons();
+
+        // Display correct costs in buttons.
+        for(int i=1; i<towerButtons.Length; i++)
+        {
+            towerButtons[i].transform.Find("UI-cost-panel").Find("cost").GetComponent<TMPro.TextMeshProUGUI>().text =
+                TowerManager.Instance.getTowerCost((TowerType)i).ToString();
+        }
     }
 
     void Update()
@@ -97,13 +104,14 @@ public class TowerUIManager : MonoBehaviour
     private void UpdateButtons()
     {
         int resources = PlayerNetController.LocalInstance?.player?.GetInventoryCount(CollectableType.TowerResource) ?? 0;
-        bool canBuild = resources >= Constants.towerCost;
-        if (!canBuild)
-            towerChoice = TowerType.None;
 
         towerButtons[0].image.sprite = (destroyMode ? selectedSpriteDestroy : defaultSpriteDestroy);
         for (int i = 1; i < towerButtons.Length; i++)
         {
+            bool canBuild = resources >= TowerManager.Instance.getTowerCost((TowerType)i);
+            if (!canBuild && i == (int)towerChoice)
+                towerChoice = TowerType.None;
+
             towerButtons[i].interactable = canBuild;
             towerButtons[i].image.sprite = (i == (int)towerChoice ? selectedSpriteBuild : defaultSpriteBuild);
         }
