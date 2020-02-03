@@ -39,7 +39,6 @@ public class TimeController : NetworkBehaviour
             
             if(Mathf.Ceil(time) <= ticksRemaining && ticksRemaining > 0)
             {
-                Debug.Log("Time: " + time);
                 SoundManager.Instance.RpcPlaySoundAll(SoundEffect.ClockTick);
                 ticksRemaining--;
             }

@@ -129,14 +129,11 @@ public class TowerUIManager : MonoBehaviour
         foreach (GameObject t in towers)
         {
             TowerBase baseClass = t.GetComponent<TowerBase>();
-            if (baseClass.owner == PlayerNetController.LocalInstance?.player)
+            GameObject range = baseClass.cannotBuildRange;
+            if(range != null)
             {
-                GameObject range = baseClass.cannotBuildRange;
-                if(range != null)
-                {
-                    Debug.Log(showRange);
-                    range.SetActive(showRange);
-                }
+                Debug.Log(showRange);
+                range.SetActive(showRange);
             }
         }
     }
