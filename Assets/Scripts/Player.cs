@@ -382,6 +382,7 @@ public class Player : NetworkBehaviour
             ball.Grapple(controllerTransform, targetPos, ownedRectangle);
         }
         statistics.powerupsUsed += 1;
+        SoundManager.Instance.RpcPlaySoundPlayer(SoundEffect.GrapplingHook, playerId);
     }
 
     [ClientRpc]
