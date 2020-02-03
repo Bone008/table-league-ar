@@ -385,13 +385,13 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void PlayerGamePaused()
+    public void RpcPlayerGamePaused()
     {
         StatusUIMananger.LocalInstance?.GamesPaused();
     }
 
     [ClientRpc]
-    public void PlayerHidePanel()
+    public void RpcPlayerHidePanel()
     {
         StatusUIMananger.LocalInstance?.HidePanel();
     }
