@@ -27,7 +27,13 @@ public class NetworkManagerEx : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        Player player = conn.identity?.GetComponent<PlayerNetController>()?.player;
+        if(conn.identity == null)
+        {
+            Debug.Log("Client disconnected (no identity)!");
+            return;
+        }
+
+        Player player = conn.identity.GetComponent<PlayerNetController>()?.player;
         base.OnServerDisconnect(conn);
 
         if (player != null)

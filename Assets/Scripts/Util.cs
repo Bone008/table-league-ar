@@ -231,7 +231,27 @@ public static class Util
     }
 
 
+    /// <summary>
+    /// A thin wrapper around StartCoroutine for simple scenarios where you just want to execute something after some time has passed.
+    /// </summary>
+    /// <param name="component">the script that wants to delay something</param>
+    /// <param name="delay">something you could "yield return" from a coroutine</param>
+    /// <param name="callback">the callback that should be invoked; useful with lambda expressions: () => ...</param>
+    /// <returns>the coroutine as created by Unity</returns>
+    public static Coroutine Delayed(this MonoBehaviour component, CustomYieldInstruction delayObject, Action callback)
+    {
+        return component.StartCoroutine(_DelayedCoroutine(delayObject, callback));
+    }
+
+
     private static IEnumerator _DelayedCoroutine(YieldInstruction delayObject, Action callback)
+    {
+        yield return delayObject;
+        callback();
+    }
+
+
+    private static IEnumerator _DelayedCoroutine(CustomYieldInstruction delayObject, Action callback)
     {
         yield return delayObject;
         callback();

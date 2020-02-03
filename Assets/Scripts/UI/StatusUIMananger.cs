@@ -10,6 +10,7 @@ public class StatusUIMananger : MonoBehaviour
     public TMPro.TextMeshProUGUI statusMessageText;
 
     public bool destroyMode = false;
+    private bool pauseActive = false;
 
     void Awake()
     {
@@ -18,9 +19,9 @@ public class StatusUIMananger : MonoBehaviour
 
     public void TowerDestroyToggle(bool mode)
     {
-        if (mode)
+        if (mode && !pauseActive)
         {
-            statusMessageText.text = "Hold a tower to destroy it";
+            statusMessageText.text = "Hold a tower to destroy it.";
             statusMessagePanel.SetActive(true);
         }
 
@@ -29,37 +30,42 @@ public class StatusUIMananger : MonoBehaviour
 
     public void HoldToBuild()
     {
-        statusMessageText.text = "Hold on the floor to build tower";
+        if (pauseActive) return;
+        statusMessageText.text = "Hold on the floor to build tower.";
         statusMessagePanel.SetActive(true);
     }
 
     public void TowerTooClose()
     {
-        statusMessageText.text = "Too close to other towers";
+        if (pauseActive) return;
+        statusMessageText.text = "Too close to other towers!";
         statusMessagePanel.SetActive(true);
     }
 
     public void BuildOwnSide()
     {
-        statusMessageText.text = "Build on your own side";
+        if (pauseActive) return;
+        statusMessageText.text = "Can only build on your own side!";
         statusMessagePanel.SetActive(true);
     }
 
     public void GamesPaused()
     {
-        statusMessageText.text = "Game is Paused";
+        statusMessageText.text = "Game is paused.";
         statusMessagePanel.SetActive(true);
+        pauseActive = true;
     }
 
-    public void HidePanel()
+    public void HidePanel(bool unpause = false)
     {
-        if (!destroyMode)
+        if (!destroyMode && !pauseActive)
             statusMessagePanel.SetActive(false);
-    }
 
-    public void ToggleDestroy(bool mode)
-    {
-        destroyMode = mode;
+        if (unpause)
+        {
+            statusMessagePanel.SetActive(false);
+            pauseActive = false;
+        }
     }
 
 

@@ -96,7 +96,7 @@ public class TowerUIManager : MonoBehaviour
         {
             towerChoice = newType;
             destroyMode = false;
-            StatusUIMananger.LocalInstance?.ToggleDestroy(destroyMode);
+            StatusUIMananger.LocalInstance?.TowerDestroyToggle(destroyMode);
         }
         UpdateButtons();
     }

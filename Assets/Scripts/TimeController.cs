@@ -122,8 +122,10 @@ public class TimeController : NetworkBehaviour
         SceneManager.LoadSceneAsync(postGameScene);
 
         // Disconnect from server / Stop server.
-        NetworkManager.singleton.Delayed(2, () =>
+        float delay = NetworkServer.active ? 8 : 2;
+        NetworkManager.singleton.Delayed(new WaitForSecondsRealtime(delay), () =>
         {
+            Debug.Log("Disconnecting now.");
             string initialOfflineScene = NetworkManager.singleton.offlineScene;
             NetworkManager.singleton.offlineScene = null;
 

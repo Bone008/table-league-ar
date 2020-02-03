@@ -251,6 +251,7 @@ public class Player : NetworkBehaviour
     [Server]
     public void StartDestroyTower(GameObject tower)
     {
+        if (!GameManager.Instance.isRunning) return;
         if (!ownedRectangle.Contains(tower.transform.position) && !GameManager.Instance.allowCheats)
         {
             Debug.LogWarning("Player tried to destroy tower outside of owned rectangle!");
@@ -313,6 +314,7 @@ public class Player : NetworkBehaviour
     [Server]
     public void UsePowerupFreeze()
     {
+        if (!GameManager.Instance.isRunning) return;
         if (!ConsumeFromInventory(CollectableType.PowerupFreeze, 1))
             return;
 
@@ -332,6 +334,7 @@ public class Player : NetworkBehaviour
     [Server]
     public void UsePowerupJamTowers()
     {
+        if (!GameManager.Instance.isRunning) return;
         if (!ConsumeFromInventory(CollectableType.PowerupJamTowers, 1))
             return;
 
@@ -351,6 +354,7 @@ public class Player : NetworkBehaviour
     [Server]
     public void UsePowerupGrapple()
     {
+        if (!GameManager.Instance.isRunning) return;
         if (controllerTransform == null)
         {
             Debug.LogWarning("Cannot use grapple: controllerTransform was not assigned!", this);
@@ -396,6 +400,6 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void RpcPlayerHidePanel()
     {
-        StatusUIMananger.LocalInstance?.HidePanel();
+        StatusUIMananger.LocalInstance?.HidePanel(true);
     }
 }
